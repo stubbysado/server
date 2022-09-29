@@ -71,6 +71,8 @@ echo -e "$PASSWORD\n$PASSWORD" | sudo smbpasswd -a $(whoami)
 sudo systemctl restart smbd.service
 
 # TRANSMISSION
+sudo systemctl stop transmission-daemon.service
+
 sudo sed -i 's|"download-dir": "/var/lib/transmission-daemon/downloads",|"download-dir": "/mnt/server/02 Downloads/Transmission",|g' /etc/transmission-daemon/settings.json
 sudo sed -i 's/"rpc-username": "transmission",/"rpc-username": "oggy",/g' /etc/transmission-daemon/settings.json
 sudo sed -i 's/"rpc-whitelist-enabled": true,/"rpc-whitelist-enabled": false,/g' /etc/transmission-daemon/settings.json
