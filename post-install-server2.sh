@@ -10,6 +10,9 @@ sudo apt clean -y
 sudo apt autoclean -y
 sudo apt autoremove -y
 
+# TIMEZONE
+sudo timedatectl set-timezone Asia/Kuala_Lumpur
+
 # FSTAB
 sudo mkdir /mnt/parity1
 sudo mkdir /mnt/data1
@@ -61,11 +64,6 @@ echo -e "$PASSWORD\n$PASSWORD" | sudo smbpasswd -a $(whoami)
 
 sudo systemctl restart smbd.service
 
-# NETDATA
-sudo sed -i 's|127.0.0.1|192.168.0.102|g' /etc/netdata/netdata.conf
-
-sudo systemctl restart netdata
-
 # SNAPRAID
 wget https://github.com/amadvance/snapraid/releases/download/v12.2/snapraid-12.2.tar.gz
 
@@ -90,6 +88,11 @@ echo 'data data2 /mnt/data2/' | sudo tee -a /etc/snapraid.conf
 echo 'data data3 /mnt/data3/' | sudo tee -a /etc/snapraid.conf
 
 echo 'exclude /lost+found/' | sudo tee -a /etc/snapraid.conf
+
+# NETDATA
+sudo sed -i 's|127.0.0.1|192.168.0.102|g' /etc/netdata/netdata.conf
+
+sudo systemctl restart netdata
 
 # SYNC
 sync && sync
