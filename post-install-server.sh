@@ -75,8 +75,39 @@ echo -e "$PASSWORD\n$PASSWORD" | sudo smbpasswd -a $(whoami)
 
 sudo systemctl restart smbd.service
 
-# TRANSMISSION
+# SNAPRAID
+wget https://github.com/amadvance/snapraid/releases/download/v12.2/snapraid-12.2.tar.gz
 
+tar -xzf /home/oggy/post-install/snapraid-12.2.tar.gz
+
+CONFIGURESNAPRAID="/home/oggy/post-install/snapraid-12.2/configure"
+
+$CONFIGURESNAPRAID
+
+make
+
+sudo make install
+
+echo 'parity /mnt/parity1/snapraid.parity' | sudo tee -a /etc/snapraid.conf
+
+echo 'content /mnt/data1/snapraid.content' | sudo tee -a /etc/snapraid.conf
+echo 'content /mnt/data2/snapraid.content' | sudo tee -a /etc/snapraid.conf
+echo 'content /mnt/data3/snapraid.content' | sudo tee -a /etc/snapraid.conf
+echo 'content /mnt/data4/snapraid.content' | sudo tee -a /etc/snapraid.conf
+echo 'content /mnt/data5/snapraid.content' | sudo tee -a /etc/snapraid.conf
+echo 'content /mnt/data6/snapraid.content' | sudo tee -a /etc/snapraid.conf
+
+echo 'data data1 /mnt/data1/' | sudo tee -a /etc/snapraid.conf
+echo 'data data2 /mnt/data2/' | sudo tee -a /etc/snapraid.conf
+echo 'data data3 /mnt/data3/' | sudo tee -a /etc/snapraid.conf
+echo 'data data4 /mnt/data4/' | sudo tee -a /etc/snapraid.conf
+echo 'data data5 /mnt/data5/' | sudo tee -a /etc/snapraid.conf
+echo 'data data6 /mnt/data6/' | sudo tee -a /etc/snapraid.conf
+
+echo 'exclude /lost+found/' | sudo tee -a /etc/snapraid.conf
+echo 'exclude *.part' | sudo tee -a /etc/snapraid.conf
+
+# TRANSMISSION
 sudo systemctl stop transmission-daemon.service
 
 sudo sed -i 's|User=debian-transmission|User=oggy|g' /lib/systemd/system/transmission-daemon.service
@@ -111,38 +142,6 @@ CRONTSCRIPT="/home/oggy/runner.sh"
 CRONJOB="0 0 * * * /home/oggy/runner.sh"
 
 cat <(fgrep -i -v "$CRONTSCRIPT" <(crontab -l)) <(echo "$CRONJOB") | crontab -
-
-# SNAPRAID
-wget https://github.com/amadvance/snapraid/releases/download/v12.2/snapraid-12.2.tar.gz
-
-tar -xzf /home/oggy/post-install/snapraid-12.2.tar.gz
-
-CONFIGURESNAPRAID="/home/oggy/post-install/snapraid-12.2/configure"
-
-$CONFIGURESNAPRAID
-
-make
-
-sudo make install
-
-echo 'parity /mnt/parity1/snapraid.parity' | sudo tee -a /etc/snapraid.conf
-
-echo 'content /mnt/data1/snapraid.content' | sudo tee -a /etc/snapraid.conf
-echo 'content /mnt/data2/snapraid.content' | sudo tee -a /etc/snapraid.conf
-echo 'content /mnt/data3/snapraid.content' | sudo tee -a /etc/snapraid.conf
-echo 'content /mnt/data4/snapraid.content' | sudo tee -a /etc/snapraid.conf
-echo 'content /mnt/data5/snapraid.content' | sudo tee -a /etc/snapraid.conf
-echo 'content /mnt/data6/snapraid.content' | sudo tee -a /etc/snapraid.conf
-
-echo 'data data1 /mnt/data1/' | sudo tee -a /etc/snapraid.conf
-echo 'data data2 /mnt/data2/' | sudo tee -a /etc/snapraid.conf
-echo 'data data3 /mnt/data3/' | sudo tee -a /etc/snapraid.conf
-echo 'data data4 /mnt/data4/' | sudo tee -a /etc/snapraid.conf
-echo 'data data5 /mnt/data5/' | sudo tee -a /etc/snapraid.conf
-echo 'data data6 /mnt/data6/' | sudo tee -a /etc/snapraid.conf
-
-echo 'exclude /lost+found/' | sudo tee -a /etc/snapraid.conf
-echo 'exclude *.part' | sudo tee -a /etc/snapraid.conf
 
 # SYNC
 sync && sync
