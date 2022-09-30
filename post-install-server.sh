@@ -92,14 +92,14 @@ sudo systemctl daemon-reload
 sudo systemctl restart transmission-daemon.service
 
 # PRINTER
-sudo sed -i 's/Listen localhost:631/Port 631/g' /etc/cups/cupsd.conf
-sudo sed -i 's/Browsing No/Browsing Yes/g' /etc/cups/cupsd.conf
+sudo sed -i 's|Listen localhost:631|Port 631|g' /etc/cups/cupsd.conf
+sudo sed -i 's|Browsing No|Browsing Yes|g' /etc/cups/cupsd.conf
 
 sudo usermod -aG lpadmin oggy
 sudo systemctl restart cups
 
 # NETDATA
-sudo sed -i 's/127.0.0.1/192.168.0.101/g' /etc/netdata/netdata.conf
+sudo sed -i 's|127.0.0.1|192.168.0.101|g' /etc/netdata/netdata.conf
 
 sudo systemctl restart netdata
 
