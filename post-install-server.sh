@@ -48,6 +48,8 @@ echo '' | sudo tee -a /etc/fstab
 echo '# MergerFS' | sudo tee -a /etc/fstab
 echo '/mnt/data* /mnt/server fuse.mergerfs use_ino,cache.files=off,dropcacheonclose=true,allow_other,category.create=mfs,fsname=server,nonempty 0 0' | sudo tee -a /etc/fstab
 
+sudo mount -a
+
 sudo chown oggy:oggy /mnt/server
 
 # SAMBA
@@ -72,6 +74,8 @@ sudo systemctl restart smbd.service
 
 # TRANSMISSION
 sudo systemctl stop transmission-daemon.service
+
+sudo chgrp -R debian-transmission /mnt/server/02 Downloads/Transmission
 
 sudo sed -i 's|"download-dir": "/var/lib/transmission-daemon/downloads",|"download-dir": "/mnt/server/02 Downloads/Transmission",|g' /etc/transmission-daemon/settings.json
 sudo sed -i 's/"rpc-username": "transmission",/"rpc-username": "oggy",/g' /etc/transmission-daemon/settings.json
