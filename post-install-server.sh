@@ -10,6 +10,9 @@ sudo apt clean -y
 sudo apt autoclean -y
 sudo apt autoremove -y
 
+# TIMEZONE
+sudo timedatectl set-timezone Asia/Kuala_Lumpur
+
 # FSTAB
 sudo mkdir /mnt/parity1
 sudo mkdir /mnt/data1
