@@ -62,7 +62,7 @@ echo -e "$PASSWORD\n$PASSWORD" | sudo smbpasswd -a $(whoami)
 sudo systemctl restart smbd.service
 
 # NETDATA
-sudo sed -i 's/127.0.0.1/192.168.0.102/g' /etc/netdata/netdata.conf
+sudo sed -i 's|127.0.0.1|192.168.0.102|g' /etc/netdata/netdata.conf
 
 sudo systemctl restart netdata
 
