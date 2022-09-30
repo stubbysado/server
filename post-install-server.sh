@@ -72,6 +72,25 @@ echo -e "$PASSWORD\n$PASSWORD" | sudo smbpasswd -a $(whoami)
 
 sudo systemctl restart smbd.service
 
+# TRANSMISSION
+
+sudo systemctl stop transmission-daemon.service
+
+sudo sed -i 's|User=debian-transmission|User=oggy|g' /lib/systemd/system/transmission-daemon.service
+
+sudo systemctl daemon-reload
+sudo systemctl start transmission-daemon.service
+sudo systemctl stop transmission-daemon.service
+
+sudo sed -i 's|"download-dir": "/home/oggy/Downloads",|"download-dir": "/mnt/server/02 Downloads/Transmission",|g' /home/oggy/.config/transmission-daemon/settings.json
+
+sudo sed -i 's|"rpc-username": "",|"rpc-username": "oggy",|g' /home/oggy/.config/transmission-daemon/settings.json
+
+sudo sed -i 's|"rpc-whitelist": "127.0.0.1,::1",|"rpc-whitelist": "127.0.0.1,192.168.*.*",|g' /home/oggy/.config/transmission-daemon/settings.json
+
+sudo systemctl daemon-reload
+sudo systemctl restart transmission-daemon.service
+
 # PRINTER
 sudo sed -i 's/Listen localhost:631/Port 631/g' /etc/cups/cupsd.conf
 sudo sed -i 's/Browsing No/Browsing Yes/g' /etc/cups/cupsd.conf
