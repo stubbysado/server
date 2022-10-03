@@ -44,6 +44,8 @@ echo '/mnt/data* /mnt/server2 fuse.mergerfs use_ino,cache.files=off,dropcacheonc
 
 sudo chown oggy:oggy /mnt/server2
 
+sudo mount -a
+
 # SAMBA
 echo '' | sudo tee -a /etc/samba/smb.conf
 echo '[server2]' | sudo tee -a /etc/samba/smb.conf
