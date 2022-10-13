@@ -21,10 +21,12 @@ sudo mkdir /mnt/data3
 
 echo '' | sudo tee -a /etc/fstab
 echo '# Hard Disk Drive' | sudo tee -a /etc/fstab
-echo '/dev/sdb1 /mnt/parity1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo '/dev/sdc1 /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo '/dev/sdd1 /mnt/data2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo '/dev/sde1 /mnt/data3 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=1326ca8d-bae5-442f-8abd-ce838a1eb5e3 /mnt/parity1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo '' | sudo tee -a /etc/fstab
+echo 'UUID=bb3142a8-5b8d-4b99-b27f-166b9cb1060d /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=5ce59e64-be1a-4235-a291-b94b8217667e /mnt/data2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=2e8f3d3d-1664-4cf4-9a2f-d59834aa0315 /mnt/data3 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=b365421e-db36-4faf-9816-14503d7685d7 /mnt/data4 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 
 sudo mount -a
 
