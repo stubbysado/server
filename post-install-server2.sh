@@ -18,6 +18,7 @@ sudo mkdir /mnt/parity1
 sudo mkdir /mnt/data1
 sudo mkdir /mnt/data2
 sudo mkdir /mnt/data3
+sudo mkdir /mnt/data4
 
 echo '' | sudo tee -a /etc/fstab
 echo '# Hard Disk Drive' | sudo tee -a /etc/fstab
@@ -34,6 +35,7 @@ sudo chown oggy:oggy /mnt/parity1
 sudo chown oggy:oggy /mnt/data1
 sudo chown oggy:oggy /mnt/data2
 sudo chown oggy:oggy /mnt/data3
+sudo chown oggy:oggy /mnt/data4
 
 # MERGERFS
 sudo mkdir /mnt/server2
