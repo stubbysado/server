@@ -106,5 +106,3 @@ sudo systemctl restart netdata
 
 # SYNC
 sync && sync
-
-echo -e "*** System restart required ***"
