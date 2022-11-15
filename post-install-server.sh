@@ -147,9 +147,3 @@ cat <(fgrep -i -v "$CRONTSCRIPT" <(crontab -l)) <(echo "$CRONJOB") | crontab -
 
 # SYNC
 sync && sync
-
-echo -e "Update transmission password"
-echo -e "Update cups"
-echo -e "Update crontab"
-echo -e "Sync snapraid"
-echo -e "*** System restart required ***"
