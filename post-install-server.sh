@@ -1,3 +1,5 @@
+#!/bin/bash -x
+
 # DOWNLOAD PACKAGE
 sudo apt update -y
 sudo apt upgrade -y
