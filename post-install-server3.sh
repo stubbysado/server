@@ -15,6 +15,10 @@ sudo apt autoremove -y
 # TIMEZONE
 sudo timedatectl set-timezone Asia/Kuala_Lumpur
 
+# DISABLE NETWORKD
+sudo systemctl disable systemd-networkd-wait-online.service
+sudo systemctl mask systemd-networkd-wait-online.service
+
 # FSTAB
 sudo mkdir /mnt/parity1
 sudo mkdir /mnt/data1
