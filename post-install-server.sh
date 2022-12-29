@@ -139,7 +139,7 @@ sudo usermod -aG lpadmin oggy
 sudo systemctl restart cups
 
 # NETDATA
-sudo sed -i 's|127.0.0.1|192.168.0.101|g' /etc/netdata/netdata.conf
+sudo sed -i 's|127.0.0.1|192.168.0.200|g' /etc/netdata/netdata.conf
 
 sudo systemctl restart netdata
 
