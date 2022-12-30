@@ -120,7 +120,7 @@ sudo mount -a
 sudo chown oggy:oggy /mnt/ext1
 
 echo '' | sudo tee -a /etc/samba/smb.conf
-echo '[server3-extra]' | sudo tee -a /etc/samba/smb.conf
+echo '[server3a]' | sudo tee -a /etc/samba/smb.conf
 echo 'path = /mnt/ext1' | sudo tee -a /etc/samba/smb.conf
 echo 'browseable = yes' | sudo tee -a /etc/samba/smb.conf
 echo 'read only = no' | sudo tee -a /etc/samba/smb.conf
