@@ -112,6 +112,7 @@ sudo systemctl restart netdata
 sudo mkdir /mnt/ext1
 
 echo '' | sudo tee -a /etc/fstab
+echo '# Extra Hard Disk Drive' | sudo tee -a /etc/fstab
 echo 'UUID=23b3c9e4-4799-4a1c-a95e-a4b536d67a7f /mnt/ext1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 
 sudo mount -a
