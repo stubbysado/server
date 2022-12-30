@@ -108,5 +108,28 @@ sudo sed -i 's|127.0.0.1|192.168.0.198|g' /etc/netdata/netdata.conf
 
 sudo systemctl restart netdata
 
+# EXTRA HDD
+sudo mkdir /mnt/ext1
+
+echo '' | sudo tee -a /etc/fstab
+echo 'UUID=23b3c9e4-4799-4a1c-a95e-a4b536d67a7f /mnt/ext1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+
+sudo mount -a
+
+sudo chown oggy:oggy /mnt/ext1
+
+echo '' | sudo tee -a /etc/samba/smb.conf
+echo '[server3-extra]' | sudo tee -a /etc/samba/smb.conf
+echo 'path = /mnt/ext1' | sudo tee -a /etc/samba/smb.conf
+echo 'browseable = yes' | sudo tee -a /etc/samba/smb.conf
+echo 'read only = no' | sudo tee -a /etc/samba/smb.conf
+echo 'guest ok = no' | sudo tee -a /etc/samba/smb.conf
+echo 'valid users = oggy' | sudo tee -a /etc/samba/smb.conf
+echo '' | sudo tee -a /etc/samba/smb.conf
+echo 'vfs objects = recycle' | sudo tee -a /etc/samba/smb.conf
+echo 'recycle:repository = .recycle' | sudo tee -a /etc/samba/smb.conf
+echo 'recycle:directory_mode = 775' | sudo tee -a /etc/samba/smb.conf
+echo 'recycle:versions = yes' | sudo tee -a /etc/samba/smb.conf
+
 # SYNC
 sync && sync
