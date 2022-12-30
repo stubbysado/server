@@ -132,5 +132,7 @@ echo 'recycle:repository = .recycle' | sudo tee -a /etc/samba/smb.conf
 echo 'recycle:directory_mode = 775' | sudo tee -a /etc/samba/smb.conf
 echo 'recycle:versions = yes' | sudo tee -a /etc/samba/smb.conf
 
+sudo systemctl restart smbd.service
+
 # SYNC
 sync && sync
