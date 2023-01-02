@@ -44,22 +44,22 @@ sudo chown oggy:oggy /mnt/data3
 sudo chown oggy:oggy /mnt/data4
 
 # MERGERFS
-sudo mkdir /mnt/server3
+sudo mkdir /mnt/server2
 
-sudo mergerfs -o use_ino,cache.files=off,dropcacheonclose=true,allow_other,category.create=mfs,fsname=server2 /mnt/data* /mnt/server3
+sudo mergerfs -o use_ino,cache.files=off,dropcacheonclose=true,allow_other,category.create=mfs,fsname=server2 /mnt/data* /mnt/server2
 
 echo '' | sudo tee -a /etc/fstab
 echo '# MergerFS' | sudo tee -a /etc/fstab
-echo '/mnt/data* /mnt/server3 fuse.mergerfs use_ino,cache.files=off,dropcacheonclose=true,allow_other,category.create=mfs,fsname=server3,nonempty 0 0' | sudo tee -a /etc/fstab
+echo '/mnt/data* /mnt/server2 fuse.mergerfs use_ino,cache.files=off,dropcacheonclose=true,allow_other,category.create=mfs,fsname=server2,nonempty 0 0' | sudo tee -a /etc/fstab
 
-sudo chown oggy:oggy /mnt/server3
+sudo chown oggy:oggy /mnt/server2
 
 sudo mount -a
 
 # SAMBA
 echo '' | sudo tee -a /etc/samba/smb.conf
-echo '[server3]' | sudo tee -a /etc/samba/smb.conf
-echo 'path = /mnt/server3' | sudo tee -a /etc/samba/smb.conf
+echo '[server2]' | sudo tee -a /etc/samba/smb.conf
+echo 'path = /mnt/server2' | sudo tee -a /etc/samba/smb.conf
 echo 'browseable = yes' | sudo tee -a /etc/samba/smb.conf
 echo 'read only = no' | sudo tee -a /etc/samba/smb.conf
 echo 'guest ok = no' | sudo tee -a /etc/samba/smb.conf
@@ -120,7 +120,7 @@ sudo mount -a
 sudo chown oggy:oggy /mnt/ext1
 
 echo '' | sudo tee -a /etc/samba/smb.conf
-echo '[server3a]' | sudo tee -a /etc/samba/smb.conf
+echo '[server2a]' | sudo tee -a /etc/samba/smb.conf
 echo 'path = /mnt/ext1' | sudo tee -a /etc/samba/smb.conf
 echo 'browseable = yes' | sudo tee -a /etc/samba/smb.conf
 echo 'read only = no' | sudo tee -a /etc/samba/smb.conf
