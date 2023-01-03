@@ -83,6 +83,7 @@ sudo make install
 echo 'parity /mnt/parity1/snapraid.parity' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
 echo 'content /mnt/data1/snapraid.content' | sudo tee -a /etc/snapraid.conf
+echo 'content /home/oggy/snapraid.content' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
 echo 'data data1 /mnt/data1/' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
