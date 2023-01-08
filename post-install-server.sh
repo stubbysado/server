@@ -3,7 +3,7 @@
 # DOWNLOAD PACKAGE
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install cups gcc hplip make mergerfs netdata samba transmission-daemon -y
+sudo apt install cups gcc hplip make mergerfs samba transmission-daemon -y
 
 # RE-CHECK UPDATE
 sudo apt update -y
@@ -137,11 +137,6 @@ sudo sed -i 's|Browsing No|Browsing Yes|g' /etc/cups/cupsd.conf
 
 sudo usermod -aG lpadmin oggy
 sudo systemctl restart cups
-
-# NETDATA
-sudo sed -i 's|127.0.0.1|192.168.0.200|g' /etc/netdata/netdata.conf
-
-sudo systemctl restart netdata
 
 # CRONTAB
 CRONTSCRIPT="/home/oggy/runner.sh"
