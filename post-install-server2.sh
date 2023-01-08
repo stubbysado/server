@@ -3,7 +3,7 @@
 # DOWNLOAD PACKAGE
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install gcc make mergerfs netdata samba -y
+sudo apt install gcc make mergerfs samba -y
 
 # RE-CHECK UPDATE
 sudo apt update -y
@@ -102,11 +102,6 @@ echo 'data data3 /mnt/data3/' | sudo tee -a /etc/snapraid.conf
 echo 'data data4 /mnt/data4/' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
 echo 'exclude /lost+found/' | sudo tee -a /etc/snapraid.conf
-
-# NETDATA
-sudo sed -i 's|127.0.0.1|192.168.0.198|g' /etc/netdata/netdata.conf
-
-sudo systemctl restart netdata
 
 # EXTRA HDD
 sudo mkdir /mnt/ext1
