@@ -46,11 +46,11 @@ sudo chown oggy:oggy /mnt/data4
 # MERGERFS
 sudo mkdir /mnt/server2
 
-sudo mergerfs -o use_ino,cache.files=off,dropcacheonclose=true,allow_other,category.create=mfs,fsname=server2 /mnt/data* /mnt/server2
+sudo mergerfs -o use_ino,cache.files=full,dropcacheonclose=true,allow_other,category.create=mfs,fsname=server2 /mnt/data* /mnt/server2
 
 echo '' | sudo tee -a /etc/fstab
 echo '# MergerFS' | sudo tee -a /etc/fstab
-echo '/mnt/data* /mnt/server2 fuse.mergerfs use_ino,cache.files=off,dropcacheonclose=true,allow_other,category.create=mfs,fsname=server2,nonempty 0 0' | sudo tee -a /etc/fstab
+echo '/mnt/data* /mnt/server2 fuse.mergerfs use_ino,cache.files=full,dropcacheonclose=true,allow_other,category.create=mfs,fsname=server2,nonempty 0 0' | sudo tee -a /etc/fstab
 
 sudo chown oggy:oggy /mnt/server2
 
