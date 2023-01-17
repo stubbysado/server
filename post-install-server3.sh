@@ -22,17 +22,23 @@ sudo systemctl mask systemd-networkd-wait-online.service
 # FSTAB
 sudo mkdir /mnt/parity1
 sudo mkdir /mnt/data1
+sudo mkdir /mnt/data2
+sudo mkdir /mnt/data3
 
 echo '' | sudo tee -a /etc/fstab
 echo '# Hard Disk Drive' | sudo tee -a /etc/fstab
-echo 'UUID=6e10f55a-2d5d-4a42-a636-5cb42ea1bd05 /mnt/parity1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=dd43886e-07ea-4c66-baae-84c333eab877 /mnt/parity1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo '' | sudo tee -a /etc/fstab
-echo 'UUID=fbd9d55a-1ed1-47c9-8a8a-58ed3769fc70 /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=61ce7573-4a44-4cfa-83df-c3d1046b13ae /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=947f2157-352e-44f3-ac73-87ec4075db2e /mnt/data2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=ef3bdd10-22cf-42fe-aedb-660d41386008 /mnt/data3 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 
 sudo mount -a
 
 sudo chown oggy:oggy /mnt/parity1
 sudo chown oggy:oggy /mnt/data1
+sudo chown oggy:oggy /mnt/data2
+sudo chown oggy:oggy /mnt/data3
 
 # MERGERFS
 sudo mkdir /mnt/server3
@@ -81,9 +87,12 @@ sudo make install
 echo 'parity /mnt/parity1/snapraid.parity' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
 echo 'content /mnt/data1/snapraid.content' | sudo tee -a /etc/snapraid.conf
-echo 'content /home/oggy/snapraid.content' | sudo tee -a /etc/snapraid.conf
+echo 'content /mnt/data2/snapraid.content' | sudo tee -a /etc/snapraid.conf
+echo 'content /mnt/data3/snapraid.content' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
 echo 'data data1 /mnt/data1/' | sudo tee -a /etc/snapraid.conf
+echo 'data data2 /mnt/data2/' | sudo tee -a /etc/snapraid.conf
+echo 'data data2 /mnt/data2/' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
 echo 'exclude /lost+found/' | sudo tee -a /etc/snapraid.conf
 
