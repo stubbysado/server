@@ -1,5 +1,8 @@
 #!/bin/bash -x
 
+# CHANGE SOURCES LIST
+sudo sed -i 's|http://my.archive.ubuntu.com/ubuntu|https://mirrors.gbnetwork.com/ubuntu/|g' /etc/apt/sources.list
+
 # DOWNLOAD PACKAGE
 sudo apt update -y
 sudo apt upgrade -y
