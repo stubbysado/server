@@ -61,7 +61,7 @@ sudo mount -a
 echo '' | sudo tee -a /etc/samba/smb.conf
 echo '[server2]' | sudo tee -a /etc/samba/smb.conf
 echo 'path = /mnt/server2' | sudo tee -a /etc/samba/smb.conf
-echo 'browseable = yes' | sudo tee -a /etc/samba/smb.conf
+echo 'browseable = no' | sudo tee -a /etc/samba/smb.conf
 echo 'read only = no' | sudo tee -a /etc/samba/smb.conf
 echo 'guest ok = no' | sudo tee -a /etc/samba/smb.conf
 echo 'valid users = oggy' | sudo tee -a /etc/samba/smb.conf
