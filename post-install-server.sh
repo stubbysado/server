@@ -67,7 +67,7 @@ sudo chown oggy:oggy /mnt/server
 echo '' | sudo tee -a /etc/samba/smb.conf
 echo '[server]' | sudo tee -a /etc/samba/smb.conf
 echo 'path = /mnt/server' | sudo tee -a /etc/samba/smb.conf
-echo 'browseable = yes' | sudo tee -a /etc/samba/smb.conf
+echo 'browseable = no' | sudo tee -a /etc/samba/smb.conf
 echo 'read only = no' | sudo tee -a /etc/samba/smb.conf
 echo 'guest ok = no' | sudo tee -a /etc/samba/smb.conf
 echo 'valid users = oggy' | sudo tee -a /etc/samba/smb.conf
