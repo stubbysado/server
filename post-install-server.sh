@@ -33,7 +33,7 @@ sudo mkdir /mnt/data6
 
 echo '' | sudo tee -a /etc/fstab
 echo '# Hard Disk Drive' | sudo tee -a /etc/fstab
-echo 'UUID=17a06caa-bd35-4381-b15f-df39b8c08ded /mnt/parity1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=29545827-c4d6-45ab-80c9-6177a3b2de2b /mnt/parity1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo '' | sudo tee -a /etc/fstab
 echo 'UUID=f7d5fb60-b454-4f2e-a44d-618c3cdadde4 /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo 'UUID=c8eb8767-e035-42c4-a81a-1f81a34dee8e /mnt/data2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
