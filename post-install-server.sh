@@ -1,5 +1,8 @@
 #!/bin/bash -x
 
+# PURGE SNAPD
+sudo apt purge snapd* -y
+
 # CHANGE SOURCES LIST
 sudo sed -i 's|http://my.archive.ubuntu.com/ubuntu|https://mirrors.gbnetwork.com/ubuntu/|g' /etc/apt/sources.list
 
@@ -84,11 +87,12 @@ echo -e "$PASSWORD\n$PASSWORD" | sudo smbpasswd -a $(whoami)
 sudo systemctl restart smbd.service
 
 # SNAPRAID
-wget https://github.com/amadvance/snapraid/releases/download/v12.2/snapraid-12.2.tar.gz
+mkdir /home/oggy/snapraid/
+wget https://github.com/amadvance/snapraid/releases/download/v12.2/snapraid-12.2.tar.gz -P /home/oggy/snapraid/
 
-tar -xzf /home/oggy/post-install/snapraid-12.2.tar.gz
+tar -xzf /home/oggy/snapraid/snapraid-12.2.tar.gz
 
-CONFIGURESNAPRAID="/home/oggy/post-install/snapraid-12.2/configure"
+CONFIGURESNAPRAID="/home/oggy/snapraid/snapraid-12.2/configure"
 
 $CONFIGURESNAPRAID
 
@@ -114,6 +118,8 @@ echo 'data data6 /mnt/data6/' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
 echo 'exclude /lost+found/' | sudo tee -a /etc/snapraid.conf
 echo 'exclude *.part' | sudo tee -a /etc/snapraid.conf
+
+rm -rfv /home/oggy/snapraid/
 
 # TRANSMISSION
 sudo systemctl stop transmission-daemon.service
