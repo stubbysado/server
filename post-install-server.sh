@@ -169,5 +169,8 @@ cat <(fgrep -i -v "$CRONTSCRIPT" <(crontab -l)) <(echo "$CRONJOB") | crontab -
 #RSYNC SNAPRAID SCRIPT
 rsync -avP /mnt/server/01\ Documents/SnapRAID/SnapRAID\ Script/Custom/* /home/oggy/
 
+sudo chmod 775 -v /home/oggy/*.sh
+sudo chown oggy:oggy -v /home/oggy/*.sh
+
 # SYNC
 sync && sync
