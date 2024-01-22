@@ -166,5 +166,14 @@ CRONJOB="0 0 * * * /home/oggy/runner.sh"
 
 cat <(fgrep -i -v "$CRONTSCRIPT" <(crontab -l)) <(echo "$CRONJOB") | crontab -
 
+#DOWNLOAD EXTRA SCRIPTS
+wget https://raw.githubusercontent.com/stubbysado/extras/main/update.sh
+wget https://raw.githubusercontent.com/stubbysado/extras/main/poweroff.sh
+wget https://raw.githubusercontent.com/stubbysado/extras/main/reboot.sh
+wget https://raw.githubusercontent.com/stubbysado/extras/main/sync.sh
+wget https://raw.githubusercontent.com/stubbysado/extras/main/scrub.sh
+sudo chmod 775 -v /home/oggy/*.sh
+sudo chown oggy:oggy -v /home/oggy/*.sh
+
 # SYNC
 sync && sync
