@@ -142,5 +142,14 @@ echo 'recycle:versions = yes' | sudo tee -a /etc/samba/smb.conf
 
 sudo systemctl restart smbd.service
 
+#DOWNLOAD EXTRA SCRIPTS
+wget https://raw.githubusercontent.com/stubbysado/extras/main/update.sh
+wget https://raw.githubusercontent.com/stubbysado/extras/main/poweroff.sh
+wget https://raw.githubusercontent.com/stubbysado/extras/main/reboot.sh
+wget https://raw.githubusercontent.com/stubbysado/extras/main/sync.sh
+wget https://raw.githubusercontent.com/stubbysado/extras/main/scrub.sh
+sudo chmod 775 -v /home/oggy/*.sh
+sudo chown oggy:oggy -v /home/oggy/*.sh
+
 # SYNC
 sync && sync
