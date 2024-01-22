@@ -4,6 +4,8 @@
 sudo apt purge snapd* -y
 
 # CHANGE SOURCES LIST
+sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+
 sudo sed -i 's|http://my.archive.ubuntu.com/ubuntu|https://mirrors.gbnetwork.com/ubuntu/|g' /etc/apt/sources.list
 
 # DOWNLOAD PACKAGE
@@ -33,6 +35,8 @@ sudo mkdir /mnt/data3
 sudo mkdir /mnt/data4
 sudo mkdir /mnt/data5
 sudo mkdir /mnt/data6
+
+sudo cp /etc/fstab /etc/fstab.bak
 
 echo '' | sudo tee -a /etc/fstab
 echo '# Hard Disk Drive' | sudo tee -a /etc/fstab
@@ -67,6 +71,9 @@ sudo mount -a
 sudo chown oggy:oggy /mnt/server
 
 # SAMBA
+
+sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
+
 echo '' | sudo tee -a /etc/samba/smb.conf
 echo '[server]' | sudo tee -a /etc/samba/smb.conf
 echo 'path = /mnt/server' | sudo tee -a /etc/samba/smb.conf
@@ -124,11 +131,15 @@ echo 'exclude *.part' | sudo tee -a /etc/snapraid.conf
 # TRANSMISSION
 sudo systemctl stop transmission-daemon.service
 
+sudo cp /lib/systemd/system/transmission-daemon.service /lib/systemd/system/transmission-daemon.service.bak
+
 sudo sed -i 's|User=debian-transmission|User=oggy|g' /lib/systemd/system/transmission-daemon.service
 
 sudo systemctl daemon-reload
 sudo systemctl start transmission-daemon.service
 sudo systemctl stop transmission-daemon.service
+
+sudo cp /home/oggy/.config/transmission-daemon/settings.json /home/oggy/.config/transmission-daemon/settings.json.bak
 
 sudo sed -i 's|"download-dir": "/home/oggy/Downloads",|"download-dir": "/mnt/server/02 Downloads/Transmission",|g' /home/oggy/.config/transmission-daemon/settings.json
 sudo sed -i 's|"rpc-authentication-required": false,|"rpc-authentication-required": true,|g' /home/oggy/.config/transmission-daemon/settings.json
@@ -139,6 +150,8 @@ sudo systemctl daemon-reload
 sudo systemctl restart transmission-daemon.service
 
 # PRINTER
+sudo cp /etc/cups/cupsd.conf /etc/cups/cupsd.conf.bak
+
 sudo sed -i 's|Listen localhost:631|Port 631|g' /etc/cups/cupsd.conf
 sudo sed -i 's|Browsing No|Browsing Yes|g' /etc/cups/cupsd.conf
 sudo sed -i '37i Allow @LOCAL' /etc/cups/cupsd.conf
