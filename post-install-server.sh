@@ -90,15 +90,17 @@ sudo systemctl restart smbd.service
 mkdir /home/oggy/snapraid/
 wget https://github.com/amadvance/snapraid/releases/download/v12.2/snapraid-12.2.tar.gz -P /home/oggy/snapraid/
 
-tar -xzf /home/oggy/snapraid/snapraid-12.2.tar.gz
+tar -xzf /home/oggy/snapraid/snapraid-12.2.tar.gz -C /home/oggy/snapraid/
 
 CONFIGURESNAPRAID="/home/oggy/snapraid/snapraid-12.2/configure"
 
-$CONFIGURESNAPRAID
+cd /home/oggy/snapraid && $CONFIGURESNAPRAID
 
-make
+make -C /home/oggy/snapraid
 
 sudo make install
+
+rm -rfv /home/oggy/snapraid/
 
 echo 'parity /mnt/parity1/snapraid.parity' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
@@ -118,8 +120,6 @@ echo 'data data6 /mnt/data6/' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
 echo 'exclude /lost+found/' | sudo tee -a /etc/snapraid.conf
 echo 'exclude *.part' | sudo tee -a /etc/snapraid.conf
-
-rm -rfv /home/oggy/snapraid/
 
 # TRANSMISSION
 sudo systemctl stop transmission-daemon.service
