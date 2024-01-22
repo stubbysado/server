@@ -71,7 +71,6 @@ sudo mount -a
 sudo chown oggy:oggy /mnt/server
 
 # SAMBA
-
 sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
 
 echo '' | sudo tee -a /etc/samba/smb.conf
