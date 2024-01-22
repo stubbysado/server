@@ -93,7 +93,7 @@ echo -e "$PASSWORD\n$PASSWORD" | sudo smbpasswd -a $(whoami)
 sudo systemctl restart smbd.service
 
 # SNAPRAID
-mkdir /home/oggy/snapraid/
+mkdir /home/oggy/snapraid
 wget https://github.com/amadvance/snapraid/releases/download/v12.2/snapraid-12.2.tar.gz -P /home/oggy/snapraid/
 
 tar -xzf /home/oggy/snapraid/snapraid-12.2.tar.gz -C /home/oggy/snapraid/
@@ -106,7 +106,7 @@ make -C /home/oggy/snapraid
 
 sudo make install
 
-rm -rfv /home/oggy/snapraid/
+rm -rfv /home/oggy/snapraid
 
 echo 'parity /mnt/parity1/snapraid.parity' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
@@ -167,9 +167,9 @@ CRONJOB="0 0 * * * /home/oggy/runner.sh"
 cat <(fgrep -i -v "$CRONTSCRIPT" <(crontab -l)) <(echo "$CRONJOB") | crontab -
 
 #RSYNC SNAPRAID SCRIPT
-rsync -avP /mnt/server/01\ Documents/SnapRAID/SnapRAID\ Script/Custom/config.sh /home/oggy
-rsync -avP /mnt/server/01\ Documents/SnapRAID/SnapRAID\ Script/Custom/runner.sh /home/oggy
-rsync -avP /mnt/server/01\ Documents/SnapRAID/SnapRAID\ Script/Custom/script.sh /home/oggy
+rsync -avP /mnt/server/01\ Documents/SnapRAID/SnapRAID\ Script/Custom/config.sh /home/oggy/
+rsync -avP /mnt/server/01\ Documents/SnapRAID/SnapRAID\ Script/Custom/runner.sh /home/oggy/
+rsync -avP /mnt/server/01\ Documents/SnapRAID/SnapRAID\ Script/Custom/script.sh /home/oggy/
 
 sudo chmod 775 -v /home/oggy/*.sh
 sudo chown oggy:oggy -v /home/oggy/*.sh
