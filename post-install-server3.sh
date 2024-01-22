@@ -111,14 +111,5 @@ echo 'data data3 /mnt/data3/' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
 echo 'exclude /lost+found/' | sudo tee -a /etc/snapraid.conf
 
-#DOWNLOAD EXTRA SCRIPTS
-wget https://raw.githubusercontent.com/stubbysado/extras/main/update.sh
-wget https://raw.githubusercontent.com/stubbysado/extras/main/poweroff.sh
-wget https://raw.githubusercontent.com/stubbysado/extras/main/reboot.sh
-wget https://raw.githubusercontent.com/stubbysado/extras/main/sync.sh
-wget https://raw.githubusercontent.com/stubbysado/extras/main/scrub.sh
-sudo chmod 775 -v /home/oggy/*.sh
-sudo chown oggy:oggy -v /home/oggy/*.sh
-
 # SYNC
 sync && sync
