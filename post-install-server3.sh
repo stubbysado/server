@@ -97,7 +97,7 @@ make -C /home/oggy/snapraid
 
 sudo make install
 
-rm -rfv /home/oggy/snapraid/
+rm -rfv /home/oggy/snapraid
 
 echo 'parity /mnt/parity1/snapraid.parity' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
