@@ -1,6 +1,11 @@
 #!/bin/bash -x
 
+# PURGE SNAPD
+sudo apt purge snapd* -y
+
 # CHANGE SOURCES LIST
+sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+
 sudo sed -i 's|http://my.archive.ubuntu.com/ubuntu|https://mirrors.gbnetwork.com/ubuntu/|g' /etc/apt/sources.list
 
 # DOWNLOAD PACKAGE
@@ -27,6 +32,8 @@ sudo mkdir /mnt/parity1
 sudo mkdir /mnt/data1
 sudo mkdir /mnt/data2
 sudo mkdir /mnt/data3
+
+sudo cp /etc/fstab /etc/fstab.bak
 
 echo '' | sudo tee -a /etc/fstab
 echo '# Hard Disk Drive' | sudo tee -a /etc/fstab
@@ -55,6 +62,8 @@ sudo chown oggy:oggy /mnt/server3
 sudo mount -a
 
 # SAMBA
+sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
+
 echo '' | sudo tee -a /etc/samba/smb.conf
 echo '[server3]' | sudo tee -a /etc/samba/smb.conf
 echo 'path = /mnt/server3' | sudo tee -a /etc/samba/smb.conf
@@ -75,17 +84,20 @@ echo -e "$PASSWORD\n$PASSWORD" | sudo smbpasswd -a $(whoami)
 sudo systemctl restart smbd.service
 
 # SNAPRAID
-wget https://github.com/amadvance/snapraid/releases/download/v12.2/snapraid-12.2.tar.gz
+mkdir /home/oggy/snapraid/
+wget https://github.com/amadvance/snapraid/releases/download/v12.2/snapraid-12.2.tar.gz -P /home/oggy/snapraid/
 
-tar -xzf /home/oggy/post-install/snapraid-12.2.tar.gz
+tar -xzf /home/oggy/snapraid/snapraid-12.2.tar.gz -C /home/oggy/snapraid/
 
-CONFIGURESNAPRAID="/home/oggy/post-install/snapraid-12.2/configure"
+CONFIGURESNAPRAID="/home/oggy/snapraid/snapraid-12.2/configure"
 
-$CONFIGURESNAPRAID
+cd /home/oggy/snapraid && $CONFIGURESNAPRAID
 
-make
+make -C /home/oggy/snapraid
 
 sudo make install
+
+rm -rfv /home/oggy/snapraid/
 
 echo 'parity /mnt/parity1/snapraid.parity' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
