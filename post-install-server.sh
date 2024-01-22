@@ -167,7 +167,9 @@ CRONJOB="0 0 * * * /home/oggy/runner.sh"
 cat <(fgrep -i -v "$CRONTSCRIPT" <(crontab -l)) <(echo "$CRONJOB") | crontab -
 
 #RSYNC SNAPRAID SCRIPT
-rsync -avP /mnt/server/01\ Documents/SnapRAID/SnapRAID\ Script/Custom/* /home/oggy/
+rsync -avP /mnt/server/01\ Documents/SnapRAID/SnapRAID\ Script/Custom/config.sh /home/oggy
+rsync -avP /mnt/server/01\ Documents/SnapRAID/SnapRAID\ Script/Custom/runner.sh /home/oggy
+rsync -avP /mnt/server/01\ Documents/SnapRAID/SnapRAID\ Script/Custom/script.sh /home/oggy
 
 sudo chmod 775 -v /home/oggy/*.sh
 sudo chown oggy:oggy -v /home/oggy/*.sh
