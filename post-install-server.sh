@@ -94,6 +94,7 @@ sudo systemctl restart smbd.service
 
 # SNAPRAID
 mkdir /home/oggy/snapraid
+
 wget https://github.com/amadvance/snapraid/releases/download/v12.2/snapraid-12.2.tar.gz -P /home/oggy/snapraid/
 
 tar -xzf /home/oggy/snapraid/snapraid-12.2.tar.gz -C /home/oggy/snapraid/
