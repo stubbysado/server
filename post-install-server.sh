@@ -127,6 +127,8 @@ echo 'data data6 /mnt/data6/' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
 echo 'exclude /lost+found/' | sudo tee -a /etc/snapraid.conf
 echo 'exclude *.part' | sudo tee -a /etc/snapraid.conf
+echo 'exclude snapraid.log' | sudo tee -a /etc/snapraid.conf
+echo 'exclude snapraid-output.log' | sudo tee -a /etc/snapraid.conf
 
 # TRANSMISSION
 sudo systemctl stop transmission-daemon.service
