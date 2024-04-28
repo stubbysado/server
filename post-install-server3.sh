@@ -3,11 +3,6 @@
 # PURGE SNAPD
 sudo apt purge snapd* -y
 
-# CHANGE SOURCES LIST
-sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-
-sudo sed -i 's|http://my.archive.ubuntu.com/ubuntu|https://mirrors.gbnetwork.com/ubuntu/|g' /etc/apt/sources.list
-
 # DOWNLOAD PACKAGE
 sudo apt update -y
 sudo apt upgrade -y
