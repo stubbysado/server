@@ -138,5 +138,29 @@ echo 'recycle:versions = yes' | sudo tee -a /etc/samba/smb.conf
 
 sudo systemctl restart smbd.service
 
+# EXTRA HDD 02
+sudo mkdir /mnt/ext2
+
+echo '' | sudo tee -a /etc/fstab
+echo '# Extra Hard Disk Drive 2' | sudo tee -a /etc/fstab
+echo 'UUID=107284b1-2ae1-4717-909f-57afc30e2d2b /mnt/ext2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+
+sudo mount -a
+
+sudo chown oggy:oggy /mnt/ext2
+
+echo '' | sudo tee -a /etc/samba/smb.conf
+echo '[server2b]' | sudo tee -a /etc/samba/smb.conf
+echo 'path = /mnt/ext2' | sudo tee -a /etc/samba/smb.conf
+echo 'browseable = yes' | sudo tee -a /etc/samba/smb.conf
+echo 'read only = no' | sudo tee -a /etc/samba/smb.conf
+echo 'guest ok = no' | sudo tee -a /etc/samba/smb.conf
+echo 'valid users = oggy' | sudo tee -a /etc/samba/smb.conf
+echo '' | sudo tee -a /etc/samba/smb.conf
+echo 'vfs objects = recycle' | sudo tee -a /etc/samba/smb.conf
+echo 'recycle:repository = .recycle' | sudo tee -a /etc/samba/smb.conf
+echo 'recycle:directory_mode = 775' | sudo tee -a /etc/samba/smb.conf
+echo 'recycle:versions = yes' | sudo tee -a /etc/samba/smb.conf
+
 # SYNC
 sync && sync
