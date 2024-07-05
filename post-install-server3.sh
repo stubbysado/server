@@ -27,6 +27,8 @@ sudo mkdir /mnt/parity1
 sudo mkdir /mnt/data1
 sudo mkdir /mnt/data2
 sudo mkdir /mnt/data3
+sudo mkdir /mnt/data4
+sudo mkdir /mnt/data5
 
 sudo cp /etc/fstab /etc/fstab.bak
 
@@ -37,6 +39,8 @@ echo '' | sudo tee -a /etc/fstab
 echo 'UUID=61ce7573-4a44-4cfa-83df-c3d1046b13ae /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo 'UUID=947f2157-352e-44f3-ac73-87ec4075db2e /mnt/data2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo 'UUID=ef3bdd10-22cf-42fe-aedb-660d41386008 /mnt/data3 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=f4b3eba6-b51b-4641-89b2-cadecbb2775f /mnt/data4 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=04873b05-2b65-4e8a-b8e4-43bf7be51a58 /mnt/data5 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 
 sudo mount -a
 
@@ -44,6 +48,8 @@ sudo chown oggy:oggy /mnt/parity1
 sudo chown oggy:oggy /mnt/data1
 sudo chown oggy:oggy /mnt/data2
 sudo chown oggy:oggy /mnt/data3
+sudo chown oggy:oggy /mnt/data4
+sudo chown oggy:oggy /mnt/data5
 
 # MERGERFS
 sudo mkdir /mnt/server3
@@ -100,10 +106,14 @@ echo '' | sudo tee -a /etc/snapraid.conf
 echo 'content /mnt/data1/snapraid.content' | sudo tee -a /etc/snapraid.conf
 echo 'content /mnt/data2/snapraid.content' | sudo tee -a /etc/snapraid.conf
 echo 'content /mnt/data3/snapraid.content' | sudo tee -a /etc/snapraid.conf
+echo 'content /mnt/data4/snapraid.content' | sudo tee -a /etc/snapraid.conf
+echo 'content /mnt/data5/snapraid.content' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
 echo 'data data1 /mnt/data1/' | sudo tee -a /etc/snapraid.conf
 echo 'data data2 /mnt/data2/' | sudo tee -a /etc/snapraid.conf
 echo 'data data3 /mnt/data3/' | sudo tee -a /etc/snapraid.conf
+echo 'data data4 /mnt/data4/' | sudo tee -a /etc/snapraid.conf
+echo 'data data5 /mnt/data5/' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
 echo 'exclude /lost+found/' | sudo tee -a /etc/snapraid.conf
 
