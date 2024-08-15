@@ -35,14 +35,14 @@ sudo cp /etc/fstab /etc/fstab.bak
 
 echo '' | sudo tee -a /etc/fstab
 echo '# Hard Disk Drive' | sudo tee -a /etc/fstab
-echo 'UUID=c20389d3-b21e-4f15-907c-a192aedf3c63 /mnt/parity1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=9fbc3d0e-2239-4ed5-9445-c2c9e1a021f1 /mnt/parity1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo '' | sudo tee -a /etc/fstab
-echo 'UUID=f7d5fb60-b454-4f2e-a44d-618c3cdadde4 /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=c8eb8767-e035-42c4-a81a-1f81a34dee8e /mnt/data2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=1bfc0af4-a189-4b35-823f-db5fc7d2a2de /mnt/data3 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=111e2f2e-029c-41df-afaa-c4d0948e78fc /mnt/data4 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=329bca5c-fb22-467a-8b25-3be4e57d1310 /mnt/data5 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=12bf9e29-2060-4b6e-8819-1245351b9fcc /mnt/data6 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=12bf9e29-2060-4b6e-8819-1245351b9fcc /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=2573f113-1b31-4395-8777-37d20010a580 /mnt/data2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=111e2f2e-029c-41df-afaa-c4d0948e78fc /mnt/data3 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=1bfc0af4-a189-4b35-823f-db5fc7d2a2de /mnt/data4 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=c8eb8767-e035-42c4-a81a-1f81a34dee8e /mnt/data5 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=f7d5fb60-b454-4f2e-a44d-618c3cdadde4 /mnt/data6 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 
 sudo mount -a
 
@@ -121,6 +121,8 @@ echo 'data data5 /mnt/data5/' | sudo tee -a /etc/snapraid.conf
 echo 'data data6 /mnt/data6/' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
 echo 'exclude /lost+found/' | sudo tee -a /etc/snapraid.conf
+echo 'exclude .recycle/' | sudo tee -a /etc/snapraid.conf
+echo 'exclude Transmission/' | sudo tee -a /etc/snapraid.conf
 echo 'exclude *.part' | sudo tee -a /etc/snapraid.conf
 echo 'exclude snapraid.log' | sudo tee -a /etc/snapraid.conf
 echo 'exclude snapraid-output.log' | sudo tee -a /etc/snapraid.conf
