@@ -78,7 +78,7 @@ echo 'valid users = oggy' | sudo tee -a /etc/samba/smb.conf
 echo '' | sudo tee -a /etc/samba/smb.conf
 echo 'vfs objects = recycle' | sudo tee -a /etc/samba/smb.conf
 echo 'recycle:repository = .recycle' | sudo tee -a /etc/samba/smb.conf
-echo 'recycle:directory_mode = 775' | sudo tee -a /etc/samba/smb.conf
+echo 'recycle:directory_mode = 755' | sudo tee -a /etc/samba/smb.conf
 echo 'recycle:versions = yes' | sudo tee -a /etc/samba/smb.conf
 
 PASSWORD="sudo"
@@ -140,7 +140,7 @@ sudo systemctl stop transmission-daemon.service
 
 sudo cp /home/oggy/.config/transmission-daemon/settings.json /home/oggy/.config/transmission-daemon/settings.json.bak
 
-sudo sed -i 's|"download-dir": "/home/oggy/Downloads",|"download-dir": "/mnt/server/02 Downloads/Transmission",|g' /home/oggy/.config/transmission-daemon/settings.json
+sudo sed -i 's|"download-dir": "/home/oggy/Downloads",|"download-dir": "/mnt/server/02-Downloads/Transmission",|g' /home/oggy/.config/transmission-daemon/settings.json
 sudo sed -i 's|"rpc-authentication-required": false,|"rpc-authentication-required": true,|g' /home/oggy/.config/transmission-daemon/settings.json
 sudo sed -i 's|"rpc-username": "",|"rpc-username": "oggy",|g' /home/oggy/.config/transmission-daemon/settings.json
 sudo sed -i 's|"rpc-whitelist": "127.0.0.1,::1",|"rpc-whitelist": "127.0.0.1,10.0.0.*",|g' /home/oggy/.config/transmission-daemon/settings.json
