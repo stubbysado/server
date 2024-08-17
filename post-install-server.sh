@@ -35,14 +35,16 @@ sudo cp /etc/fstab /etc/fstab.bak
 
 echo '' | sudo tee -a /etc/fstab
 echo '# Hard Disk Drive' | sudo tee -a /etc/fstab
-echo 'UUID=7848c8ef-afd4-488a-a642-54906ea3119c /mnt/parity1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=da6f89c1-a2a8-4a28-b83b-c70d43c418eb /mnt/parity1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo '' | sudo tee -a /etc/fstab
-echo 'UUID=8cf62c27-566d-4058-aeff-d78c064bb785 /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=6197456f-7c9a-44a4-8ed8-27c6225f41dc /mnt/data2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=c6d2e55d-7e69-4af2-ade4-0a5cd871095f /mnt/data3 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=3472b083-947d-4d4c-8162-3ca35f09aa2c /mnt/data4 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=6d397d5b-044e-4050-9f50-3e1f3ed439b7 /mnt/data5 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=733b759d-d0be-47c3-a7b1-ade2b7d3ca45 /mnt/data6 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=76be30c5-e94f-4d6f-85d9-533fb320b96d /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=f78e4d55-d4b2-4763-83fa-a9f7c9bac787 /mnt/data2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=c9a18179-3918-426b-9824-ee3b19ce9278 /mnt/data3 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=a045da27-94fc-4ea2-8c36-2d6e84e67c78 /mnt/data4 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=acb5d2b5-28e0-43b7-ab06-9619823e4d7d /mnt/data5 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=68c4a3fa-ebe7-4692-a451-058fad2bf5f6 /mnt/data6 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+
+sudo systemctl daemon-reload
 
 sudo mount -a
 
@@ -60,6 +62,8 @@ sudo mkdir /mnt/server
 echo '' | sudo tee -a /etc/fstab
 echo '# MergerFS' | sudo tee -a /etc/fstab
 echo '/mnt/data* /mnt/server fuse.mergerfs allow_other,cache.files=full,dropcacheonclose=true,category.create=mfs 0 0' | sudo tee -a /etc/fstab
+
+sudo systemctl daemon-reload
 
 sudo mount -a
 
