@@ -35,14 +35,14 @@ sudo cp /etc/fstab /etc/fstab.bak
 
 echo '' | sudo tee -a /etc/fstab
 echo '# Hard Disk Drive' | sudo tee -a /etc/fstab
-echo 'UUID=9fbc3d0e-2239-4ed5-9445-c2c9e1a021f1 /mnt/parity1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=7848c8ef-afd4-488a-a642-54906ea3119c /mnt/parity1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo '' | sudo tee -a /etc/fstab
-echo 'UUID=12bf9e29-2060-4b6e-8819-1245351b9fcc /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=2573f113-1b31-4395-8777-37d20010a580 /mnt/data2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=111e2f2e-029c-41df-afaa-c4d0948e78fc /mnt/data3 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=1bfc0af4-a189-4b35-823f-db5fc7d2a2de /mnt/data4 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=c8eb8767-e035-42c4-a81a-1f81a34dee8e /mnt/data5 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=f7d5fb60-b454-4f2e-a44d-618c3cdadde4 /mnt/data6 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=8cf62c27-566d-4058-aeff-d78c064bb785 /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=6197456f-7c9a-44a4-8ed8-27c6225f41dc /mnt/data2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=c6d2e55d-7e69-4af2-ade4-0a5cd871095f /mnt/data3 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=3472b083-947d-4d4c-8162-3ca35f09aa2c /mnt/data4 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=6d397d5b-044e-4050-9f50-3e1f3ed439b7 /mnt/data5 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=733b759d-d0be-47c3-a7b1-ade2b7d3ca45 /mnt/data6 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 
 sudo mount -a
 
