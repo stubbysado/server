@@ -35,14 +35,14 @@ sudo cp /etc/fstab /etc/fstab.bak
 
 echo '' | sudo tee -a /etc/fstab
 echo '# Hard Disk Drive' | sudo tee -a /etc/fstab
-echo 'UUID=aeb27022-c87e-4b30-a92e-eb32e40d3af6 /mnt/parity1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=80274962-7f78-4935-884a-c1ef00aba684 /mnt/parity1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo '' | sudo tee -a /etc/fstab
-echo 'UUID=f0909eb2-7607-4706-903c-8d7121c44c92 /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=f69f33bf-430d-4105-a99a-54b56d60ac9c /mnt/data2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=1afbc41b-95f6-4721-b467-0e57a8055565 /mnt/data3 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=d8be3e62-c57e-4297-a970-a83699f85312 /mnt/data4 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=eddc223f-e7e3-4b75-bd59-cb6860a0568b /mnt/data5 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=bb0f3b14-4bb7-4470-a9ea-948ac694beed /mnt/data6 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=c180a0f4-c1fa-4d14-a811-32070222e595 /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=ba563c40-37ea-4a95-85a9-ba3111199db1 /mnt/data2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=3254a9ec-8a61-42ad-bd7d-d9f8ba118b2f /mnt/data3 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=d38fb590-ddb5-4378-80a6-7981f64cf7f1 /mnt/data4 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=acd2ab84-847f-4939-843b-64de4ea98f7d /mnt/data5 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=2ed523af-42c5-44b6-8327-1126cff70e0e /mnt/data6 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 
 sudo systemctl daemon-reload
 
@@ -166,7 +166,7 @@ sudo systemctl restart cups
 
 # CRONTAB
 CRONTSCRIPT="/home/oggy/runner.sh"
-CRONJOB="0 0 * * * /home/oggy/runner.sh"
+CRONJOB="#0 0 * * * /home/oggy/runner.sh"
 
 cat <(fgrep -i -v "$CRONTSCRIPT" <(crontab -l)) <(echo "$CRONJOB") | crontab -
 
