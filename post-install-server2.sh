@@ -143,7 +143,7 @@ sudo mkdir /mnt/ext2
 
 echo '' | sudo tee -a /etc/fstab
 echo '# Extra Hard Disk Drive 2' | sudo tee -a /etc/fstab
-echo 'UUID=107284b1-2ae1-4717-909f-57afc30e2d2b /mnt/ext2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=27a9aa12-c992-4c6c-aac6-cacc7b49c5ff /mnt/ext2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 
 sudo mount -a
 
