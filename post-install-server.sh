@@ -154,6 +154,10 @@ sudo systemctl restart transmission-daemon.service
 
 # PRINTER
 sudo cp /etc/cups/cupsd.conf /etc/cups/cupsd.conf.bak
+
+sudo sed -i '/Order allow,deny/a\  Allow all' /etc/cups/cupsd.conf
+sed -i 's|Listen localhost:631|Port 631|' /etc/cups/cupsd.conf
+
 sudo usermod -aG lpadmin oggy
 sudo systemctl restart cups
 
