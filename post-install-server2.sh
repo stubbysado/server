@@ -110,7 +110,7 @@ echo 'data data2 /mnt/data2/' | sudo tee -a /etc/snapraid.conf
 echo 'data data3 /mnt/data3/' | sudo tee -a /etc/snapraid.conf
 echo 'data data4 /mnt/data4/' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
-echo 'exclude /lost+found/' | sudo tee -a /etc/snapraid.conf
+echo 'exclude lost+found/' | sudo tee -a /etc/snapraid.conf
 
 # EXTRA HDD
 sudo mkdir /mnt/ext1
