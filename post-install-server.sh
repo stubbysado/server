@@ -124,9 +124,9 @@ echo 'data data4 /mnt/data4/' | sudo tee -a /etc/snapraid.conf
 echo 'data data5 /mnt/data5/' | sudo tee -a /etc/snapraid.conf
 echo 'data data6 /mnt/data6/' | sudo tee -a /etc/snapraid.conf
 echo '' | sudo tee -a /etc/snapraid.conf
-echo 'exclude /lost+found/' | sudo tee -a /etc/snapraid.conf
+echo 'exclude lost+found/' | sudo tee -a /etc/snapraid.conf
 echo 'exclude .recycle/' | sudo tee -a /etc/snapraid.conf
-echo 'exclude Transmission/' | sudo tee -a /etc/snapraid.conf
+echo 'exclude 02-Downloads/' | sudo tee -a /etc/snapraid.conf
 echo 'exclude *.part' | sudo tee -a /etc/snapraid.conf
 echo 'exclude snapraid.log' | sudo tee -a /etc/snapraid.conf
 echo 'exclude snapraid-output.log' | sudo tee -a /etc/snapraid.conf
