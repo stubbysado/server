@@ -137,6 +137,9 @@ sudo systemctl stop transmission-daemon.service
 sudo cp /lib/systemd/system/transmission-daemon.service /lib/systemd/system/transmission-daemon.service.bak
 
 sudo sed -i 's|User=debian-transmission|User=oggy|g' /lib/systemd/system/transmission-daemon.service
+# Temporary workaround
+sudo sed -i 's|Type=notify|Type=simple|g' /lib/systemd/system/transmission-daemon.service
+
 
 sudo systemctl daemon-reload
 sudo systemctl start transmission-daemon.service
