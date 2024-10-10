@@ -140,10 +140,11 @@ sudo sed -i 's|User=debian-transmission|User=oggy|g' /lib/systemd/system/transmi
 # Temporary workaround
 sudo sed -i 's|Type=notify|Type=simple|g' /lib/systemd/system/transmission-daemon.service
 
-
 sudo systemctl daemon-reload
-sudo systemctl start transmission-daemon.service
+sudo systemctl restart transmission-daemon.service
 sudo systemctl stop transmission-daemon.service
+# Temporary workaround
+sleep 10
 
 sudo cp /home/oggy/.config/transmission-daemon/settings.json /home/oggy/.config/transmission-daemon/settings.json.bak
 
