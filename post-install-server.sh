@@ -40,7 +40,7 @@ echo '' | sudo tee -a /etc/fstab
 echo 'UUID=c180a0f4-c1fa-4d14-a811-32070222e595 /mnt/data1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo 'UUID=ba563c40-37ea-4a95-85a9-ba3111199db1 /mnt/data2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo 'UUID=06765f35-5626-403a-9190-0872d22edb8d /mnt/data3 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
-echo 'UUID=d38fb590-ddb5-4378-80a6-7981f64cf7f1 /mnt/data4 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=28fd0102-f269-43bb-88a6-959f7ea9dc65 /mnt/data4 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo 'UUID=acd2ab84-847f-4939-843b-64de4ea98f7d /mnt/data5 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo 'UUID=2ed523af-42c5-44b6-8327-1126cff70e0e /mnt/data6 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 
