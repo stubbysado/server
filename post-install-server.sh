@@ -159,11 +159,13 @@ sudo systemctl restart transmission-daemon.service
 # PRINTER
 sudo cp /etc/cups/cupsd.conf /etc/cups/cupsd.conf.bak
 
-sudo sed -i '/Order allow,deny/a\  Allow all' /etc/cups/cupsd.conf
-sudo sed -i 's|Listen localhost:631|Port 631|' /etc/cups/cupsd.conf
+cupsctl --share-printers --remote-any
+lpadmin -p printer -o printer-is-shared=true
+lpadmin -p printer -o printer-op-policy=authenticated
 
-sudo usermod -aG lpadmin oggy
-sudo systemctl restart cups
+# Keep it here temporarily, just in case
+# sudo usermod -aG lpadmin oggy
+# sudo systemctl restart cups
 
 # CRONTAB
 CRONTSCRIPT="/home/oggy/runner.sh"
