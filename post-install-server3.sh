@@ -87,11 +87,11 @@ sudo systemctl restart smbd.service
 # SNAPRAID
 mkdir /home/oggy/snapraid
 
-wget https://github.com/amadvance/snapraid/releases/download/v12.3/snapraid-12.3.tar.gz -P /home/oggy/snapraid/
+wget https://github.com/amadvance/snapraid/releases/download/v12.4/snapraid-12.4.tar.gz -P /home/oggy/snapraid/
 
-tar -xzf /home/oggy/snapraid/snapraid-12.3.tar.gz -C /home/oggy/snapraid/
+tar -xzf /home/oggy/snapraid/snapraid-12.4.tar.gz -C /home/oggy/snapraid/
 
-CONFIGURESNAPRAID="/home/oggy/snapraid/snapraid-12.3/configure"
+CONFIGURESNAPRAID="/home/oggy/snapraid/snapraid-12.4/configure"
 
 cd /home/oggy/snapraid && $CONFIGURESNAPRAID
 
