@@ -118,4 +118,4 @@ echo '' | sudo tee -a /etc/snapraid.conf
 echo 'exclude lost+found/' | sudo tee -a /etc/snapraid.conf
 
 # SYNC
-sync && syn
+sync && sync
