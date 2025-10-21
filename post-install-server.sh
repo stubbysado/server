@@ -133,24 +133,18 @@ echo 'exclude snapraid-output.log' | sudo tee -a /etc/snapraid.conf
 
 # TRANSMISSION
 # sudo systemctl stop transmission-daemon.service
-
 # sudo cp /lib/systemd/system/transmission-daemon.service /lib/systemd/system/transmission-daemon.service.bak
-
 # sudo sed -i 's|User=debian-transmission|User=oggy|g' /lib/systemd/system/transmission-daemon.service
 # Temporary workaround
 # sudo sed -i 's|Type=notify|Type=simple|g' /lib/systemd/system/transmission-daemon.service
-
 # sudo systemctl daemon-reload
 # sudo systemctl restart transmission-daemon.service
 # sudo systemctl stop transmission-daemon.service
-
 # sudo cp /home/oggy/.config/transmission-daemon/settings.json /home/oggy/.config/transmission-daemon/settings.json.bak
-
 # sudo sed -i 's|"download-dir": "/home/oggy/Downloads",|"download-dir": "/mnt/server/02-Downloads/Transmission",|g' /home/oggy/.config/transmission-daemon/settings.json
 # sudo sed -i 's|"rpc-authentication-required": false,|"rpc-authentication-required": true,|g' /home/oggy/.config/transmission-daemon/settings.json
 # sudo sed -i 's|"rpc-username": "",|"rpc-username": "oggy",|g' /home/oggy/.config/transmission-daemon/settings.json
 # sudo sed -i 's|"rpc-whitelist": "127.0.0.1,::1",|"rpc-whitelist": "127.0.0.1,10.0.0.*",|g' /home/oggy/.config/transmission-daemon/settings.json
-
 # sudo systemctl daemon-reload
 # sudo systemctl restart transmission-daemon.service
 
