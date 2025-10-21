@@ -126,7 +126,7 @@ sudo chown oggy:oggy /mnt/ext1
 echo '' | sudo tee -a /etc/samba/smb.conf
 echo '[server2a]' | sudo tee -a /etc/samba/smb.conf
 echo 'path = /mnt/ext1' | sudo tee -a /etc/samba/smb.conf
-echo 'browseable = yes' | sudo tee -a /etc/samba/smb.conf
+echo 'browseable = no' | sudo tee -a /etc/samba/smb.conf
 echo 'read only = no' | sudo tee -a /etc/samba/smb.conf
 echo 'guest ok = no' | sudo tee -a /etc/samba/smb.conf
 echo 'valid users = oggy' | sudo tee -a /etc/samba/smb.conf
@@ -152,7 +152,7 @@ sudo chown oggy:oggy /mnt/ext2
 echo '' | sudo tee -a /etc/samba/smb.conf
 echo '[server2b]' | sudo tee -a /etc/samba/smb.conf
 echo 'path = /mnt/ext2' | sudo tee -a /etc/samba/smb.conf
-echo 'browseable = yes' | sudo tee -a /etc/samba/smb.conf
+echo 'browseable = no' | sudo tee -a /etc/samba/smb.conf
 echo 'read only = no' | sudo tee -a /etc/samba/smb.conf
 echo 'guest ok = no' | sudo tee -a /etc/samba/smb.conf
 echo 'valid users = oggy' | sudo tee -a /etc/samba/smb.conf
