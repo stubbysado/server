@@ -13,7 +13,7 @@ echo 'deb-src https://mirror.twds.com.tw/debian-security/ trixie-security main c
 echo 'deb https://mirror.twds.com.tw/debian/ trixie-updates main contrib non-free non-free-firmware' | sudo tee -a /etc/apt/sources.list
 echo 'deb-src https://mirror.twds.com.tw/debian/ trixie-updates main contrib non-free non-free-firmware' | sudo tee -a /etc/apt/sources.list
 
-# DOWNLOAD PACKAGE
+# INSTALL PACKAGES
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install cups gcc hplip htop make mc mergerfs samba screen transmission-daemon -y
@@ -179,3 +179,4 @@ echo "alias ll='ls -la'" | sudo tee -a /home/oggy/.bashrc
 # SYNC
 
 sync && sync
+
