@@ -14,7 +14,16 @@ echo 'deb https://mirror.twds.com.tw/debian/ trixie-updates main contrib non-fre
 echo 'deb-src https://mirror.twds.com.tw/debian/ trixie-updates main contrib non-free non-free-firmware' | sudo tee -a /etc/apt/sources.list
 
 # INSTALL PACKAGES
+sudo apt update -y
+sudo apt upgrade -y
 sudo apt install htop make mc mergerfs samba screen -y
+
+# RE-CHECK UPDATE
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt clean -y
+sudo apt autoclean -y
+sudo apt autoremove -y
 
 # FSTAB
 sudo mkdir /mnt/parity1
@@ -168,4 +177,5 @@ echo 'recycle:versions = yes' | sudo tee -a /etc/samba/smb.conf
 echo "alias ll='ls -la'" | sudo tee -a /home/oggy/.bashrc
 
 # SYNC
+
 sync && sync
