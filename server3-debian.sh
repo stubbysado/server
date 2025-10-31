@@ -131,3 +131,4 @@ echo "alias ll='ls -la'" | sudo tee -a /home/oggy/.bashrc
 
 sync && sync
 
+
