@@ -141,7 +141,6 @@ sudo systemctl stop transmission-daemon.service
 sleep 3
 sudo cp /lib/systemd/system/transmission-daemon.service /lib/systemd/system/transmission-daemon.service.bak
 sudo sed -i 's|User=debian-transmission|User=oggy|g' /lib/systemd/system/transmission-daemon.service
-# Temporary workaround
 sudo sed -i 's|Type=notify|Type=simple|g' /lib/systemd/system/transmission-daemon.service
 sudo systemctl daemon-reload
 sudo systemctl start transmission-daemon.service
@@ -179,5 +178,6 @@ echo "alias ll='ls -la'" | sudo tee -a /home/oggy/.bashrc
 # SYNC
 
 sync && sync
+
 
 
