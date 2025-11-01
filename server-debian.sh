@@ -1,17 +1,17 @@
 #!/bin/bash -x
 
-# BACKUP SOURCES.LIST
-sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-
 # SOURCES.LIST
-echo 'deb https://mirror.twds.com.tw/debian/ trixie main contrib non-free non-free-firmware' | sudo tee -a /etc/apt/sources.list
-echo 'deb-src https://mirror.twds.com.tw/debian/ trixie main contrib non-free non-free-firmware' | sudo tee -a /etc/apt/sources.list
-
-echo 'deb https://mirror.twds.com.tw/debian-security/ trixie-security main contrib non-free non-free-firmware' | sudo tee -a /etc/apt/sources.list
-echo 'deb-src https://mirror.twds.com.tw/debian-security/ trixie-security main contrib non-free non-free-firmware' | sudo tee -a /etc/apt/sources.list
-
-echo 'deb https://mirror.twds.com.tw/debian/ trixie-updates main contrib non-free non-free-firmware' | sudo tee -a /etc/apt/sources.list
-echo 'deb-src https://mirror.twds.com.tw/debian/ trixie-updates main contrib non-free non-free-firmware' | sudo tee -a /etc/apt/sources.list
+echo 'Types: deb deb-src' | sudo tee -a /etc/apt/sources.list.d/debian.sources
+echo 'URIs: https://mirror.twds.com.tw/debian' | sudo tee -a /etc/apt/sources.list.d/debian.sources
+echo 'Suites: trixie trixie-updates' | sudo tee -a /etc/apt/sources.list.d/debian.sources
+echo 'Components: main contrib non-free non-free-firmware' | sudo tee -a /etc/apt/sources.list.d/debian.sources
+echo 'Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg' | sudo tee -a /etc/apt/sources.list.d/debian.sources
+echo '' | sudo tee -a /etc/apt/sources.list.d/debian.sources
+echo 'Types: deb deb-src' | sudo tee -a /etc/apt/sources.list.d/debian.sources
+echo 'URIs: https://mirror.twds.com.tw/debian-security' | sudo tee -a /etc/apt/sources.list.d/debian.sources
+echo 'Suites: trixie-security' | sudo tee -a /etc/apt/sources.list.d/debian.sources
+echo 'Components: main contrib non-free non-free-firmware' | sudo tee -a /etc/apt/sources.list.d/debian.sources
+echo 'Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg' | sudo tee -a /etc/apt/sources.list.d/debian.sources
 
 # INSTALL PACKAGES
 sudo apt update -y
@@ -178,6 +178,7 @@ echo "alias ll='ls -la'" | sudo tee -a /home/oggy/.bashrc
 # SYNC
 
 sync && sync
+
 
 
 
