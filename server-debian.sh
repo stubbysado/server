@@ -16,7 +16,7 @@ echo 'Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg' | sudo tee -a /
 # INSTALL PACKAGES
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install cups gcc hplip htop make mc mergerfs samba screen transmission-daemon -y
+sudo apt install htop make mc mergerfs samba screen transmission-daemon -y
 
 # RE-CHECK UPDATE
 sudo apt update -y
@@ -157,15 +157,6 @@ sudo sed -i 's|"rpc-whitelist": "127.0.0.1,::1",|"rpc-whitelist": "127.0.0.1,10.
 sudo systemctl daemon-reload
 sudo systemctl start transmission-daemon.service
 
-# PRINTER
-sudo cp /etc/cups/cupsd.conf /etc/cups/cupsd.conf.bak
-
-sudo cupsctl --share-printers --remote-any
-sudo lpadmin -p printer -o printer-is-shared=true
-sudo lpadmin -p printer -o printer-op-policy=authenticated
-sudo usermod -aG lpadmin oggy
-sudo systemctl restart cups
-
 # CRONTAB
 CRONTSCRIPT="/home/oggy/runner.sh"
 CRONJOB="#0 0 * * * /home/oggy/runner.sh"
@@ -176,5 +167,4 @@ cat <(fgrep -i -v "$CRONTSCRIPT" <(crontab -l)) <(echo "$CRONJOB") | crontab -
 echo "alias ll='ls -la'" | sudo tee -a /home/oggy/.bashrc
 
 # SYNC
-
 sync && sync
