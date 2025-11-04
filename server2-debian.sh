@@ -16,7 +16,7 @@ echo 'Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg' | sudo tee -a /
 # INSTALL PACKAGES
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install htop make mergerfs samba screen -y
+sudo apt install gcc htop make mergerfs samba screen -y
 
 # RE-CHECK UPDATE
 sudo apt update -y
