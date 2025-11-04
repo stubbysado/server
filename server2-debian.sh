@@ -177,5 +177,4 @@ echo 'recycle:versions = yes' | sudo tee -a /etc/samba/smb.conf
 echo "alias ll='ls -la'" | sudo tee -a /home/oggy/.bashrc
 
 # SYNC
-
 sync && sync
