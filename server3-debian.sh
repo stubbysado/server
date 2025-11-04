@@ -128,5 +128,4 @@ echo 'exclude lost+found/' | sudo tee -a /etc/snapraid.conf
 echo "alias ll='ls -la'" | sudo tee -a /home/oggy/.bashrc
 
 # SYNC
-
 sync && sync
