@@ -72,14 +72,12 @@ sudo mount -a
 # SAMBA
 sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
 
-echo '' | sudo tee -a /etc/samba/smb.conf
 echo '[server3]' | sudo tee -a /etc/samba/smb.conf
 echo 'path = /mnt/server3' | sudo tee -a /etc/samba/smb.conf
 echo 'browseable = no' | sudo tee -a /etc/samba/smb.conf
 echo 'read only = no' | sudo tee -a /etc/samba/smb.conf
 echo 'guest ok = no' | sudo tee -a /etc/samba/smb.conf
 echo 'valid users = oggy' | sudo tee -a /etc/samba/smb.conf
-echo '' | sudo tee -a /etc/samba/smb.conf
 echo 'vfs objects = recycle' | sudo tee -a /etc/samba/smb.conf
 echo 'recycle:repository = .recycle' | sudo tee -a /etc/samba/smb.conf
 echo 'recycle:directory_mode = 775' | sudo tee -a /etc/samba/smb.conf
@@ -126,6 +124,11 @@ echo 'exclude lost+found/' | sudo tee -a /etc/snapraid.conf
 
 # ALIAS
 echo "alias ll='ls -la'" | sudo tee -a /home/oggy/.bashrc
+
+# WAKE ON LAN
+sudo cp /etc/network/interfaces /etc/network/interfaces.bak
+
+echo 'ethernet-wol g' | sudo tee -a /etc/network/interfaces
 
 # SYNC
 sync && sync
