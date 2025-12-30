@@ -118,56 +118,30 @@ echo '' | sudo tee -a /etc/snapraid.conf
 echo 'exclude lost+found/' | sudo tee -a /etc/snapraid.conf
 
 # EXTRA HDD
-sudo mkdir /mnt/ext1
+sudo mkdir /mnt/data-ext1
 
 echo '' | sudo tee -a /etc/fstab
 echo '# Extra Hard Disk Drive' | sudo tee -a /etc/fstab
-echo 'UUID=23b3c9e4-4799-4a1c-a95e-a4b536d67a7f /mnt/ext1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=23b3c9e4-4799-4a1c-a95e-a4b536d67a7f /mnt/data-ext1 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 
 sudo systemctl daemon-reload
 
 sudo mount -a
 
-sudo chown oggy:oggy /mnt/ext1
-
-echo '' | sudo tee -a /etc/samba/smb.conf
-echo '[server2a]' | sudo tee -a /etc/samba/smb.conf
-echo 'path = /mnt/ext1' | sudo tee -a /etc/samba/smb.conf
-echo 'browseable = no' | sudo tee -a /etc/samba/smb.conf
-echo 'read only = no' | sudo tee -a /etc/samba/smb.conf
-echo 'guest ok = no' | sudo tee -a /etc/samba/smb.conf
-echo 'valid users = oggy' | sudo tee -a /etc/samba/smb.conf
-echo 'vfs objects = recycle' | sudo tee -a /etc/samba/smb.conf
-echo 'recycle:repository = .recycle' | sudo tee -a /etc/samba/smb.conf
-echo 'recycle:directory_mode = 775' | sudo tee -a /etc/samba/smb.conf
-echo 'recycle:versions = yes' | sudo tee -a /etc/samba/smb.conf
-
-sudo systemctl restart smbd.service
+sudo chown oggy:oggy /mnt/data-ext1
 
 # EXTRA HDD 02
-sudo mkdir /mnt/ext2
+sudo mkdir /mnt/data-ext2
 
 echo '' | sudo tee -a /etc/fstab
 echo '# Extra Hard Disk Drive 2' | sudo tee -a /etc/fstab
-echo 'UUID=27a9aa12-c992-4c6c-aac6-cacc7b49c5ff /mnt/ext2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=27a9aa12-c992-4c6c-aac6-cacc7b49c5ff /mnt/data-ext2 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 
 sudo systemctl daemon-reload
 
 sudo mount -a
 
-sudo chown oggy:oggy /mnt/ext2
-
-echo '' | sudo tee -a /etc/samba/smb.conf
-echo '[server2b]' | sudo tee -a /etc/samba/smb.conf
-echo 'path = /mnt/ext2' | sudo tee -a /etc/samba/smb.conf
-echo 'browseable = no' | sudo tee -a /etc/samba/smb.conf
-echo 'read only = no' | sudo tee -a /etc/samba/smb.conf
-echo 'guest ok = no' | sudo tee -a /etc/samba/smb.conf
-echo 'valid users = oggy' | sudo tee -a /etc/samba/smb.conf
-echo 'vfs objects = recycle' | sudo tee -a /etc/samba/smb.conf
-echo 'recycle:repository = .recycle' | sudo tee -a /etc/samba/smb.conf
-echo 'recycle:directory_mode = 775' | sudo tee -a /etc/samba/smb.conf
-echo 'recycle:versions = yes' | sudo tee -a /etc/samba/smb.conf
+sudo chown oggy:oggy /mnt/data-ext2
 
 # ALIAS
 echo "alias ll='ls -la'" | sudo tee -a /home/oggy/.bashrc
