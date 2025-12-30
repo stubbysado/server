@@ -2,13 +2,13 @@
 
 # SOURCES.LIST
 echo 'Types: deb deb-src' | sudo tee -a /etc/apt/sources.list.d/debian.sources
-echo 'URIs: https://mirror.twds.com.tw/debian' | sudo tee -a /etc/apt/sources.list.d/debian.sources
+echo 'URIs: https://mirror.sg.gs/debian' | sudo tee -a /etc/apt/sources.list.d/debian.sources
 echo 'Suites: trixie trixie-updates' | sudo tee -a /etc/apt/sources.list.d/debian.sources
 echo 'Components: main contrib non-free non-free-firmware' | sudo tee -a /etc/apt/sources.list.d/debian.sources
 echo 'Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg' | sudo tee -a /etc/apt/sources.list.d/debian.sources
 echo '' | sudo tee -a /etc/apt/sources.list.d/debian.sources
 echo 'Types: deb deb-src' | sudo tee -a /etc/apt/sources.list.d/debian.sources
-echo 'URIs: https://mirror.twds.com.tw/debian-security' | sudo tee -a /etc/apt/sources.list.d/debian.sources
+echo 'URIs: https://mirror.sg.gs/debian-security' | sudo tee -a /etc/apt/sources.list.d/debian.sources
 echo 'Suites: trixie-security' | sudo tee -a /etc/apt/sources.list.d/debian.sources
 echo 'Components: main contrib non-free non-free-firmware' | sudo tee -a /etc/apt/sources.list.d/debian.sources
 echo 'Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg' | sudo tee -a /etc/apt/sources.list.d/debian.sources
