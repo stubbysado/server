@@ -32,6 +32,7 @@ sudo mkdir /mnt/data2
 sudo mkdir /mnt/data3
 sudo mkdir /mnt/data4
 sudo mkdir /mnt/data5
+sudo mkdir /mnt/data6
 
 sudo cp /etc/fstab /etc/fstab.bak
 
@@ -44,6 +45,7 @@ echo 'UUID=947f2157-352e-44f3-ac73-87ec4075db2e /mnt/data2 auto nosuid,nodev,nof
 echo 'UUID=ef3bdd10-22cf-42fe-aedb-660d41386008 /mnt/data3 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo 'UUID=f4b3eba6-b51b-4641-89b2-cadecbb2775f /mnt/data4 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 echo 'UUID=04873b05-2b65-4e8a-b8e4-43bf7be51a58 /mnt/data5 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
+echo 'UUID=3890ba1c-3b95-4df2-a979-cd81d280e994 /mnt/data6 auto nosuid,nodev,nofail 0 0' | sudo tee -a /etc/fstab
 
 sudo systemctl daemon-reload
 
