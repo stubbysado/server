@@ -64,7 +64,7 @@ sudo mkdir /mnt/server
 
 echo '' | sudo tee -a /etc/fstab
 echo '# MergerFS' | sudo tee -a /etc/fstab
-echo '/mnt/data* /mnt/server fuse.mergerfs allow_other,cache.files=full,dropcacheonclose=true,category.create=mfs 0 0' | sudo tee -a /etc/fstab
+echo '/mnt/data* /mnt/server mergerfs cache.files=off,category.create=pfrd,func.getattr=newest,dropcacheonclose=false 0 0' | sudo tee -a /etc/fstab
 
 sudo systemctl daemon-reload
 
