@@ -57,6 +57,7 @@ sudo chown oggy:oggy /mnt/data2
 sudo chown oggy:oggy /mnt/data3
 sudo chown oggy:oggy /mnt/data4
 sudo chown oggy:oggy /mnt/data5
+sudo chown oggy:oggy /mnt/data6
 
 # MERGERFS
 sudo mkdir /mnt/server3
