@@ -58,7 +58,7 @@ sudo mkdir /mnt/server2
 
 echo '' | sudo tee -a /etc/fstab
 echo '# MergerFS' | sudo tee -a /etc/fstab
-echo '/mnt/data* /mnt/server2 fuse.mergerfs allow_other,cache.files=full,dropcacheonclose=true,category.create=mfs 0 0' | sudo tee -a /etc/fstab
+echo '/mnt/data* /mnt/server2 mergerfs cache.files=off,category.create=pfrd,func.getattr=newest,dropcacheonclose=false 0 0' | sudo tee -a /etc/fstab
 
 sudo chown oggy:oggy /mnt/server2
 
