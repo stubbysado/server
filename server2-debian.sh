@@ -22,7 +22,6 @@ sudo apt install gcc htop make mergerfs samba screen -y
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt clean -y
-sudo apt autoclean -y
 sudo apt autoremove -y
 
 # FSTAB
