@@ -17,3 +17,5 @@ sed -i 's|http://security.debian.org|https://mirror.sg.gs|g' /etc/apt/sources.li
 
 apt update
 apt dist-upgrade -y
+apt clean -y
+apt autoremove -y
