@@ -1,10 +1,5 @@
 #!/bin/bash -x
 
-# CRONTAB
-LINE="@reboot echo 0 | tee /sys/class/backlight/intel_backlight/brightness"
-
-(crontab -l 2>/dev/null | grep -Fq "$LINE") || (crontab -l 2>/dev/null; echo "$LINE") | crontab -
-
 # BACKUP REPO
 mkdir -p /root/sources_list_bak/
 mv /etc/apt/sources.list.d/* /root/sources_list_bak/
@@ -38,3 +33,33 @@ apt update
 apt dist-upgrade -y
 apt clean -y
 apt autoremove -y
+
+# ZRAM
+ apt update
+ apt install systemd-zram-generator -y
+
+echo "[zram0]
+zram-size = min(ram, 8192)
+compression-algorithm = zstd" | tee /etc/systemd/zram-generator.conf
+
+echo "vm.swappiness = 180
+vm.watermark_boost_factor = 0
+vm.watermark_scale_factor = 125
+vm.page-cluster = 0" | tee /etc/sysctl.d/99-zram.conf
+
+# FIX E1000E NIC
+apt update
+apt install ethtool -y
+
+NIC="nic0"
+CONFIG="/etc/network/interfaces"
+
+/usr/sbin/ethtool -K $NIC tso off gso off gro off
+
+if grep -q "ethtool -K $NIC" "$CONFIG"; then
+    :
+else
+    sed -i "/iface $NIC/a \      post-up /usr/sbin/ethtool -K $NIC tso off gso off gro off" "$CONFIG"
+fi
+
+ethtool -k $NIC | grep -E 'tcp-segmentation-offload|generic-segmentation-offload|generic-receive-offload'
