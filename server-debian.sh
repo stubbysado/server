@@ -119,29 +119,6 @@ exclude snapraid.log
 exclude snapraid-output.log
 EOF
 
-# TRANSMISSION
-sudo systemctl stop transmission-daemon.service
-sudo systemctl start transmission-daemon.service
-sudo systemctl stop transmission-daemon.service
-sleep 3
-sudo cp /lib/systemd/system/transmission-daemon.service /lib/systemd/system/transmission-daemon.service.bak
-sudo sed -i 's|User=debian-transmission|User=oggy|g' /lib/systemd/system/transmission-daemon.service
-sudo sed -i 's|Type=notify|Type=simple|g' /lib/systemd/system/transmission-daemon.service
-sudo systemctl daemon-reload
-sudo systemctl start transmission-daemon.service
-sleep 3
-sudo systemctl stop transmission-daemon.service
-sudo systemctl start transmission-daemon.service
-sudo systemctl stop transmission-daemon.service
-sleep 3
-sudo cp /home/oggy/.config/transmission-daemon/settings.json /home/oggy/.config/transmission-daemon/settings.json.bak
-sudo sed -i 's|"download-dir": "/home/oggy/Downloads",|"download-dir": "/mnt/server/02-Downloads/Transmission",|g' /home/oggy/.config/transmission-daemon/settings.json
-sudo sed -i 's|"rpc-authentication-required": false,|"rpc-authentication-required": true,|g' /home/oggy/.config/transmission-daemon/settings.json
-sudo sed -i 's|"rpc-username": "",|"rpc-username": "oggy",|g' /home/oggy/.config/transmission-daemon/settings.json
-sudo sed -i 's|"rpc-whitelist": "127.0.0.1,::1",|"rpc-whitelist": "127.0.0.1,10.0.0.*",|g' /home/oggy/.config/transmission-daemon/settings.json
-sudo systemctl daemon-reload
-sudo systemctl start transmission-daemon.service
-
 # CRONTAB
 CRONTSCRIPT="/home/oggy/runner.sh"
 CRONJOB="#0 0 * * * /home/oggy/runner.sh"
@@ -150,10 +127,6 @@ cat <(fgrep -i -v "$CRONTSCRIPT" <(crontab -l)) <(echo "$CRONJOB") | crontab -
 
 # ALIAS
 echo "alias ll='ls -la'" >> /home/oggy/.bashrc
-
-# WAKE ON LAN
-sudo cp /etc/network/interfaces /etc/network/interfaces.bak
-echo 'ethernet-wol g' | sudo tee -a /etc/network/interfaces
 
 sync && sync
 # SYNC
