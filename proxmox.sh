@@ -51,14 +51,23 @@ vm.page-cluster = 0" | tee /etc/sysctl.d/99-zram.conf
 apt update
 apt install ethtool -y
 
+NIC=$(basename $(ls -l /sys/class/net/*/device/driver | grep e1000e | awk '{print $9}' | cut -d/ -f5) 2>/dev/null | head -n 1)
+
+if [ -z "$NIC" ]; then
+    echo "E1000E not found"
+    exit 1
+fi
+
+echo "NIC: $NIC"
+
 tee /etc/systemd/system/e1000e-fix.service <<EOF
 [Unit]
-Description=Disable NIC offloading for Intel E1000E interface nic0
+Description=Disable NIC offloading for Intel E1000E interface $NIC
 After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/sbin/ethtool -K nic0 gso off gro off tso off tx off rx off rxvlan off txvlan off sg off
+ExecStart=/sbin/ethtool -K $NIC gso off gro off tso off tx off rx off rxvlan off txvlan off sg off
 RemainAfterExit=true
 
 [Install]
@@ -67,4 +76,4 @@ EOF
 
 systemctl daemon-reload
 systemctl enable --now e1000e-fix.service
-ethtool -k nic0
+ethtool -k "$NIC"
