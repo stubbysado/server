@@ -51,15 +51,20 @@ vm.page-cluster = 0" | tee /etc/sysctl.d/99-zram.conf
 apt update
 apt install ethtool -y
 
-NIC="nic0"
-CONFIG="/etc/network/interfaces"
+tee /etc/systemd/system/e1000e-fix.service <<EOF
+[Unit]
+Description=Disable NIC offloading for Intel E1000E interface nic0
+After=network.target
 
-/usr/sbin/ethtool -K $NIC tso off gso off gro off
+[Service]
+Type=oneshot
+ExecStart=/sbin/ethtool -K nic0 gso off gro off tso off tx off rx off rxvlan off txvlan off sg off
+RemainAfterExit=true
 
-if grep -q "ethtool -K $NIC" "$CONFIG"; then
-    :
-else
-    sed -i "/iface $NIC/a \      post-up /usr/sbin/ethtool -K $NIC tso off gso off gro off" "$CONFIG"
-fi
+[Install]
+WantedBy=multi-user.target
+EOF
 
-ethtool -k $NIC | grep -E 'tcp-segmentation-offload|generic-segmentation-offload|generic-receive-offload'
+systemctl daemon-reload
+systemctl enable --now e1000e-fix.service
+ethtool -k nic0
