@@ -126,9 +126,5 @@ sudo chown oggy:oggy /mnt/data-ext{1,2}
 # ALIAS
 echo "alias ll='ls -la'" >> /home/oggy/.bashrc
 
-# WAKE ON LAN
-sudo cp /etc/network/interfaces /etc/network/interfaces.bak
-echo 'ethernet-wol g' | sudo tee -a /etc/network/interfaces
-
 # SYNC
 sync && sync
