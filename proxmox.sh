@@ -6,7 +6,7 @@ mv /etc/apt/sources.list.d/* /root/sources_list_bak/
 mv /etc/apt/sources.list /root/sources_list_bak/sources.list.bak
 
 # CREATE REPO
-tee /etc/apt/sources.list.d/debian.sources <<EOF
+tee /etc/apt/sources.list.d/debian.sources <<'EOF'
 Types: deb deb-src
 URIs: https://mirror.sg.gs/debian
 Suites: trixie trixie-updates
@@ -20,7 +20,7 @@ Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 EOF
 
-tee /etc/apt/sources.list.d/proxmox.sources <<EOF
+tee /etc/apt/sources.list.d/proxmox.sources <<'EOF'
 Types: deb
 URIs: http://mirror.sg.gs/pve
 Suites: trixie
@@ -53,7 +53,7 @@ NIC=$(basename $(ls -l /sys/class/net/*/device/driver 2>/dev/null | grep e1000e 
 if [ -n "$NIC" ]; then
     apt update && apt install ethtool -y
 	
-    tee /etc/systemd/system/e1000e-fix.service <<EOF
+    tee /etc/systemd/system/e1000e-fix.service <<'EOF'
 [Unit]
 Description=Disable NIC offloading for Intel E1000E interface $NIC
 After=network.target
