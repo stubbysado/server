@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 # SOURCES.LIST
-sudo tee /etc/apt/sources.list.d/debian.sources <<EOF
+sudo tee /etc/apt/sources.list.d/debian.sources <<'EOF'
 Types: deb deb-src
 URIs: https://mirror.sg.gs/debian
 Suites: trixie trixie-updates
@@ -30,7 +30,7 @@ sudo apt autoremove -y
 sudo mkdir -p /mnt/parity1 /mnt/data{1..4}
 sudo cp /etc/fstab /etc/fstab.bak
 
-sudo tee -a /etc/fstab <<EOF
+sudo tee -a /etc/fstab <<'EOF'
 
 # Hard Disk Drive
 UUID=1326ca8d-bae5-442f-8abd-ce838a1eb5e3 /mnt/parity1 auto nosuid,nodev,nofail 0 0
@@ -48,7 +48,7 @@ sudo chown oggy:oggy /mnt/parity1 /mnt/data{1..4}
 # MERGERFS
 sudo mkdir -p /mnt/server2
 
-sudo tee -a /etc/fstab <<EOF
+sudo tee -a /etc/fstab <<'EOF'
 
 # MergerFS
 /mnt/data* /mnt/server2 mergerfs cache.files=off,category.create=pfrd,func.getattr=newest,dropcacheonclose=false 0 0
@@ -61,7 +61,7 @@ sudo mount -a
 # SAMBA
 sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
 
-sudo tee -a /etc/samba/smb.conf <<EOF
+sudo tee -a /etc/samba/smb.conf <<'EOF'
 
 [server2]
    path = /mnt/server2
@@ -92,7 +92,7 @@ make -C /home/oggy/snapraid
 sudo make install
 rm -rfv /home/oggy/snapraid
 
-sudo tee /etc/snapraid.conf <<EOF
+sudo tee /etc/snapraid.conf <<'EOF'
 
 parity /mnt/parity1/snapraid.parity
 
@@ -112,7 +112,7 @@ EOF
 # EXTRA HDD
 sudo mkdir -p /mnt/data-ext{1,2}
 
-sudo tee -a /etc/fstab <<EOF
+sudo tee -a /etc/fstab <<'EOF'
 
 # Extra Hard Disk Drives
 UUID=23b3c9e4-4799-4a1c-a95e-a4b536d67a7f /mnt/data-ext1 auto nosuid,nodev,nofail 0 0
