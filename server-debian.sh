@@ -1,5 +1,8 @@
 #!/bin/bash -x
 
+# REMOVE SOURCES.LIST
+sudo rm -f /etc/apt/sources.list
+
 # SOURCES.LIST
 sudo tee /etc/apt/sources.list.d/debian.sources <<EOF
 Types: deb deb-src
