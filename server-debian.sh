@@ -21,7 +21,7 @@ EOF
 # INSTALL PACKAGES
 sudo apt update
 sudo apt upgrade -y
-sudo apt install gcc htop make mc mergerfs qemu-guest-agent samba screen transmission-daemon unattended-upgrades -y
+sudo apt install gcc htop make mc mergerfs qemu-guest-agent samba screen transmission-daemon -y
 
 # RE-CHECK UPDATE
 sudo apt update
