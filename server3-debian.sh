@@ -117,6 +117,3 @@ EOF
 
 # ALIAS
 echo "alias ll='ls -la'" >> /home/oggy/.bashrc
-
-# SYNC
-sync && sync
