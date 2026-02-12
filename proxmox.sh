@@ -31,7 +31,7 @@ EOF
 # UPDATE
 apt update
 apt dist-upgrade -y
-apt clean -y
+apt clean
 apt autoremove -y
 
 # ZRAM
