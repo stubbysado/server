@@ -128,5 +128,12 @@ cat <(fgrep -i -v "$CRONTSCRIPT" <(crontab -l)) <(echo "$CRONJOB") | crontab -
 # ALIAS
 echo "alias ll='ls -la'" >> /home/oggy/.bashrc
 
-sync && sync
+# INSTALL NFS
+sudo apt update
+sudo apt install nfs-kernel-server -y
+echo "/mnt/server 10.0.0.32(rw,no_root_squash,fsid=0)" | sudo tee -a /etc/exports
+sudo exportfs -ra
+sudo systemctl restart nfs-kernel-server
+
 # SYNC
+sync && sync
