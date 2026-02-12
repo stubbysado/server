@@ -125,6 +125,3 @@ sudo chown oggy:oggy /mnt/data-ext{1,2}
 
 # ALIAS
 echo "alias ll='ls -la'" >> /home/oggy/.bashrc
-
-# SYNC
-sync && sync
