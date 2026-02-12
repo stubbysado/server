@@ -26,7 +26,7 @@ sudo apt install gcc htop make mc mergerfs samba screen transmission-daemon -y
 # RE-CHECK UPDATE
 sudo apt update
 sudo apt upgrade -y
-sudo apt clean -y
+sudo apt clean
 sudo apt autoremove -y
 
 # FSTAB
