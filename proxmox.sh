@@ -73,3 +73,42 @@ EOF
 else
     echo "E1000E not found"
 fi
+
+# UPDATE.SH
+tee ./update.sh <<'EOF'
+#!/bin/bash
+
+# UPDATE PROXMOX
+apt update
+apt dist-upgrade -y
+apt clean
+apt autoremove -y
+
+# UPDATE LXC
+for vmid in $(pct list | awk 'NR>1 {print $1}'); do
+    status=$(pct status $vmid)
+    if [ "$status" == "status: running" ]; then
+        echo "--- LXC $vmid ---"
+        pct exec $vmid -- bash -c "apt update && apt upgrade -y && apt clean && apt autoremove -y"
+    else
+        echo "LXC $vmid: SKIPPED"
+    fi
+done
+
+# UPDATE VM
+for vmid in $(qm list | awk 'NR>1 {print $1}'); do
+    status=$(qm status $vmid)
+    if [ "$status" == "status: running" ]; then
+        os_info=$(qm guest exec $vmid -- bash -c "cat /etc/os-release" 2>/dev/null | grep -i "ID=debian")        
+        if [ ! -z "$os_info" ]; then
+            echo "--- VM $vmid ---"
+            qm guest exec $vmid -- bash -c "apt-get update && apt-get upgrade -y && apt-get clean && apt-get autoremove -y"
+        else
+            echo "--- VM $vmid: ERROR ---"
+        fi
+    else
+        echo "--- VM $vmid: SKIPPED ---"
+    fi
+done
+EOF
+chmod 755 -v ./update.sh
