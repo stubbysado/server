@@ -123,10 +123,7 @@ exclude snapraid-output.log
 EOF
 
 # CRONTAB
-CRONTSCRIPT="/home/oggy/runner.sh"
-CRONJOB="#0 0 * * * /home/oggy/runner.sh"
-
-cat <(fgrep -i -v "$CRONTSCRIPT" <(crontab -l)) <(echo "$CRONJOB") | crontab -
+bash -c '(crontab -l 2>/dev/null; echo "0 0 * * * /home/oggy/runner.sh") | crontab -'
 
 # ALIAS
 echo "alias ll='ls -la'" >> /home/oggy/.bashrc
