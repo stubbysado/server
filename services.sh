@@ -54,7 +54,7 @@ while true; do
     fi
 done
 
-# INSTALL NFS
+# NFS
 sudo apt update
 sudo apt install nfs-common -y
 sudo mkdir -p /mnt/server
