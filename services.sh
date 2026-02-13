@@ -23,6 +23,37 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt install qemu-guest-agent transmission-daemon curl -y
 
+# LINK
+check_link() {
+    if ! curl --output /dev/null --silent --head --fail "$1"; then
+        return 1
+    fi
+}
+
+while true; do
+    echo "--- Please provide valid links (Ctrl+C to exit) ---"
+    
+    read -p "MICROSOFT link (Default: https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb): " MICROSOFT
+    MICROSOFT=${MICROSOFT:-https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb}
+
+    read -p "REAL DEBRID link: " REALDEBRID
+    read -p "FILEBROWSER QUANTUM link: " FILEBROWSER
+    read -p "NAVIDROME link: " NAVIDROME
+
+    if [ -z "$REALDEBRID" ] || [ -z "$FILEBROWSER" ] || [ -z "$NAVIDROME" ]; then
+        echo "Error: All links except Microsoft are required."
+        continue
+    fi
+
+    echo "Checking links..."
+    if check_link "$MICROSOFT" && check_link "$REALDEBRID" && check_link "$FILEBROWSER" && check_link "$NAVIDROME"; then
+        echo "All links verified successfully."
+        break
+    else
+        echo "Error: One or more links are unreachable. Please re-enter all links."
+    fi
+done
+
 # INSTALL NFS
 sudo apt update
 sudo apt install nfs-common -y
@@ -89,30 +120,6 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable --now prowlarr
 rm ./Prowlarr*.linux*.tar.gz
-
-# LINK
-check_link() {
-    if ! curl --output /dev/null --silent --head --fail "$1"; then
-        echo "Error: The link $1 is unreachable or the file does not exist."
-        exit 1
-    fi
-}
-
-read -p "MICROSOFT link (Default: https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb): " MICROSOFT
-MICROSOFT=${MICROSOFT:-https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb}
-check_link "$MICROSOFT"
-
-read -p "REAL DEBRID link: " REALDEBRID
-if [ -z "$REALDEBRID" ]; then echo "Link is required"; exit 1; fi
-check_link "$REALDEBRID"
-
-read -p "FILEBROWSER QUANTUM link: " FILEBROWSER
-if [ -z "$FILEBROWSER" ]; then echo "Link is required"; exit 1; fi
-check_link "$FILEBROWSER"
-
-read -p "NAVIDROME link: " NAVIDROME
-if [ -z "$NAVIDROME" ]; then echo "Link is required"; exit 1; fi
-check_link "$NAVIDROME"
 
 # INSTALL REAL DEBRID (RDT-CLIENT)
 sudo apt update
