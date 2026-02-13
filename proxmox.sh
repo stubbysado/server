@@ -74,14 +74,19 @@ else
     echo "E1000E not found"
 fi
 
-# UPDATE.SH
+#UPDATE.SH
 tee ./update.sh <<'EOF'
-#!/bin/bash
+#!/bin/bash -x
 
 apt-get update
-apt-get dist-upgrade -y
+apt-get full-upgrade -y
 apt-get clean
 apt-get autoremove -y
+EOF
+
+# GUEST.SH
+tee ./guest.sh <<'EOF'
+#!/bin/bash
 
 for container in $(pct list | tail -n +2 | awk '{print $1}'); do
     if [ "$(pct status $container)" == "status: running" ]; then
