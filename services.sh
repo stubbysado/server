@@ -210,107 +210,108 @@ sudo sed -i 's|MusicFolder = "/opt/navidrome/music"|MusicFolder = "/mnt/server/0
 sudo systemctl enable --now navidrome
 
 # TAGGER.PY
-sudo apt update && sudo apt install python3-mutagen -y
 
-tee ./tagger.py <<'EOF'
-import os
-import re
-import readline
-import glob
-from mutagen.easyid3 import EasyID3
-from mutagen.flac import FLAC
-from mutagen.mp3 import MP3
-
-# --- Tab Autocomplete Setup ---
-def path_completer(text, state):
-    line = readline.get_line_buffer()
-    if not line:
-        return [f + "/" for f in os.listdir('.')][state]
-    else:
-        return (glob.glob(os.path.expanduser(text) + '*') + [None])[state]
-
-readline.set_completer_delims(' \t\n;')
-readline.parse_and_bind("tab: complete")
-readline.set_completer(path_completer)
-
-def process_music(root_path):
-    root_path = os.path.abspath(os.path.expanduser(root_path))
-    
-    for root, dirs, files in os.walk(root_path):
-        for file in files:
-            if not file.lower().endswith(('.flac', '.mp3')):
-                continue
-
-            file_path = os.path.join(root, file)
-            # Split path into parts to identify Artist and Album folders
-            parts = file_path.split(os.sep)
-            
-            try:
-                # Structure: .../[Artist]/[Year Album]/[Track Title].ext
-                # filename is parts[-1], album folder is parts[-2], artist is parts[-3]
-                filename = parts[-1]
-                year_album = parts[-2]
-                artist_name = parts[-3]
-
-                # Parse Year and Album (e.g., "1973 Ring Ring")
-                match_album = re.match(r"(\d{4})\s+(.*)", year_album)
-                year = match_album.group(1) if match_album else ""
-                album = match_album.group(2) if match_album else year_album
-
-                # Parse Track and Title (e.g., "01 Ring Ring")
-                match_track = re.match(r"(\d+)\s+(.*)\.", filename)
-                track = match_track.group(1) if match_track else ""
-                title = match_track.group(2) if match_track else filename.rsplit('.', 1)[0]
-
-                print(f"Processing: {artist_name} - {album} [{year}] - {track}: {title}")
-
-                if file.lower().endswith('.flac'):
-                    audio = FLAC(file_path)
-                    # .delete() on FLAC clears comments but leaves Album Art blocks intact
-                    audio.delete()
-                    audio["artist"] = artist_name
-                    audio["albumartist"] = artist_name # Contributing Artist
-                    audio["album"] = album
-                    audio["date"] = year
-                    audio["tracknumber"] = track
-                    audio["title"] = title
-                    audio.save()
-
-                elif file.lower().endswith('.mp3'):
-                    # MP3s are trickier; must manually preserve 'APIC' (Album Art) frame
-                    audio_full = MP3(file_path)
-                    artwork = audio_full.tags.getall('APIC') if audio_full.tags else []
-                    audio_full.delete() 
-                    audio_full.save() # Wipe file clean
-
-                    # Re-load with EasyID3 for standard fields
-                    audio = EasyID3(file_path)
-                    audio["artist"] = artist_name
-                    audio["albumartist"] = artist_name
-                    audio["album"] = album
-                    audio["date"] = year
-                    audio["tracknumber"] = track
-                    audio["title"] = title
-                    audio.save()
-
-                    # Restore artwork to the clean file
-                    if artwork:
-                        audio_final = MP3(file_path)
-                        for art in artwork:
-                            audio_final.tags.add(art)
-                        audio_final.save()
-
-            except Exception as e:
-                print(f"Error on {file}: {e}")
-
-if __name__ == "__main__":
-    path = input("Enter music path (Tab for autocomplete): ").strip()
-    if os.path.isdir(os.path.expanduser(path)):
-        process_music(path)
-        print("\nDone!")
-    else:
-        print("Invalid Directory.")
-EOF
+# sudo apt update && sudo apt install python3-mutagen -y
+#
+# tee ./tagger.py <<'EOF'
+# import os
+# import re
+# import readline
+# import glob
+# from mutagen.easyid3 import EasyID3
+# from mutagen.flac import FLAC
+# from mutagen.mp3 import MP3
+#
+# # --- Tab Autocomplete Setup ---
+# def path_completer(text, state):
+#     line = readline.get_line_buffer()
+#     if not line:
+#         return [f + "/" for f in os.listdir('.')][state]
+#     else:
+#         return (glob.glob(os.path.expanduser(text) + '*') + [None])[state]
+#
+# readline.set_completer_delims(' \t\n;')
+# readline.parse_and_bind("tab: complete")
+# readline.set_completer(path_completer)
+#
+# def process_music(root_path):
+#     root_path = os.path.abspath(os.path.expanduser(root_path))
+#     
+#     for root, dirs, files in os.walk(root_path):
+#         for file in files:
+#             if not file.lower().endswith(('.flac', '.mp3')):
+#                 continue
+#
+#             file_path = os.path.join(root, file)
+#             # Split path into parts to identify Artist and Album folders
+#             parts = file_path.split(os.sep)
+#             
+#             try:
+#                 # Structure: .../[Artist]/[Year Album]/[Track Title].ext
+#                 # filename is parts[-1], album folder is parts[-2], artist is parts[-3]
+#                 filename = parts[-1]
+#                 year_album = parts[-2]
+#                 artist_name = parts[-3]
+#
+#                 # Parse Year and Album (e.g., "1973 Ring Ring")
+#                 match_album = re.match(r"(\d{4})\s+(.*)", year_album)
+#                 year = match_album.group(1) if match_album else ""
+#                 album = match_album.group(2) if match_album else year_album
+#
+#                 # Parse Track and Title (e.g., "01 Ring Ring")
+#                 match_track = re.match(r"(\d+)\s+(.*)\.", filename)
+#                 track = match_track.group(1) if match_track else ""
+#                 title = match_track.group(2) if match_track else filename.rsplit('.', 1)[0]
+#
+#                 print(f"Processing: {artist_name} - {album} [{year}] - {track}: {title}")
+#
+#                 if file.lower().endswith('.flac'):
+#                     audio = FLAC(file_path)
+#                     # .delete() on FLAC clears comments but leaves Album Art blocks intact
+#                     audio.delete()
+#                     audio["artist"] = artist_name
+#                     audio["albumartist"] = artist_name # Contributing Artist
+#                     audio["album"] = album
+#                     audio["date"] = year
+#                     audio["tracknumber"] = track
+#                     audio["title"] = title
+#                     audio.save()
+#
+#                 elif file.lower().endswith('.mp3'):
+#                     # MP3s are trickier; must manually preserve 'APIC' (Album Art) frame
+#                     audio_full = MP3(file_path)
+#                     artwork = audio_full.tags.getall('APIC') if audio_full.tags else []
+#                     audio_full.delete() 
+#                     audio_full.save() # Wipe file clean
+#
+#                     # Re-load with EasyID3 for standard fields
+#                     audio = EasyID3(file_path)
+#                     audio["artist"] = artist_name
+#                     audio["albumartist"] = artist_name
+#                     audio["album"] = album
+#                     audio["date"] = year
+#                     audio["tracknumber"] = track
+#                     audio["title"] = title
+#                     audio.save()
+#
+#                     # Restore artwork to the clean file
+#                     if artwork:
+#                         audio_final = MP3(file_path)
+#                         for art in artwork:
+#                             audio_final.tags.add(art)
+#                         audio_final.save()
+#
+#             except Exception as e:
+#                 print(f"Error on {file}: {e}")
+#
+# if __name__ == "__main__":
+#     path = input("Enter music path (Tab for autocomplete): ").strip()
+#     if os.path.isdir(os.path.expanduser(path)):
+#         process_music(path)
+#         print("\nDone!")
+#     else:
+#         print("Invalid Directory.")
+# EOF
 
 # RE-CHECK UPDATE
 sudo apt update
