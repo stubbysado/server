@@ -15,7 +15,7 @@ Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 EOF
 
-# INSTALL PACKAGES
+# PACKAGES
 sudo apt update
 sudo apt upgrade -y
 sudo apt install gcc htop make mergerfs samba screen -y
