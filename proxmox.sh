@@ -1,11 +1,11 @@
 #!/bin/bash -x
 
-# BACKUP REPO
+# BACKUP SOURCES.LIST
 mkdir -p /root/sources_list_bak/
 mv /etc/apt/sources.list.d/* /root/sources_list_bak/
 mv /etc/apt/sources.list /root/sources_list_bak/sources.list.bak
 
-# CREATE REPO
+# SOURCES.LIST.D
 tee /etc/apt/sources.list.d/debian.sources <<'EOF'
 Types: deb deb-src
 URIs: https://mirror.sg.gs/debian
