@@ -18,7 +18,7 @@ Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 EOF
 
-# INSTALL PACKAGES
+# PACKAGES
 sudo apt update
 sudo apt upgrade -y
 sudo apt install qemu-guest-agent transmission-daemon curl -y
@@ -92,7 +92,7 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "0 0 * * * systemctl restart transmi
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && /usr/bin/mount -a") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 90 && systemctl restart transmission-daemon.service") | crontab -'
 
-# INSTALL PROWLARR
+# PROWLARR
 sudo apt update
 sudo apt install curl sqlite3 libicu-dev -y
 wget --content-disposition 'http://prowlarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64'
@@ -121,7 +121,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now prowlarr
 rm ./Prowlarr*.linux*.tar.gz
 
-# INSTALL REAL DEBRID (RDT-CLIENT)
+# REAL DEBRID (RDT-CLIENT)
 sudo apt update
 sudo apt install unzip -y
 wget "$MICROSOFT"
@@ -149,7 +149,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable rdtc
 sudo systemctl start rdtc
 
-# INSTALL FILEBROWSER QUANTUM
+# FILEBROWSER QUANTUM
 wget "$FILEBROWSER"
 chmod 755 ./linux-amd64-filebrowser
 sudo mv ./linux-amd64-filebrowser /usr/local/bin/filebrowser
