@@ -83,6 +83,7 @@ apt-get full-upgrade -y
 apt-get clean
 apt-get autoremove -y
 EOF
+chmod 755 -v ./update.sh
 
 # GUEST.SH
 tee ./guest.sh <<'EOF'
@@ -120,4 +121,4 @@ except Exception as e:
     fi
 done
 EOF
-chmod 755 -v ./update.sh
+chmod 755 -v ./guest.sh
