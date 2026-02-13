@@ -78,10 +78,10 @@ fi
 tee ./update.sh <<'EOF'
 #!/bin/bash -x
 
-apt-get update
-apt-get full-upgrade -y
-apt-get clean
-apt-get autoremove -y
+apt update
+apt full-upgrade -y
+apt clean
+apt autoremove -y
 EOF
 chmod 755 -v ./update.sh
 
