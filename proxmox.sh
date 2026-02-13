@@ -78,34 +78,38 @@ fi
 tee ./update.sh <<'EOF'
 #!/bin/bash
 
-# UPDATE PROXMOX
-apt update
-apt dist-upgrade -y
-apt clean
-apt autoremove -y
+apt-get update
+apt-get dist-upgrade -y
+apt-get clean
+apt-get autoremove -y
 
-# UPDATE LXC
-for vmid in $(pct list | awk 'NR>1 {print $1}'); do
-    status=$(pct status $vmid)
-    if [ "$status" == "status: running" ]; then
-        echo "--- LXC $vmid ---"
-        pct exec $vmid -- bash -c "apt update && apt upgrade -y && apt clean && apt autoremove -y"
+for container in $(pct list | tail -n +2 | awk '{print $1}'); do
+    if [ "$(pct status $container)" == "status: running" ]; then
+        echo "--- LXC $container ---"
+        pct exec $container -- bash -c "apt-get update && apt-get upgrade -y && apt-get clean && apt-get autoremove -y"
     else
-        echo "LXC $vmid: SKIPPED"
+        echo "--- LXC $container: SKIPPED ---"
     fi
 done
 
-# UPDATE VM
-for vmid in $(qm list | awk 'NR>1 {print $1}'); do
-    status=$(qm status $vmid)
-    if [ "$status" == "status: running" ]; then
-        os_info=$(qm guest exec $vmid -- bash -c "cat /etc/os-release" 2>/dev/null | grep -i "ID=debian")        
-        if [ ! -z "$os_info" ]; then
-            echo "--- VM $vmid ---"
-            qm guest exec $vmid -- bash -c "apt-get update && apt-get upgrade -y && apt-get clean && apt-get autoremove -y"
-        else
-            echo "--- VM $vmid: ERROR ---"
-        fi
+for vmid in $(qm list | tail -n +2 | awk '{print $1}'); do
+    if [ "$(qm status $vmid | awk '{print $2}')" != "running" ]; then
+        echo "--- VM $vmid: NOT RUNNING ---"
+        continue
+    fi
+    os_info=$(qm agent $vmid get-osinfo 2>/dev/null)
+    if [[ $? -eq 0 && "$os_info" == *"debian"* ]]; then
+        echo "--- VM $vmid ---"
+        response=$(qm guest exec $vmid -- bash -c "apt-get update && apt-get upgrade -y && apt-get clean && apt-get autoremove -y")
+        echo "$response" | python3 -c "
+import sys, json
+try:
+    data = json.load(sys.stdin)
+    if 'out-data' in data: print(data['out-data'])
+    if 'err-data' in data: print(data['err-data'], file=sys.stderr)
+except Exception as e:
+    print(f'Error parsing VM output: {e}')
+"
     else
         echo "--- VM $vmid: SKIPPED ---"
     fi
