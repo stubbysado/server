@@ -210,7 +210,6 @@ sudo sed -i 's|MusicFolder = "/opt/navidrome/music"|MusicFolder = "/mnt/server/0
 sudo systemctl enable --now navidrome
 
 # TAGGER.PY
-
 # sudo apt update && sudo apt install python3-mutagen -y
 #
 # tee ./tagger.py <<'EOF'
