@@ -98,22 +98,18 @@ check_link() {
     fi
 }
 
-# MICROSOFT
 read -p "MICROSOFT link (Default: https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb): " MICROSOFT
 MICROSOFT=${MICROSOFT:-https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb}
 check_link "$MICROSOFT"
 
-# REALDEBRID
 read -p "REAL DEBRID link: " REALDEBRID
 if [ -z "$REALDEBRID" ]; then echo "Link is required"; exit 1; fi
 check_link "$REALDEBRID"
 
-# FILEBROWSER
 read -p "FILEBROWSER QUANTUM link: " FILEBROWSER
 if [ -z "$FILEBROWSER" ]; then echo "Link is required"; exit 1; fi
 check_link "$FILEBROWSER"
 
-# NAVIDROME
 read -p "NAVIDROME link: " NAVIDROME
 if [ -z "$NAVIDROME" ]; then echo "Link is required"; exit 1; fi
 check_link "$NAVIDROME"
