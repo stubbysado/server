@@ -21,7 +21,7 @@ EOF
 # PACKAGES
 sudo apt update
 sudo apt upgrade -y
-sudo apt install htop qemu-guest-agent transmission-daemon curl -y
+sudo apt install htop transmission-daemon curl -y
 
 # LINK
 check_link() {
