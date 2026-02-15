@@ -53,7 +53,7 @@ NIC=$(basename $(ls -l /sys/class/net/*/device/driver 2>/dev/null | grep e1000e 
 if [ -n "$NIC" ]; then
     apt update && apt install ethtool -y
 	
-    tee /etc/systemd/system/e1000e-fix.service <<'EOF'
+    tee /etc/systemd/system/e1000e-fix.service <<EOF
 [Unit]
 Description=Disable NIC offloading for Intel E1000E interface $NIC
 After=network.target
