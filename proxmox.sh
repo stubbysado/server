@@ -86,7 +86,7 @@ EOF
 chmod 755 -v ./update.sh
 
 # GUEST.SH
-tee ./guest.sh <<'EOF'
+tee ./lxc-update.sh <<'EOF'
 #!/bin/bash
 
 for container in $(pct list | tail -n +2 | awk '{print $1}'); do
@@ -97,28 +97,5 @@ for container in $(pct list | tail -n +2 | awk '{print $1}'); do
         echo "--- LXC $container: SKIPPED ---"
     fi
 done
-
-for vmid in $(qm list | tail -n +2 | awk '{print $1}'); do
-    if [ "$(qm status $vmid | awk '{print $2}')" != "running" ]; then
-        echo "--- VM $vmid: NOT RUNNING ---"
-        continue
-    fi
-    os_info=$(qm agent $vmid get-osinfo 2>/dev/null)
-    if [[ $? -eq 0 && "$os_info" == *"debian"* ]]; then
-        echo "--- VM $vmid ---"
-        response=$(qm guest exec $vmid -- bash -c "apt-get update && apt-get upgrade -y && apt-get clean && apt-get autoremove -y")
-        echo "$response" | python3 -c "
-import sys, json
-try:
-    data = json.load(sys.stdin)
-    if 'out-data' in data: print(data['out-data'])
-    if 'err-data' in data: print(data['err-data'], file=sys.stderr)
-except Exception as e:
-    print(f'Error parsing VM output: {e}')
-"
-    else
-        echo "--- VM $vmid: SKIPPED ---"
-    fi
-done
 EOF
-chmod 755 -v ./guest.sh
+chmod 755 -v ./lxc-update.sh
