@@ -89,8 +89,8 @@ sudo systemctl start transmission-daemon.service
 
 # CRONTAB
 sudo bash -c '(crontab -l 2>/dev/null; echo "0 0 * * * systemctl restart transmission-daemon.service") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot /usr/bin/mount -a") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart transmission-daemon.service") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && /usr/bin/mount -a") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart transmission-daemon.service") | crontab -'
 
 # PROWLARR
 sudo apt update
