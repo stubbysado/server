@@ -78,8 +78,9 @@ sudo systemctl start transmission-daemon.service
 sudo systemctl stop transmission-daemon.service
 sleep 3
 sudo cp /home/oggy/.config/transmission-daemon/settings.json /home/oggy/.config/transmission-daemon/settings.json.bak
-sudo sed -i 's|"encryption": 1,|"encryption": 2,|g' /home/oggy/.config/transmission-daemon/settings.json
+sudo sed -i 's|"cache-size-mb": 4,|"cache-size-mb": 512,|g' /home/oggy/.config/transmission-daemon/settings.json
 sudo sed -i 's|"download-dir": "/home/oggy/Downloads",|"download-dir": "/mnt/server/02-Downloads/Transmission",|g' /home/oggy/.config/transmission-daemon/settings.json
+sudo sed -i 's|"encryption": 1,|"encryption": 2,|g' /home/oggy/.config/transmission-daemon/settings.json
 sudo sed -i 's|"incomplete-dir": .*|"incomplete-dir": "/mnt/server/02-Downloads/Transmission/incomplete-dir/",|' /home/oggy/.config/transmission-daemon/settings.json
 sudo sed -i 's|"incomplete-dir-enabled": false,|"incomplete-dir-enabled": true,|' /home/oggy/.config/transmission-daemon/settings.json
 sudo sed -i 's|"rpc-authentication-required": false,|"rpc-authentication-required": true,|g' /home/oggy/.config/transmission-daemon/settings.json
