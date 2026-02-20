@@ -66,7 +66,6 @@ RemainAfterExit=true
 [Install]
 WantedBy=multi-user.target
 EOF
-
     systemctl daemon-reload
     systemctl enable --now e1000e-fix.service
     ethtool -k "$NIC"
