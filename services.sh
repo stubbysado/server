@@ -59,7 +59,7 @@ sudo apt update
 sudo apt install nfs-common -y
 sudo mkdir -p /mnt/server
 sudo chown oggy:oggy /mnt/server
-echo "10.0.0.21:/mnt/server /mnt/server nfs defaults 0 0" | sudo tee -a /etc/fstab
+echo "10.0.0.21:/mnt/server /mnt/server nfs defaults,nofail 0 0" | sudo tee -a /etc/fstab
 sudo mount -a
 
 # TRANSMISSION
@@ -327,6 +327,7 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "0 0 * * * systemctl restart transmi
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && /usr/bin/mount -a") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart transmission-daemon.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart navidrome.service") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart filebrowser.service") | crontab -'
 
 # UPDATE.SH
 tee ./update.sh <<'EOF'
