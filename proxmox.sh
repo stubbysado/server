@@ -119,3 +119,4 @@ else
 fi
 EOF
 chmod 755 -v ./update.sh
+(crontab -l 2>/dev/null; echo '0 4 1-7 * * [ "$(date "+\%a")" = "Tue" ] && /bin/bash /root/update.sh') | crontab -
