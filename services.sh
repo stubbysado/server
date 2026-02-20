@@ -315,6 +315,18 @@ sudo systemctl enable --now navidrome
 #         print("Invalid Directory.")
 # EOF
 
+# ZRAM
+sudo apt update
+sudo apt install systemd-zram-generator -y
+
+echo "[zram0]
+zram-size = ram" | sudo tee /etc/systemd/zram-generator.conf
+
+echo "vm.swappiness = 180
+vm.watermark_boost_factor = 0
+vm.watermark_scale_factor = 125
+vm.page-cluster = 0" | sudo tee /etc/sysctl.d/99-zram.conf
+
 # RE-CHECK UPDATE
 sudo apt update
 sudo apt upgrade -y
