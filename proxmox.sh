@@ -74,28 +74,49 @@ else
     echo "E1000E not found"
 fi
 
-#UPDATE.SH
 tee ./update.sh <<'EOF'
-#!/bin/bash -x
+#!/bin/bash
 
+# UPDATE
 apt update
 apt full-upgrade -y
 apt clean
 apt autoremove -y
+
+REBOOT_NEEDED=0
+
+# 1. CHECK KERNEL
+RUNNING_KERNEL=$(uname -r)
+LATEST_KERNEL=$(ls -v /boot/vmlinuz-* | grep -v 'debug' | tail -1 | sed 's|/boot/vmlinuz-||')
+
+if [ "$RUNNING_KERNEL" != "$LATEST_KERNEL" ]; then
+    echo "[!] KERNEL UPDATED. Running: $RUNNING_KERNEL, Latest: $LATEST_KERNEL."
+    REBOOT_NEEDED=1
+fi
+
+# 2. CHECK CORE LIBRARY (GLIBC)
+GLIBC_UPGRADE=$(lsof -n -p 1 | grep 'libc-.*\.so' | grep 'DEL')
+if [ -n "$GLIBC_UPGRADE" ]; then
+    echo "[!] CORE LIBRARY UPDATED."
+    REBOOT_NEEDED=1
+fi
+
+# 3. CHECK CPU MICROCODE
+BOOT_MICROCODE=$(journalctl -b -k | grep -i "microcode updated early" | awk -F'revision=' '{print $2}' | awk '{print $1}' | head -1)
+CURRENT_MICROCODE=$(grep -m1 "microcode" /proc/cpuinfo | awk '{print $3}')
+
+if [ -n "$BOOT_MICROCODE" ] && [ "$BOOT_MICROCODE" != "$CURRENT_MICROCODE" ]; then
+    echo "[!] MICROCODE MISMATCHED DETECTED."
+    REBOOT_NEEDED=1
+fi
+
+if [ "$REBOOT_NEEDED" -eq 1 ]; then
+    echo "[!] REBOOT REQUIRED"
+    sleep 3
+    reboot
+else
+    echo "No reboot required."
+    exit 0
+fi
 EOF
 chmod 755 -v ./update.sh
-
-# GUEST.SH
-tee ./lxc-update.sh <<'EOF'
-#!/bin/bash
-
-for container in $(pct list | tail -n +2 | awk '{print $1}'); do
-    if [ "$(pct status $container)" == "status: running" ]; then
-        echo "--- LXC $container ---"
-        pct exec $container -- bash -c "apt-get update && apt-get upgrade -y && apt-get clean && apt-get autoremove -y"
-    else
-        echo "--- LXC $container: SKIPPED ---"
-    fi
-done
-EOF
-chmod 755 -v ./lxc-update.sh
