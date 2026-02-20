@@ -128,12 +128,24 @@ bash -c '(crontab -l 2>/dev/null; echo "0 0 * * * /home/oggy/runner.sh") | cront
 # ALIAS
 echo "alias ll='ls -la'" >> /home/oggy/.bashrc
 
-# INSTALL NFS
+# NFS
 sudo apt update
 sudo apt install nfs-kernel-server -y
 echo "/mnt/server 10.0.0.42(rw,no_root_squash,fsid=0)" | sudo tee -a /etc/exports
 sudo exportfs -ra
 sudo systemctl restart nfs-kernel-server
+
+# ZRAM
+sudo apt update
+sudo apt install systemd-zram-generator -y
+
+echo "[zram0]
+zram-size = ram" | sudo tee /etc/systemd/zram-generator.conf
+
+echo "vm.swappiness = 180
+vm.watermark_boost_factor = 0
+vm.watermark_scale_factor = 125
+vm.page-cluster = 0" | sudo tee /etc/sysctl.d/99-zram.conf
 
 # UPDATE.SH
 tee ./update.sh <<'EOF'
