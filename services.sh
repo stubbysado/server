@@ -327,12 +327,6 @@ vm.watermark_boost_factor = 0
 vm.watermark_scale_factor = 125
 vm.page-cluster = 0" | sudo tee /etc/sysctl.d/99-zram.conf
 
-# RE-CHECK UPDATE
-sudo apt update
-sudo apt upgrade -y
-sudo apt clean
-sudo apt autoremove -y
-
 # UPDATE.SH
 tee ./update.sh <<'EOF'
 #!/bin/bash
@@ -381,3 +375,9 @@ fi
 EOF
 chmod 755 -v ./update.sh
 sudo bash -c "(crontab -l 2>/dev/null; echo '0 4 1-7 * * [ \"\$(date \"+\%a\")\" = \"Wed\" ] && /bin/bash /home/oggy/update.sh') | crontab -"
+
+# RE-CHECK UPDATE
+sudo apt update
+sudo apt upgrade -y
+sudo apt clean
+sudo apt autoremove -y
