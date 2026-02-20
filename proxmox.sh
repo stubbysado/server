@@ -73,6 +73,7 @@ else
     echo "E1000E not found"
 fi
 
+# UPDATE.SH
 tee ./update.sh <<'EOF'
 #!/bin/bash
 
