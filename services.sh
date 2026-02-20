@@ -320,3 +320,52 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt clean
 sudo apt autoremove -y
+
+# UPDATE.SH
+tee ./update.sh <<'EOF'
+#!/bin/bash
+
+# UPDATE
+apt update
+apt upgrade -y
+apt clean
+apt autoremove -y
+
+REBOOT_NEEDED=0
+
+# 1. CHECK KERNEL
+RUNNING_KERNEL=$(uname -r)
+LATEST_KERNEL=$(ls -v /boot/vmlinuz-* | grep -v 'debug' | tail -1 | sed 's|/boot/vmlinuz-||')
+
+if [ "$RUNNING_KERNEL" != "$LATEST_KERNEL" ]; then
+    echo "[!] KERNEL UPDATED. Running: $RUNNING_KERNEL, Latest: $LATEST_KERNEL."
+    REBOOT_NEEDED=1
+fi
+
+# 2. CHECK CORE LIBRARY
+GLIBC_UPGRADE=$(lsof -n -p 1 | grep -E 'libc.*\.so' | grep 'DEL')
+if [ -n "$GLIBC_UPGRADE" ]; then
+    echo "[!] CORE LIBRARY UPDATED."
+    REBOOT_NEEDED=1
+fi
+
+# 3. CHECK CPU MICROCODE
+BOOT_MICROCODE=$(journalctl -b -k | grep -i "microcode updated early" | awk -F'revision=' '{print $2}' | awk '{print $1}' | head -1)
+CURRENT_MICROCODE=$(grep -m1 "microcode" /proc/cpuinfo | awk '{print $3}')
+
+if [ -n "$BOOT_MICROCODE" ] && [ "$BOOT_MICROCODE" != "$CURRENT_MICROCODE" ]; then
+    echo "[!] MICROCODE UPDATED."
+    REBOOT_NEEDED=1
+fi
+
+if [ "$REBOOT_NEEDED" -eq 1 ]; then
+    echo "[!] REBOOT REQUIRED"
+    sleep 3
+    reboot
+else
+    echo "No reboot required."
+    exit 0
+fi
+EOF
+chmod 755 -v ./update.sh
+sudo bash -c "(crontab -l 2>/dev/null; echo '0 4 1-7 * * [ \"\$(date \"+\%a\")\" = \"Wed\" ] && /bin/bash /home/oggy/update.sh') | crontab -"
