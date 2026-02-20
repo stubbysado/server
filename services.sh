@@ -90,11 +90,6 @@ sudo sed -i 's|"rpc-whitelist": "127.0.0.1,::1",|"rpc-whitelist": "127.0.0.1,10.
 sudo systemctl daemon-reload
 sudo systemctl start transmission-daemon.service
 
-# CRONTAB
-sudo bash -c '(crontab -l 2>/dev/null; echo "0 0 * * * systemctl restart transmission-daemon.service") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && /usr/bin/mount -a") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart transmission-daemon.service") | crontab -'
-
 # PROWLARR
 sudo apt update
 sudo apt install curl sqlite3 libicu-dev -y
@@ -326,6 +321,12 @@ echo "vm.swappiness = 180
 vm.watermark_boost_factor = 0
 vm.watermark_scale_factor = 125
 vm.page-cluster = 0" | sudo tee /etc/sysctl.d/99-zram.conf
+
+# CRONTAB
+sudo bash -c '(crontab -l 2>/dev/null; echo "0 0 * * * systemctl restart transmission-daemon.service") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && /usr/bin/mount -a") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart transmission-daemon.service") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart navidrome.service") | crontab -'
 
 # UPDATE.SH
 tee ./update.sh <<'EOF'
