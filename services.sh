@@ -378,6 +378,11 @@ EOF
 chmod 755 -v ./update.sh
 sudo bash -c "(crontab -l 2>/dev/null; echo '0 4 1-7 * * [ \"\$(date \"+\%a\")\" = \"Wed\" ] && /bin/bash /home/oggy/update.sh') | crontab -"
 
+# TIMEOUT
+sudo tee -a /etc/systemd/system.conf <<'EOF'
+DefaultTimeoutStopSec=10s
+EOF
+
 # RE-CHECK UPDATE
 sudo apt update
 sudo apt upgrade -y
