@@ -35,8 +35,8 @@ apt clean
 apt autoremove -y
 
 # ZRAM
- apt update
- apt install systemd-zram-generator -y
+apt update
+apt install systemd-zram-generator -y
 
 echo "[zram0]
 zram-size = min(ram, 8192)
@@ -76,6 +76,26 @@ fi
 # UPDATE.SH
 tee ./update.sh <<'EOF'
 #!/bin/bash
+
+# UPDATE LXC
+CONTAINER_IDS=$(pct list | tail -n +2 | awk '{print $1}')
+
+for VMID in $CONTAINER_IDS; do
+    STATUS=$(pct status $VMID)
+    if [[ "$STATUS" != "status: running" ]]; then
+        echo "$VMID: NOT RUNNING."
+        continue
+    fi
+
+    OSTYPE=$(pct config $VMID | grep "ostype" | awk '{print $2}')
+    if [[ "$OSTYPE" != "debian" ]]; then
+        echo "$VMID: '$OSTYPE', SKIPPED."
+        continue
+    fi
+
+    echo "--- LXC $VMID ---"
+    pct exec $VMID -- bash -c "apt update && apt upgrade -y && apt clean && apt autoremove -y"
+done
 
 # UPDATE
 apt update
