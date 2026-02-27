@@ -43,7 +43,6 @@ mkdir -p "$CACHE_DIR"
 chown www-data:www-data "$CACHE_DIR"
 
 cat <<EOF > "$CONF_PATH"
-# Cache definition
 proxy_cache_path $CACHE_DIR 
     levels=1:2 
     keys_zone=deb_cache:10m 
@@ -55,7 +54,6 @@ server {
     listen 80;
     server_name $SERVER_IP;
 
-    # Logging
     access_log /var/log/nginx/apt-proxy-access.log;
     error_log /var/log/nginx/apt-proxy-error.log;
 
@@ -63,19 +61,15 @@ server {
         proxy_pass $MIRROR_URL;
         proxy_cache deb_cache;
         
-        # Metadata (Release, InRelease, Packages) - Refresh every 6 hours
         proxy_cache_valid 200 302 6h;
         
-        # Deb packages (.deb) - Cache for 14 days
         location ~* \.deb$ {
             proxy_pass $MIRROR_URL;
             proxy_cache_valid 200 302 14d;
         }
 
-        # Header to see if it's a HIT or MISS
         add_header X-Cache-Status \$upstream_cache_status;
 
-        # Ensure correct SNI and Host for the backend HTTPS mirror
         proxy_set_header Host mirror.sg.gs;
         proxy_ssl_server_name on;
         proxy_ssl_verify on;
