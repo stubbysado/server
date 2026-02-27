@@ -79,7 +79,6 @@ server {
 EOF
 
 rm -f /etc/nginx/sites-enabled/default
-
 ln -sf "$CONF_PATH" /etc/nginx/sites-enabled/
 
 if nginx -t; then
