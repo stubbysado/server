@@ -95,3 +95,5 @@ else
     echo "[!] FAILED [!]"
     exit 1
 fi
+
+bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart nginx") | crontab -'
