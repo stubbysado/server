@@ -42,7 +42,7 @@ apt update && apt install nginx -y
 mkdir -p "$CACHE_DIR"
 chown www-data:www-data "$CACHE_DIR"
 
-cat <<EOF > "$CONF_PATH"
+tee "$CONF_PATH" <<EOF
 proxy_cache_path $CACHE_DIR 
     levels=1:2 
     keys_zone=deb_cache:10m 
