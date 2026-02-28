@@ -3,13 +3,13 @@
 # SOURCES.LIST
 sudo tee /etc/apt/sources.list.d/debian.sources <<'EOF'
 Types: deb deb-src
-URIs: https://mirror.sg.gs/debian
+URIs: http://10.0.0.41/debian
 Suites: trixie trixie-updates
 Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 
 Types: deb deb-src
-URIs: https://mirror.sg.gs/debian-security
+URIs: http://10.0.0.41/debian-security
 Suites: trixie-security
 Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
