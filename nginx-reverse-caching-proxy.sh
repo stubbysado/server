@@ -35,7 +35,12 @@ mkdir -p "$CACHE_DIR"
 chown www-data:www-data "$CACHE_DIR"
 
 tee "$CONF_PATH" <<EOF
-proxy_cache_path $CACHE_DIR levels=1:2 keys_zone=deb_cache:10m max_size=5g inactive=180d use_temp_path=off;
+proxy_cache_path $CACHE_DIR
+    levels=1:2
+    keys_zone=deb_cache:10m
+    max_size=5g
+    inactive=180d
+    use_temp_path=off;
 server {
     listen 80;
     server_name $SERVER_IP;
