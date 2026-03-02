@@ -25,8 +25,8 @@ apt clean
 apt autoremove -y
 
 # NGINX REVERSE CACHING PROXY
-CACHE_DIR="/var/cache/nginx/debian"
-CONF_PATH="/etc/nginx/sites-available/apt-proxy"
+CACHE_DIR="/var/cache/nginx/reverse-proxy"
+CONF_PATH="/etc/nginx/sites-available/reverse-proxy"
 MIRROR_URL="https://mirror.sg.gs"
 SERVER_IP="10.0.0.41"
 
@@ -44,7 +44,7 @@ proxy_cache_path $CACHE_DIR
 server {
     listen 80;
     server_name $SERVER_IP;
-    access_log /var/log/nginx/apt-proxy.log;
+    access_log /var/log/nginx/reverse-proxy.log;
     error_log off;
     location / {
         proxy_pass $MIRROR_URL;
