@@ -131,7 +131,8 @@ echo "alias ll='ls -la'" >> /home/oggy/.bashrc
 # NFS
 sudo apt update
 sudo apt install nfs-kernel-server -y
-echo "/mnt/server 10.0.0.42(rw,no_root_squash,fsid=0)" | sudo tee -a /etc/exports
+echo "/mnt/server 10.0.0.42(rw,async,no_root_squash,no_subtree_check,fsid=0)" | sudo tee -a /etc/exports
+echo "/mnt/server 10.0.0.43(rw,async,no_root_squash,no_subtree_check,fsid=0)" | sudo tee -a /etc/exports
 sudo exportfs -ra
 sudo systemctl restart nfs-kernel-server
 
