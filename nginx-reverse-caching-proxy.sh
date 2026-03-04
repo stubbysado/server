@@ -24,6 +24,9 @@ apt upgrade -y
 apt clean
 apt autoremove -y
 
+# NGINX
+apt install nginx -y
+
 # NGINX REVERSE CACHING PROXY
 CACHE_DIR="/var/cache/nginx/reverse-proxy"
 CONF_PATH="/etc/nginx/sites-available/reverse-proxy"
