@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # DELETE SOURCES.LIST
 /etc/apt/sources.list.d/debian.sources
