@@ -207,6 +207,26 @@ sudo apt install ./navidrome*.deb -y
 sudo sed -i 's|MusicFolder = "/opt/navidrome/music"|MusicFolder = "/mnt/server/03-Music/Music/"|' /etc/navidrome/navidrome.toml
 sudo systemctl enable --now navidrome
 
+# NGINX
+sudo cp -r /var/www/html/ /var/www/oglab.cc
+sudo cp -r /var/www/html/ /var/www/oggyproduction.com
+sudo rm -rfv /var/www/html/
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+
+sudo tee /etc/nginx/sites-available/default <<'EOF'
+server {
+    listen 80 default_server;
+    root /var/www/oglab.cc;
+}
+
+server {
+    listen 8080;
+    root /var/www/oggyproduction.com;
+}
+EOF
+
+sudo systemctl restart nginx.service
+
 # ZRAM
 sudo apt update
 sudo apt install systemd-zram-generator -y
