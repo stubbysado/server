@@ -180,5 +180,4 @@ sudo bash -c "(crontab -l 2>/dev/null; echo '0 5 1-7 * * [ \"\$(date \"+\%a\")\"
 sudo apt update
 sudo apt upgrade -y
 sudo apt clean
-
 sudo apt autoremove -y
