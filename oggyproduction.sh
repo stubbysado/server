@@ -41,20 +41,15 @@ check_link() {
 while true; do
     echo "--- INVALID LINK (Ctrl+C to exit) ---"
     
-    read -p "MICROSOFT link (Default: https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb): " MICROSOFT
-    MICROSOFT=${MICROSOFT:-https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb}
-
-    read -p "REAL DEBRID link: " REALDEBRID
     read -p "FILEBROWSER QUANTUM link: " FILEBROWSER
-    read -p "NAVIDROME link: " NAVIDROME
-
-    if [ -z "$REALDEBRID" ] || [ -z "$FILEBROWSER" ] || [ -z "$NAVIDROME" ]; then
+    
+    if [ -z "$FILEBROWSER" ] ; then
         echo "ERROR: Link required"
         continue
     fi
 
     echo "Checking link"
-    if check_link "$MICROSOFT" && check_link "$REALDEBRID" && check_link "$FILEBROWSER" && check_link "$NAVIDROME"; then
+    if  check_link "$FILEBROWSER" ; then
         echo "Link verified"
         break
     else
@@ -185,4 +180,5 @@ sudo bash -c "(crontab -l 2>/dev/null; echo '0 5 1-7 * * [ \"\$(date \"+\%a\")\"
 sudo apt update
 sudo apt upgrade -y
 sudo apt clean
+
 sudo apt autoremove -y
