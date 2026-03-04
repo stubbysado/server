@@ -23,6 +23,12 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt install curl nginx transmission-daemon -y
 
+# RE-CHECK UPDATE
+sudo apt update
+sudo apt upgrade -y
+sudo apt clean
+sudo apt autoremove -y
+
 # NFS
 sudo apt update
 sudo apt install nfs-common -y
@@ -219,9 +225,3 @@ fi
 EOF
 chmod 755 -v ./update.sh
 sudo bash -c "(crontab -l 2>/dev/null; echo '0 5 1-7 * * [ \"\$(date \"+\%a\")\" = \"Wed\" ] && /bin/bash /home/oggy/update.sh') | crontab -"
-
-# RE-CHECK UPDATE
-sudo apt update
-sudo apt upgrade -y
-sudo apt clean
-sudo apt autoremove -y
