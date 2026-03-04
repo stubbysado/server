@@ -37,16 +37,15 @@ while true; do
     MICROSOFT=${MICROSOFT:-https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb}
 
     read -p "REAL DEBRID link: " REALDEBRID
-    read -p "FILEBROWSER QUANTUM link: " FILEBROWSER
     read -p "NAVIDROME link: " NAVIDROME
 
-    if [ -z "$REALDEBRID" ] || [ -z "$FILEBROWSER" ] || [ -z "$NAVIDROME" ]; then
+    if [ -z "$REALDEBRID" ] || [ -z "$NAVIDROME" ]; then
         echo "ERROR: Link required"
         continue
     fi
 
     echo "Checking link"
-    if check_link "$MICROSOFT" && check_link "$REALDEBRID" && check_link "$FILEBROWSER" && check_link "$NAVIDROME"; then
+    if check_link "$MICROSOFT" && check_link "$REALDEBRID" && check_link "$NAVIDROME"; then
         echo "Link verified"
         break
     else
@@ -147,85 +146,11 @@ sudo systemctl daemon-reload
 sudo systemctl enable rdtc
 sudo systemctl start rdtc
 
-# FILEBROWSER QUANTUM
-wget "$FILEBROWSER"
-chmod 755 ./linux-amd64-filebrowser
-sudo mv ./linux-amd64-filebrowser /usr/local/bin/filebrowser
-sudo mkdir -p /opt/filebrowser
-sudo chown oggy:oggy /opt/filebrowser
-sudo tee /opt/filebrowser/config.yaml <<'EOF'
-server:
-  port: 55555
-  database: /opt/filebrowser/database.db
-  sources:
-  - name: Oggy Production
-    path: /mnt/server/09-Work/RAW/
-  logging:
-  - levels: info|warning|error
-    apiLevels: info|warning|error
-    output: stdout
-    noColors: false
-    utc: false
-frontend:
-  name: Oggy Production
-auth:
-  adminUsername: admin
-  adminPassword: fWEHt"Pg]N4G$w76
-userDefaults:
-  permissions:
-    api: false
-    admin: false
-    modify: false
-    share: false
-    realtime: false
-    delete: false
-    create: false
-    download: false
-EOF
-sudo tee /etc/systemd/system/filebrowser.service <<'EOF'
-[Unit]
-Description=FileBrowser Quantum
-After=network.target
-
-[Service]
-Type=simple
-User=oggy
-WorkingDirectory=/opt/filebrowser
-ExecStart=/usr/local/bin/filebrowser -c /opt/filebrowser/config.yaml
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
-EOF
-sudo systemctl daemon-reload
-sudo systemctl enable filebrowser
-sudo systemctl start filebrowser
-
 # NAVIDROME
 wget "$NAVIDROME"
 sudo apt install ./navidrome*.deb -y
 sudo sed -i 's|MusicFolder = "/opt/navidrome/music"|MusicFolder = "/mnt/server/03-Music/Music/"|' /etc/navidrome/navidrome.toml
 sudo systemctl enable --now navidrome
-
-# NGINX
-sudo cp -r /var/www/html/ /var/www/oglab.cc
-sudo cp -r /var/www/html/ /var/www/oggyproduction.com
-sudo rm -rfv /var/www/html/
-sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
-
-sudo tee /etc/nginx/sites-available/default <<'EOF'
-server {
-    listen 80 default_server;
-    root /var/www/oglab.cc;
-}
-
-server {
-    listen 8080;
-    root /var/www/oggyproduction.com;
-}
-EOF
-
-sudo systemctl restart nginx.service
 
 # ZRAM
 sudo apt update
@@ -245,7 +170,6 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && /usr/bin/mount 
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart rdtc.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart transmission-daemon.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart navidrome.service") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart filebrowser.service") | crontab -'
 
 # UPDATE.SH
 tee ./update.sh <<'EOF'
