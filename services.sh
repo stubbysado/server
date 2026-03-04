@@ -23,6 +23,14 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt install curl nginx transmission-daemon -y
 
+# NFS
+sudo apt update
+sudo apt install nfs-common -y
+sudo mkdir -p /mnt/server
+sudo chown oggy:oggy /mnt/server
+echo "10.0.0.21:/mnt/server /mnt/server nfs rw,async,nconnect=8,rsize=1048576,wsize=1048576,noatime,nofail 0 0" | sudo tee -a /etc/fstab
+sudo mount -a
+
 # LINK
 check_link() {
     if ! curl --output /dev/null --silent --head --fail "$1"; then
@@ -52,14 +60,6 @@ while true; do
         echo "ERROR: One or more links are unreachable. Please re-enter all links."
     fi
 done
-
-# NFS
-sudo apt update
-sudo apt install nfs-common -y
-sudo mkdir -p /mnt/server
-sudo chown oggy:oggy /mnt/server
-echo "10.0.0.21:/mnt/server /mnt/server nfs rw,async,nconnect=8,rsize=1048576,wsize=1048576,noatime,nofail 0 0" | sudo tee -a /etc/fstab
-sudo mount -a
 
 # TRANSMISSION
 sudo systemctl stop transmission-daemon.service
