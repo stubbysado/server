@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 # DELETE SOURCES.LIST
-/etc/apt/sources.list.d/debian.sources
+rm -rfv /etc/apt/sources.list.d/debian.sources
 
 # SOURCES.LIST.D
 tee /etc/apt/sources.list.d/debian.sources <<'EOF'
