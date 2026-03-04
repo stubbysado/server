@@ -39,8 +39,7 @@ apt update
 apt install systemd-zram-generator -y
 
 echo "[zram0]
-zram-size = min(ram, 8192)
-compression-algorithm = zstd" | tee /etc/systemd/zram-generator.conf
+zram-size = min(ram, 8192)" | tee /etc/systemd/zram-generator.conf
 
 echo "vm.swappiness = 180
 vm.watermark_boost_factor = 0
