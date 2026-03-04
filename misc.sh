@@ -22,6 +22,12 @@ EOF
 sudo apt update
 sudo apt upgrade -y
 
+# RE-CHECK UPDATE
+sudo apt update
+sudo apt upgrade -y
+sudo apt clean
+sudo apt autoremove -y
+
 # NFS
 sudo apt update
 sudo apt install nfs-common -y
@@ -43,9 +49,3 @@ vm.page-cluster = 0" | sudo tee /etc/sysctl.d/99-zram.conf
 
 # CRONTAB
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && /usr/bin/mount -a") | crontab -'
-
-# RE-CHECK UPDATE
-sudo apt update
-sudo apt upgrade -y
-sudo apt clean
-sudo apt autoremove -y
