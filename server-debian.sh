@@ -21,13 +21,9 @@ EOF
 # PACKAGES
 sudo apt update
 sudo apt upgrade -y
-sudo apt install gcc make mergerfs samba screen -y
-
-# RE-CHECK UPDATE
-sudo apt update
-sudo apt upgrade -y
 sudo apt clean
 sudo apt autoremove -y
+sudo apt install gcc make mergerfs samba screen -y
 
 # FSTAB
 sudo mkdir -p /mnt/parity1 /mnt/data{1..6}
