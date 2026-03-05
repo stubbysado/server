@@ -21,11 +21,6 @@ EOF
 # PACKAGES
 sudo apt update
 sudo apt upgrade -y
-sudo apt install curl nginx -y
-
-# RE-CHECK UPDATE
-sudo apt update
-sudo apt upgrade -y
 sudo apt clean
 sudo apt autoremove -y
 
