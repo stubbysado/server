@@ -23,6 +23,7 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt clean
 sudo apt autoremove -y
+sudo apt install curl nginx -y
 
 # NFS
 sudo apt update
