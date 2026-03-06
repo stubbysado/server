@@ -6,13 +6,13 @@ rm -f /etc/apt/sources.list.d/debian.sources
 # SOURCES.LIST.D
 tee /etc/apt/sources.list.d/debian.sources <<'EOF'
 Types: deb deb-src
-URIs: https://mirror.sg.gs/debian
+URIs: https://deb.debian.org/debian
 Suites: trixie trixie-updates
 Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 
 Types: deb deb-src
-URIs: https://mirror.sg.gs/debian-security
+URIs: https://security.debian.org/debian-security
 Suites: trixie-security
 Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
