@@ -28,17 +28,12 @@ apt autoremove -y
 apt install nginx -y
 
 # NGINX REVERSE CACHING PROXY
-CACHE_DIR="/var/cache/nginx/reverse-proxy"
-CONF_PATH="/etc/nginx/sites-available/reverse-proxy"
-MIRROR_URL="https://mirror.sg.gs"
-SERVER_IP="10.0.0.41"
-
 apt update && apt install nginx -y
-mkdir -p "$CACHE_DIR"
-chown www-data:www-data "$CACHE_DIR"
+mkdir -p /var/cache/nginx/reverse-proxy
+chown www-data:www-data /var/cache/nginx/reverse-proxy
 
-tee "$CONF_PATH" <<EOF
-proxy_cache_path $CACHE_DIR
+tee /etc/nginx/sites-available/reverse-proxy <<'EOF'
+proxy_cache_path /var/cache/nginx/reverse-proxy
     levels=1:2
     keys_zone=deb_cache:10m
     max_size=5g
@@ -46,24 +41,28 @@ proxy_cache_path $CACHE_DIR
     use_temp_path=off;
 server {
     listen 80;
-    server_name $SERVER_IP;
+    server_name 10.0.0.41;
     access_log /var/log/nginx/reverse-proxy.log;
     error_log off;
-    location / {
-        proxy_pass $MIRROR_URL;
-        proxy_cache deb_cache;
-        proxy_cache_valid 200 302 1h;
-        proxy_cache_lock on;
-        proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_503 http_504;
-        proxy_set_header Host mirror.sg.gs;
-        proxy_ssl_server_name on;
-        add_header X-Cache-Status \$upstream_cache_status;
+    proxy_cache deb_cache;
+    proxy_cache_valid 200 302 1h;
+    proxy_cache_lock on;
+    proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_503 http_504;
+    proxy_ssl_server_name on;
+    add_header X-Cache-Status $upstream_cache_status;
+    location /debian {
+        proxy_pass https://deb.debian.org/debian;
+        proxy_set_header Host deb.debian.org;
+    }
+    location /debian-security {
+        proxy_pass https://security.debian.org/debian-security;
+        proxy_set_header Host security.debian.org;
     }
 }
 EOF
 
 rm -f /etc/nginx/sites-enabled/default
-ln -sf "$CONF_PATH" /etc/nginx/sites-enabled/
+ln -sf /etc/nginx/sites-available/reverse-proxy /etc/nginx/sites-enabled/
 
 if nginx -t; then
     systemctl restart nginx
