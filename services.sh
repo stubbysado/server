@@ -149,7 +149,6 @@ sudo systemctl enable rdtc
 sudo systemctl start rdtc
 
 # ARIA2
-
 RPC_SECRET="sudo"
 USER_NAME=$(whoami)
 CONFIG_DIR="$HOME/.config/aria2"
