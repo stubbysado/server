@@ -148,6 +148,48 @@ sudo systemctl daemon-reload
 sudo systemctl enable rdtc
 sudo systemctl start rdtc
 
+# ARIA2
+
+RPC_SECRET="sudo"
+USER_NAME=$(whoami)
+CONFIG_DIR="$HOME/.config/aria2"
+CONFIG_FILE="$CONFIG_DIR/aria2.conf"
+
+sudo apt update && sudo apt install aria2 -y
+
+mkdir -p "$CONFIG_DIR"
+tee "$CONFIG_FILE" <<EOF
+max-connection-per-server=16
+split=16
+min-split-size=1M
+
+disk-cache=256M
+file-allocation=none
+no-file-allocation-limit=0
+
+enable-rpc=true
+rpc-listen-all=false
+rpc-listen-port=6800
+rpc-secret=$RPC_SECRET
+EOF
+
+sudo tee /etc/systemd/system/aria2c.service <<EOF
+[Unit]
+Description=Aria2c RPC Service
+After=network.target nfs-client.target
+
+[Service]
+User=$USER_NAME
+ExecStart=/usr/bin/aria2c --conf-path=$CONFIG_FILE
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable aria2c
+sudo systemctl start aria2c
+
 # NAVIDROME
 wget "$NAVIDROME"
 sudo apt install ./navidrome*.deb -y
@@ -170,6 +212,7 @@ vm.page-cluster = 0" | sudo tee /etc/sysctl.d/99-zram.conf
 sudo bash -c '(crontab -l 2>/dev/null; echo "0 0 * * * systemctl restart transmission-daemon.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && /usr/bin/mount -a") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart rdtc.service") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart aria2.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart transmission-daemon.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart navidrome.service") | crontab -'
 
