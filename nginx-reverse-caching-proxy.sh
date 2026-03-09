@@ -6,13 +6,13 @@ rm -f /etc/apt/sources.list.d/debian.sources
 # SOURCES.LIST.D
 tee /etc/apt/sources.list.d/debian.sources <<'EOF'
 Types: deb deb-src
-URIs: https://deb.debian.org/debian
+URIs: https://mirror.sg.gs/debian
 Suites: trixie trixie-updates
 Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 
 Types: deb deb-src
-URIs: https://security.debian.org/debian-security
+URIs: https://mirror.sg.gs/debian-security
 Suites: trixie-security
 Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
@@ -50,13 +50,9 @@ server {
     proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_503 http_504;
     proxy_ssl_server_name on;
     add_header X-Cache-Status $upstream_cache_status;
-    location /debian {
-        proxy_pass https://deb.debian.org/debian;
-        proxy_set_header Host deb.debian.org;
-    }
-    location /debian-security {
-        proxy_pass https://security.debian.org/debian-security;
-        proxy_set_header Host security.debian.org;
+    location / {
+        proxy_pass https://mirror.sg.gs/;
+        proxy_set_header Host mirror.sg.gs;
     }
 }
 EOF
