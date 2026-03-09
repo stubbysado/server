@@ -211,7 +211,7 @@ vm.page-cluster = 0" | sudo tee /etc/sysctl.d/99-zram.conf
 sudo bash -c '(crontab -l 2>/dev/null; echo "0 0 * * * systemctl restart transmission-daemon.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && /usr/bin/mount -a") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart rdtc.service") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart aria2.service") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart aria2c.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart transmission-daemon.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 60 && systemctl restart navidrome.service") | crontab -'
 
