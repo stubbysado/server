@@ -133,6 +133,31 @@ echo "/mnt/server 10.0.0.43(rw,async,no_root_squash,no_subtree_check,fsid=0)" | 
 sudo exportfs -ra
 sudo systemctl restart nfs-kernel-server
 
+# CAKE
+sudo tc qdisc replace dev ens18 root cake bandwidth 893Mbit diffserv4 triple-isolate
+
+sudo tee /etc/systemd/system/cake-qdisc.service << EOF
+[Unit]
+Description=CAKE qdisc for bufferbloat management
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/tc qdisc replace dev ens18 root cake bandwidth 893Mbit diffserv4 triple-isolate
+ExecStop=/sbin/tc qdisc del dev ens18 root
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable cake-qdisc
+sudo systemctl start cake-qdisc
+
+sudo systemctl status cake-qdisc | grep -E 'active|enable'
+sudo tc -s qdisc show dev ens18
+
 # ZRAM
 sudo apt update
 sudo apt install systemd-zram-generator -y
@@ -146,7 +171,7 @@ vm.watermark_scale_factor = 125
 vm.page-cluster = 0" | sudo tee /etc/sysctl.d/99-zram.conf
 
 # UPDATE.SH
-tee ./update.sh <<'EOF'
+tee /home/oggy/update.sh <<'EOF'
 #!/bin/bash
 
 # UPDATE
@@ -192,5 +217,5 @@ else
 fi
 EOF
 
-sudo chmod 755 -v ./update.sh
+sudo chmod 755 -v /home/oggy/update.sh
 sudo bash -c "(crontab -l 2>/dev/null; echo '0 4 1-7 * * [ \"\$(date \"+\%a\")\" = \"Wed\" ] && /bin/bash /home/oggy/update.sh') | crontab -"
