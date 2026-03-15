@@ -133,12 +133,12 @@ echo "/mnt/server 10.0.0.43(rw,async,no_root_squash,no_subtree_check,fsid=0)" | 
 sudo exportfs -ra
 sudo systemctl restart nfs-kernel-server
 
-# CAKE
+# TC
 sudo tc qdisc replace dev ens18 root cake bandwidth 893Mbit diffserv4 triple-isolate
 
-sudo tee /etc/systemd/system/cake-qdisc.service <<'EOF'
+sudo tee /etc/systemd/system/tc.service <<'EOF'
 [Unit]
-Description=cake
+Description=tc
 After=network.target
 
 [Service]
@@ -152,10 +152,10 @@ WantedBy=multi-user.target
 EOF
 
 sudo systemctl daemon-reload
-sudo systemctl enable cake-qdisc
-sudo systemctl start cake-qdisc
+sudo systemctl enable tc.service
+sudo systemctl start tc.service
 
-sudo systemctl status cake-qdisc | grep -E 'active|enable'
+sudo systemctl status tc.service | grep -E 'active|enable'
 sudo tc -s qdisc show dev ens18
 
 # ZRAM
