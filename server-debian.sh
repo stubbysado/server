@@ -134,7 +134,7 @@ sudo exportfs -ra
 sudo systemctl restart nfs-kernel-server
 
 # TC
-sudo tc qdisc replace dev ens18 root cake bandwidth 893Mbit diffserv4 triple-isolate
+sudo tc qdisc replace dev ens18 root cake bandwidth 893Mbit triple-isolate
 
 sudo tee /etc/systemd/system/tc.service <<'EOF'
 [Unit]
@@ -143,7 +143,7 @@ After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/sbin/tc qdisc replace dev ens18 root cake bandwidth 893Mbit diffserv4 triple-isolate
+ExecStart=/sbin/tc qdisc replace dev ens18 root cake bandwidth 893Mbit triple-isolate
 ExecStop=/sbin/tc qdisc del dev ens18 root
 RemainAfterExit=yes
 
