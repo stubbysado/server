@@ -136,7 +136,7 @@ sudo systemctl restart nfs-kernel-server
 # CAKE
 sudo tc qdisc replace dev ens18 root cake bandwidth 893Mbit diffserv4 triple-isolate
 
-sudo tee /etc/systemd/system/cake-qdisc.service << EOF
+sudo tee /etc/systemd/system/cake-qdisc.service <<'EOF'
 [Unit]
 Description=CAKE qdisc for bufferbloat management
 After=network.target
