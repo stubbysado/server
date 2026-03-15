@@ -133,31 +133,6 @@ echo "/mnt/server 10.0.0.43(rw,async,no_root_squash,no_subtree_check,fsid=0)" | 
 sudo exportfs -ra
 sudo systemctl restart nfs-kernel-server
 
-# TC
-sudo tc qdisc replace dev ens18 root cake bandwidth 893Mbit triple-isolate
-
-sudo tee /etc/systemd/system/tc.service <<'EOF'
-[Unit]
-Description=tc
-After=network.target
-
-[Service]
-Type=oneshot
-ExecStart=/sbin/tc qdisc replace dev ens18 root cake bandwidth 893Mbit triple-isolate
-ExecStop=/sbin/tc qdisc del dev ens18 root
-RemainAfterExit=yes
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-sudo systemctl daemon-reload
-sudo systemctl enable tc.service
-sudo systemctl start tc.service
-
-sudo systemctl status tc.service | grep -E 'active|enable'
-sudo tc -s qdisc show dev ens18
-
 # ZRAM
 sudo apt update
 sudo apt install systemd-zram-generator -y
