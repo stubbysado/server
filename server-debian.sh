@@ -138,7 +138,7 @@ sudo tc qdisc replace dev ens18 root cake bandwidth 893Mbit diffserv4 triple-iso
 
 sudo tee /etc/systemd/system/cake-qdisc.service <<'EOF'
 [Unit]
-Description=CAKE
+Description=cake
 After=network.target
 
 [Service]
