@@ -368,7 +368,7 @@ nginx -t && systemctl reload nginx
 echo "NGINX CONFIGURED AND RELOADED"
 
 echo "[6/7] INSTALL CRON JOB"
-CRON_LINE="0 * * * * $CHECK_SCRIPT >> $LOG_FILE 2>&1"
+CRON_LINE="30 * * * * $CHECK_SCRIPT >> $LOG_FILE 2>&1"
 (crontab -l 2>/dev/null || true) | grep -v "$CHECK_SCRIPT" | { cat; echo "$CRON_LINE"; } | crontab -
 echo "CRON JOB: EVERY HOUR AT :00"
 
