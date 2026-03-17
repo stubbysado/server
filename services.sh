@@ -120,6 +120,42 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now prowlarr
 rm ./Prowlarr*.linux*.tar.gz
 
+# RADARR
+sudo apt install curl sqlite3 -y
+
+sudo mkdir -p /var/lib/radarr
+sudo chown "$USER":"$USER" /var/lib/radarr
+
+wget --content-disposition 'http://radarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64'
+
+tar -xvzf Radarr*.linux*.tar.gz
+sudo mv Radarr /opt/
+sudo chown "$USER":"$USER" -R /opt/Radarr
+
+sudo tee /etc/systemd/system/radarr.service << EOF > /dev/null
+[Unit]
+Description=Radarr Daemon
+After=syslog.target network.target
+[Service]
+User=$USER
+Group=$USER
+Type=simple
+ExecStart=/opt/Radarr/Radarr -nobrowser -data=/var/lib/radarr/
+TimeoutStopSec=20
+KillMode=process
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl -q daemon-reload
+sudo systemctl enable --now -q radarr
+rm Radarr*.linux*.tar.gz
+
+# SONARR
+curl -o install-sonarr.sh https://raw.githubusercontent.com/Sonarr/Sonarr/develop/distribution/debian/install.sh
+sudo bash install-sonarr.sh
+
 # REAL DEBRID (RDT-CLIENT)
 sudo apt update
 sudo apt install unzip -y
