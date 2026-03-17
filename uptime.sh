@@ -133,7 +133,7 @@ while IFS='|' read -r name target; do
         down_count=$((down_count + 1))
     elif [[ "$status" == "UP" && "$prev_status" == "DOWN" ]]; then
         # DOWN -> UP: move down_since to last_down, clear down_since
-        last_down="$down_since ($down_count times)"
+        last_down="$down_since ($down_count x)"
         down_since=""
     fi
 
@@ -278,7 +278,7 @@ cat > "$WWW_DIR/index.html" << HTMLEOF
   .red    { color: #d75f5f; }
   .yellow { color: #d7af5f; }
   .white  { color: #e8e8e8; }
-  .header, .row { display: grid; grid-template-columns: 7ch 30ch 30ch 9ch 7ch 7ch 17ch 22ch; align-items: center; padding: 5px 0; column-gap: 1.5ch; }
+  .header, .row { display: grid; grid-template-columns: 7ch 30ch 30ch 9ch 7ch 7ch 17ch 30ch; align-items: center; padding: 5px 0; column-gap: 1.5ch; }
   .header { padding-bottom: 8px; border-bottom: 1px solid #222; margin-bottom: 4px; }
   .col-name, .col-target, .col-down, .col-lastdown { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .footer { display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 1.25rem; }
@@ -312,7 +312,7 @@ cat > "$WWW_DIR/index.html" << HTMLEOF
       if (diff < 0) diff = 0;
       var m = Math.floor(diff / 60), s = diff % 60;
       document.getElementById('next').textContent =
-        'next update: ' + (m < 10 ? '0' : '') + m + 'm ' + (s < 10 ? '0' : '') + s + 's';
+        'refresh: ' + (m < 10 ? '0' : '') + m + 'm ' + (s < 10 ? '0' : '') + s + 's';
     }
     tick(); setInterval(tick, 1000);
   </script>
