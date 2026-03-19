@@ -132,7 +132,7 @@ tar -xvzf Radarr*.linux*.tar.gz
 sudo mv Radarr /opt/
 sudo chown "$USER":"$USER" -R /opt/Radarr
 
-sudo tee /etc/systemd/system/radarr.service << EOF > /dev/null
+sudo tee /etc/systemd/system/radarr.service <<EOF
 [Unit]
 Description=Radarr Daemon
 After=syslog.target network.target
@@ -183,6 +183,33 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable rdtc
 sudo systemctl start rdtc
+
+#RDTC UPDATE SCRIPT
+tee /home/$USER/update_rdtc.sh <<'EOF'
+#!/bin/bash -x
+
+APP_DIR="/home/$USER/rdtc"
+BACKUP_DIR="/home/$USER/rdtc_backup"
+ZIP_FILE="/home/$USER/RealDebridClient.zip"
+
+if [ ! -f "$ZIP_FILE" ]; then
+    echo "ERROR: NO $ZIP_FILE"
+    exit 1
+fi
+
+sudo systemctl stop rdtc.service
+mkdir -p "$BACKUP_DIR"
+cp "$APP_DIR/appsettings.json" "$BACKUP_DIR/"
+cp "$APP_DIR/rdtclient.db"* "$BACKUP_DIR/"
+unzip -o "$ZIP_FILE" -d "$APP_DIR/"
+mv "$BACKUP_DIR/appsettings.json" "$APP_DIR/"
+mv "$BACKUP_DIR/rdtclient.db"* "$APP_DIR/"
+rm -rfv "$BACKUP_DIR"
+rm "$ZIP_FILE"
+sudo systemctl start rdtc.service
+EOF
+
+sudo chmod 755 -v /home/$USER/update_rdtc.sh
 
 # ARIA2
 RPC_SECRET="sudo"
