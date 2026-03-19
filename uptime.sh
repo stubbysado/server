@@ -30,20 +30,20 @@ timedatectl set-timezone Asia/Kuala_Lumpur
 # UPTIME
 set -e
 
-CONF_FILE="/etc/uptime/uptime.conf"
-LOG_FILE="/var/log/uptime.log"
-DATA_DIR="/var/lib/uptime"
+BASE_DIR="/root/uptime"
+CONF_FILE="$BASE_DIR/uptime.conf"
+LOG_FILE="$BASE_DIR/uptime.log"
+DATA_DIR="$BASE_DIR/data"
 WWW_DIR="/var/www/uptime"
 NGINX_CONF="/etc/nginx/sites-available/uptime"
-CHECK_SCRIPT="/opt/uptime/check.sh"
+CHECK_SCRIPT="$BASE_DIR/check.sh"
 
 echo "[1/7] INSTALL DEPENDENCIES"
 apt update
 apt install -y nginx iputils-ping curl bc
 
 echo "[2/7] CREATE DIRECTORIES"
-mkdir -p /opt/uptime
-mkdir -p /etc/uptime
+mkdir -p "$BASE_DIR"
 mkdir -p "$DATA_DIR"
 mkdir -p "$WWW_DIR"
 
@@ -70,13 +70,12 @@ echo "[4/7] WRITE CHECK SCRIPT"
 cat > "$CHECK_SCRIPT" << 'CHECKEOF'
 #!/bin/bash
 # check.sh
-# Runs every hour via cron. Reads uptime.conf, pings/curls each target,
-# stores results, then regenerates the HTML dashboard.
 
-CONF_FILE="/etc/uptime/uptime.conf"
-DATA_DIR="/var/lib/uptime"
+BASE_DIR="/root/uptime"
+CONF_FILE="$BASE_DIR/uptime.conf"
+DATA_DIR="$BASE_DIR/data"
+LOG_FILE="$BASE_DIR/uptime.log"
 WWW_DIR="/var/www/uptime"
-LOG_FILE="/var/log/uptime.log"
 
 NOW=$(date '+%Y-%m-%d %H:%M')
 TS=$(date '+%s')
@@ -113,11 +112,9 @@ while IFS='|' read -r name target; do
         fi
     fi
 
-    # APPEND TO DATA LOG
     echo "${TS}|${status}|${ping_ms}" >> "$datafile"
     tail -n 720 "$datafile" > "${datafile}.tmp" && mv "${datafile}.tmp" "$datafile"
 
-    # READ CURRENT STATE
     prev_status=$(grep '^prev_status=' "$statefile" 2>/dev/null | cut -d'=' -f2)
     down_since=$(grep '^down_since=' "$statefile" 2>/dev/null | cut -d'=' -f2-)
     last_down=$(grep '^last_down=' "$statefile" 2>/dev/null | cut -d'=' -f2-)
@@ -125,11 +122,9 @@ while IFS='|' read -r name target; do
     down_count=${down_count:-0}
 
     if [[ "$status" == "DOWN" && "$prev_status" != "DOWN" ]]; then
-        # UP -> DOWN: record outage start, increment counter
         down_since="$NOW"
         down_count=$((down_count + 1))
     elif [[ "$status" == "UP" && "$prev_status" == "DOWN" ]]; then
-        # DOWN -> UP: move down_since to last_down, clear down_since
         last_down="$down_since ($down_count x)"
         down_since=""
     fi
@@ -157,7 +152,6 @@ while IFS='|' read -r name target; do
     datafile="$DATA_DIR/${slug}.log"
     statefile="$DATA_DIR/${slug}.state"
 
-    # CURRENT STATUS
     if [[ -f "$datafile" ]]; then
         last=$(tail -n 1 "$datafile")
         cur_status=$(echo "$last" | cut -d'|' -f2)
@@ -167,7 +161,6 @@ while IFS='|' read -r name target; do
         cur_ping="—"
     fi
 
-    # 24H UPTIME
     cutoff_24h=$((TS - 86400))
     total_24h=0; up_24h=0
     if [[ -f "$datafile" ]]; then
@@ -183,7 +176,6 @@ while IFS='|' read -r name target; do
         pct_24h="—"
     fi
 
-    # 30D UPTIME
     cutoff_30d=$((TS - 2592000))
     total_30d=0; up_30d=0
     if [[ -f "$datafile" ]]; then
@@ -199,7 +191,6 @@ while IFS='|' read -r name target; do
         pct_30d="—"
     fi
 
-    # STATUS COLORS
     if [[ "$cur_status" == "UP" ]]; then
         UP_COUNT=$((UP_COUNT + 1))
         status_class="green"
@@ -214,7 +205,6 @@ while IFS='|' read -r name target; do
         cur_ping="—"
     fi
 
-    # UPTIME COLORS
     color_pct() {
         local p="$1"
         if [[ "$p" == "—" ]]; then echo "white"
@@ -230,7 +220,6 @@ while IFS='|' read -r name target; do
     [[ "$pct_30d" != "—" ]] && pct_30d="${pct_30d}%"
     [[ "$cur_ping" != "—" ]] && cur_ping="${cur_ping} ms"
 
-    # READ DOWN/LAST DOWN FROM STATE FILE
     col_down="—"
     col_last_down="—"
     if [[ -f "$statefile" ]]; then
@@ -365,13 +354,13 @@ echo "NGINX CONFIGURED AND RELOADED"
 echo "[6/7] INSTALL CRON JOB"
 CRON_LINE="30 * * * * $CHECK_SCRIPT >> $LOG_FILE 2>&1"
 (crontab -l 2>/dev/null || true) | grep -v "$CHECK_SCRIPT" | { cat; echo "$CRON_LINE"; } | crontab -
-echo "CRON JOB: EVERY HOUR AT :00"
+echo "CRON JOB: EVERY HOUR AT :30"
 
 echo "[7/7] RUN FIRST CHECK"
 bash "$CHECK_SCRIPT"
 
 echo "DONE!"
 echo "DASHBOARD: http://$(hostname -I | awk '{print $1}')/"
-echo "CONFIG: $CONF_FILE"
-echo "LOGS: $LOG_FILE"
-echo "ADD/REMOVE MONITORS: $CONF_FILE"
+echo "CONFIG:    $CONF_FILE"
+echo "LOGS:      $LOG_FILE"
+echo "DATA:      $DATA_DIR"
