@@ -50,17 +50,16 @@ mkdir -p "$WWW_DIR"
 echo "[3/7] WRITE DEFAULT CONFIG"
 if [ ! -f "$CONF_FILE" ]; then
 cat > "$CONF_FILE" << 'EOF'
-# uptime — uptime.conf
+# uptime.conf
 #
-# Format:  name | target
+# Format: name | target
 #
-#   Plain IP  (ping) : OPNsense | 10.0.0.1
-#   HTTP/HTTPS (curl): Jellyfin | http://10.0.0.42:8096
+# IP  (ping) : opnsense | 10.0.0.1
+# HTTP/HTTPS (curl): Jellyfin | http://10.0.0.42:8096
 #
-# Lines starting with # and blank lines are ignored.
-# Changes take effect on the next hourly check — no restart needed.
+# Changes take effect on the next hourly check, no restart needed.
 
-OPNsense | 10.0.0.1
+opnsense | 10.0.0.1
 EOF
 echo "CONFIG: $CONF_FILE"
 else
@@ -70,7 +69,7 @@ fi
 echo "[4/7] WRITE CHECK SCRIPT"
 cat > "$CHECK_SCRIPT" << 'CHECKEOF'
 #!/bin/bash
-# uptime — check.sh
+# check.sh
 # Runs every hour via cron. Reads uptime.conf, pings/curls each target,
 # stores results, then regenerates the HTML dashboard.
 
@@ -84,9 +83,7 @@ TS=$(date '+%s')
 
 echo "[$NOW] Starting check..." >> "$LOG_FILE"
 
-# -----------------------------------------------------------------------------
 # Check each target + update state files
-# -----------------------------------------------------------------------------
 while IFS='|' read -r name target; do
     name=$(echo "$name" | xargs)
     target=$(echo "$target" | xargs)
@@ -144,9 +141,7 @@ while IFS='|' read -r name target; do
 
 done < "$CONF_FILE"
 
-# -----------------------------------------------------------------------------
 # Regenerate HTML dashboard
-# -----------------------------------------------------------------------------
 ROWS=""
 TOTAL=0
 UP_COUNT=0
