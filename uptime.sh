@@ -83,7 +83,7 @@ TS=$(date '+%s')
 
 echo "[$NOW] Starting check..." >> "$LOG_FILE"
 
-# Check each target + update state files
+# CHECK TARGET, UPDATE STATE FILES
 while IFS='|' read -r name target; do
     name=$(echo "$name" | xargs)
     target=$(echo "$target" | xargs)
@@ -113,11 +113,11 @@ while IFS='|' read -r name target; do
         fi
     fi
 
-    # Append to data log
+    # APPEND TO DATA LOG
     echo "${TS}|${status}|${ping_ms}" >> "$datafile"
     tail -n 720 "$datafile" > "${datafile}.tmp" && mv "${datafile}.tmp" "$datafile"
 
-    # Read current state
+    # READ CURRENT STATE
     prev_status=$(grep '^prev_status=' "$statefile" 2>/dev/null | cut -d'=' -f2)
     down_since=$(grep '^down_since=' "$statefile" 2>/dev/null | cut -d'=' -f2-)
     last_down=$(grep '^last_down=' "$statefile" 2>/dev/null | cut -d'=' -f2-)
@@ -141,7 +141,7 @@ while IFS='|' read -r name target; do
 
 done < "$CONF_FILE"
 
-# Regenerate HTML dashboard
+# REGENERATE HTML DASHBOARD
 ROWS=""
 TOTAL=0
 UP_COUNT=0
@@ -157,7 +157,7 @@ while IFS='|' read -r name target; do
     datafile="$DATA_DIR/${slug}.log"
     statefile="$DATA_DIR/${slug}.state"
 
-    # Current status
+    # CURRENT STATUS
     if [[ -f "$datafile" ]]; then
         last=$(tail -n 1 "$datafile")
         cur_status=$(echo "$last" | cut -d'|' -f2)
@@ -167,7 +167,7 @@ while IFS='|' read -r name target; do
         cur_ping="—"
     fi
 
-    # 24h uptime
+    # 24H UPTIME
     cutoff_24h=$((TS - 86400))
     total_24h=0; up_24h=0
     if [[ -f "$datafile" ]]; then
@@ -183,7 +183,7 @@ while IFS='|' read -r name target; do
         pct_24h="—"
     fi
 
-    # 30d uptime
+    # 30D UPTIME
     cutoff_30d=$((TS - 2592000))
     total_30d=0; up_30d=0
     if [[ -f "$datafile" ]]; then
@@ -199,7 +199,7 @@ while IFS='|' read -r name target; do
         pct_30d="—"
     fi
 
-    # Status colors
+    # STATUS COLORS
     if [[ "$cur_status" == "UP" ]]; then
         UP_COUNT=$((UP_COUNT + 1))
         status_class="green"
@@ -214,7 +214,7 @@ while IFS='|' read -r name target; do
         cur_ping="—"
     fi
 
-    # Uptime color
+    # UPTIME COLORS
     color_pct() {
         local p="$1"
         if [[ "$p" == "—" ]]; then echo "white"
@@ -230,7 +230,7 @@ while IFS='|' read -r name target; do
     [[ "$pct_30d" != "—" ]] && pct_30d="${pct_30d}%"
     [[ "$cur_ping" != "—" ]] && cur_ping="${cur_ping} ms"
 
-    # Read down/last down from state file
+    # READ DOWN/LAST DOWN FROM STATE FILE
     col_down="—"
     col_last_down="—"
     if [[ -f "$statefile" ]]; then
