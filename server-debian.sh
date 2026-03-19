@@ -193,4 +193,4 @@ fi
 EOF
 
 sudo chmod 755 -v /home/oggy/update.sh
-sudo bash -c "(crontab -l 2>/dev/null; echo '0 4 1-7 * * [ \"\$(date \"+\%a\")\" = \"Wed\" ] && /bin/bash /home/oggy/update.sh') | crontab -"
+sudo bash -c "(crontab -l 2>/dev/null; echo '0 4 * * 3 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
