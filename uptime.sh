@@ -54,7 +54,7 @@ cat > "$CONF_FILE" << 'EOF'
 #
 # Format: name | target
 #
-# IP  (ping) : opnsense | 10.0.0.1
+# IP (ping): opnsense | 10.0.0.1
 # HTTP/HTTPS (curl): Jellyfin | http://10.0.0.42:8096
 #
 # Changes take effect on the next hourly check, no restart needed.
