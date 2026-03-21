@@ -193,4 +193,4 @@ fi
 EOF
 
 sudo chmod 755 -v /home/oggy/update.sh
-sudo bash -c "(crontab -l 2>/dev/null; echo '0 4 * * 3 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
+sudo bash -c "(crontab -l 2>/dev/null; echo '0 6 * * 1 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
