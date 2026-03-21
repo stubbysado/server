@@ -176,4 +176,4 @@ else
 fi
 EOF
 chmod 755 -v ./update.sh
-sudo bash -c "(crontab -l 2>/dev/null; echo '0 5 * * 3 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
+sudo bash -c "(crontab -l 2>/dev/null; echo '30 6 * * 1 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
