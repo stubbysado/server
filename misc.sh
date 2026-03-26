@@ -29,8 +29,34 @@ sudo apt update
 sudo apt install nfs-common -y
 sudo mkdir -p /mnt/server
 sudo chown oggy:oggy /mnt/server
-echo "10.0.0.21:/mnt/server /mnt/server nfs rw,async,nconnect=8,rsize=1048576,wsize=1048576,noatime,nofail 0 0" | sudo tee -a /etc/fstab
+echo "10.0.0.21:/mnt/server /mnt/server nfs rw,async,nconnect=8,rsize=1048576,wsize=1048576,noatime,nofail,noauto 0 0" | sudo tee -a /etc/fstab
 sudo mount -a
+
+sudo tee /etc/systemd/system/nfs-mount.service <<'EOF'
+[Unit]
+Description=NFS Mount 10.0.0.21:/mnt/server
+After=network-online.target nfs-client.target
+Wants=network-online.target
+Before=remote-fs.target
+StartLimitBurst=10
+StartLimitIntervalSec=90
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/mount /mnt/server
+ExecStop=/bin/umount -l -f /mnt/server
+Restart=on-failure
+RestartSec=6
+TimeoutStartSec=15
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable nfs-mount.service
 
 # ZRAM
 sudo apt update
@@ -43,6 +69,3 @@ echo "vm.swappiness = 180
 vm.watermark_boost_factor = 0
 vm.watermark_scale_factor = 125
 vm.page-cluster = 0" | sudo tee /etc/sysctl.d/99-zram.conf
-
-# CRONTAB
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && /usr/bin/mount -a") | crontab -'
