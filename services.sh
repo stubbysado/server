@@ -59,36 +59,6 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable nfs-mount.service
 
-# LINK
-check_link() {
-    if ! curl --output /dev/null --silent --head --fail "$1"; then
-        return 1
-    fi
-}
-
-while true; do
-    echo "--- INVALID LINK (Ctrl+C to exit) ---"
-    
-    read -p "MICROSOFT link (Default: https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb): " MICROSOFT
-    MICROSOFT=${MICROSOFT:-https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb}
-
-    read -p "REAL DEBRID link: " REALDEBRID
-    read -p "NAVIDROME link: " NAVIDROME
-
-    if [ -z "$REALDEBRID" ] || [ -z "$NAVIDROME" ]; then
-        echo "ERROR: Link required"
-        continue
-    fi
-
-    echo "Checking link"
-    if check_link "$MICROSOFT" && check_link "$REALDEBRID" && check_link "$NAVIDROME"; then
-        echo "Link verified"
-        break
-    else
-        echo "ERROR: One or more links are unreachable. Please re-enter all links."
-    fi
-done
-
 # TRANSMISSION
 sudo systemctl stop transmission-daemon.service
 sudo systemctl start transmission-daemon.service
@@ -183,13 +153,17 @@ curl -o install-sonarr.sh https://raw.githubusercontent.com/Sonarr/Sonarr/develo
 sudo bash install-sonarr.sh
 
 # REAL DEBRID (RDT-CLIENT)
+REALDEBRIDMICROSOFTLINK="https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb"
+REALDEBRIDMICROSOFTDEB="/home/oggy/microsoft.deb"
+REALDEBRIDCLIENTLINK="https://github.com/rogerfar/rdt-client/releases/download/v2.0.129/RealDebridClient.zip"
+
 sudo apt update
 sudo apt install unzip -y
-wget "$MICROSOFT"
-sudo dpkg -i ./packages-microsoft-prod.deb
+wget -O "$REALDEBRIDMICROSOFTDEB" "$REALDEBRIDMICROSOFTLINK"
+sudo dpkg -i "$REALDEBRIDMICROSOFTDEB"
 sudo apt update
 sudo apt install dotnet-sdk-10.0 -y
-wget "$REALDEBRID"
+wget "$REALDEBRIDCLIENTLINK"
 mkdir -p ./rdtc
 unzip ./RealDebridClient.zip -d ./rdtc
 sed -i 's@/data/db/@@g' ./rdtc/appsettings.json
@@ -238,15 +212,15 @@ EOF
 sudo chmod 755 -v /home/$USER/update_rdtc.sh
 
 # ARIA2
-RPC_SECRET="sudo"
-USER_NAME=$(whoami)
-CONFIG_DIR="$HOME/.config/aria2"
-CONFIG_FILE="$CONFIG_DIR/aria2.conf"
+ARIA2RPCSECRET="sudo"
+ARIA2USERNAME=$(whoami)
+ARIA2CONFIGDIR="$HOME/.config/aria2"
+ARIA2CONFIGFILE="$ARIA2CONFIGDIR/aria2.conf"
 
 sudo apt update && sudo apt install aria2 -y
 
-mkdir -p "$CONFIG_DIR"
-tee "$CONFIG_FILE" <<EOF
+mkdir -p "$ARIA2CONFIGDIR"
+tee "$ARIA2CONFIGFILE" <<EOF
 max-connection-per-server=16
 split=16
 min-split-size=1M
@@ -258,7 +232,7 @@ no-file-allocation-limit=0
 enable-rpc=true
 rpc-listen-all=false
 rpc-listen-port=6800
-rpc-secret=$RPC_SECRET
+rpc-secret=$ARIA2RPCSECRET
 EOF
 
 sudo tee /etc/systemd/system/aria2c.service <<EOF
@@ -267,8 +241,8 @@ Description=Aria2c RPC Service
 After=network.target nfs-client.target
 
 [Service]
-User=$USER_NAME
-ExecStart=/usr/bin/aria2c --conf-path=$CONFIG_FILE
+User=$ARIA2USERNAME
+ExecStart=/usr/bin/aria2c --conf-path=$ARIA2CONFIGFILE
 
 [Install]
 WantedBy=multi-user.target
@@ -279,8 +253,11 @@ sudo systemctl enable aria2c
 sudo systemctl start aria2c
 
 # NAVIDROME
-wget "$NAVIDROME"
-sudo apt install ./navidrome*.deb -y
+NAVIDROMELINK="https://github.com/navidrome/navidrome/releases/download/v0.61.1/navidrome_0.61.1_linux_amd64.deb"
+NAVIDROMEDEB="/home/oggy/navidrome.deb"
+
+wget -O "$NAVIDROMEDEB" "$NAVIDROMELINK"
+sudo apt install "$NAVIDROMEDEB" -y
 sudo sed -i 's|MusicFolder = "/opt/navidrome/music"|MusicFolder = "/mnt/server/03-Music/Music/"|' /etc/navidrome/navidrome.toml
 sudo systemctl enable --now navidrome
 
