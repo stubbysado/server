@@ -62,20 +62,20 @@ sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
 sudo tee -a /etc/samba/smb.conf <<'EOF'
 
 [server3]
-   path = /mnt/server3
-   browseable = no
-   read only = no
-   guest ok = no
-   valid users = oggy
-   vfs objects = recycle
-   recycle:repository = .recycle
-   recycle:directory_mode = 775
-   recycle:versions = yes
+path = /mnt/server3
+browseable = no
+read only = no
+guest ok = no
+valid users = oggy
+vfs objects = recycle
+recycle:repository = .recycle
+recycle:directory_mode = 775
+recycle:versions = yes
 EOF
 
-PASSWORD="sudo"
+SAMBAPASSWORD="sudo"
 
-echo -e "$PASSWORD\n$PASSWORD" | sudo smbpasswd -a oggy
+echo -e "$SAMBAPASSWORD\n$SAMBAPASSWORD" | sudo smbpasswd -a oggy
 sudo systemctl restart smbd.service
 
 # SNAPRAID
