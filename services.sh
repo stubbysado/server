@@ -186,12 +186,12 @@ sudo systemctl enable rdtc
 sudo systemctl start rdtc
 
 #RDTC UPDATE SCRIPT
-tee /home/$USER/update_rdtc.sh <<'EOF'
+tee /home/oggy/update_rdtc.sh <<'EOF'
 #!/bin/bash -x
 
-APP_DIR="/home/$USER/rdtc"
-BACKUP_DIR="/home/$USER/rdtc_backup"
-ZIP_FILE="/home/$USER/RealDebridClient.zip"
+APP_DIR="/home/oggy/rdtc"
+BACKUP_DIR="/home/oggy/rdtc_backup"
+ZIP_FILE="/home/oggy/RealDebridClient.zip"
 
 if [ ! -f "$ZIP_FILE" ]; then
     echo "ERROR: NO $ZIP_FILE"
@@ -210,7 +210,7 @@ rm "$ZIP_FILE"
 sudo systemctl start rdtc.service
 EOF
 
-sudo chmod 755 -v /home/$USER/update_rdtc.sh
+sudo chmod 755 -v /home/oggy/update_rdtc.sh
 
 # ARIA2
 ARIA2RPCSECRET="sudo"
@@ -286,7 +286,7 @@ vm.watermark_scale_factor = 125
 vm.page-cluster = 0" | sudo tee /etc/sysctl.d/99-zram.conf
 
 # UPDATE.SH
-tee /home/$USER/update.sh <<'EOF'
+tee /home/oggy/update.sh <<'EOF'
 #!/bin/bash
 
 # UPDATE
@@ -331,5 +331,5 @@ else
     exit 0
 fi
 EOF
-chmod 755 -v /home/$USER/update.sh
+chmod 755 -v /home/oggy/update.sh
 sudo bash -c "(crontab -l 2>/dev/null; echo '30 6 * * 1 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
