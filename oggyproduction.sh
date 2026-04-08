@@ -155,7 +155,7 @@ vm.watermark_scale_factor = 125
 vm.page-cluster = 0" | sudo tee /etc/sysctl.d/99-zram.conf
 
 # UPDATE.SH
-tee ./update.sh <<'EOF'
+tee /home/oggy/update.sh <<'EOF'
 #!/bin/bash
 
 # UPDATE
@@ -200,5 +200,5 @@ else
     exit 0
 fi
 EOF
-chmod 755 -v ./update.sh
+chmod 755 -v /home/oggy/update.sh
 sudo bash -c "(crontab -l 2>/dev/null; echo '30 6 * * 1 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
