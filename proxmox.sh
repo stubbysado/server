@@ -1,9 +1,11 @@
 #!/bin/bash -x
 
 # BACKUP SOURCES.LIST
-mkdir -p /root/sources_list_bak/
-mv /etc/apt/sources.list.d/* /root/sources_list_bak/
-mv /etc/apt/sources.list /root/sources_list_bak/sources.list.bak
+SOURCESLISTBACKUPDIR="/root/backup/sources_list_backup"
+
+mkdir -p "$SOURCESLISTBACKUPDIR"
+mv /etc/apt/sources.list.d/* "$SOURCESLISTBACKUPDIR"
+mv /etc/apt/sources.list "$SOURCESLISTBACKUPDIR"/sources.list.bak
 
 # SOURCES.LIST.D
 tee /etc/apt/sources.list.d/debian.sources <<'EOF'
