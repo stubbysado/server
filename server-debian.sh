@@ -75,9 +75,9 @@ sudo tee -a /etc/samba/smb.conf <<'EOF'
    recycle:versions = yes
 EOF
 
-PASSWORD="sudo"
+SAMBAPASSWORD="sudo"
 
-echo -e "$PASSWORD\n$PASSWORD" | sudo smbpasswd -a oggy
+echo -e "$SAMBAPASSWORD\n$SAMBAPASSWORD" | sudo smbpasswd -a oggy
 sudo systemctl restart smbd.service
 
 # NFS
@@ -90,21 +90,21 @@ sudo exportfs -ra
 sudo systemctl restart nfs-kernel-server
 
 # SNAPRAID
-SNAPRAID_LINK="https://github.com/amadvance/snapraid/releases/download/v14.1/snapraid_14.1-1_amd64.deb"
-SNAPRAID_DEB="/home/oggy/snapraid.deb"
+SNAPRAIDLINK="https://github.com/amadvance/snapraid/releases/download/v14.1/snapraid_14.1-1_amd64.deb"
+SNAPRAIDDEB="/home/oggy/snapraid.deb"
 
-wget -O "$SNAPRAID_DEB" "$SNAPRAID_LINK"
+wget -O "$SNAPRAID_DEB" "$SNAPRAIDLINK"
 sudo dpkg -i "$SNAPRAID_DEB"
 rm -fv "$SNAPRAID_DEB"
 
-SNAPRAID_DAEMON_LINK="https://github.com/amadvance/snapraid-daemon/releases/download/v1.5/snapraid-daemon_1.5-1_amd64.deb"
-SNAPRAID_DAEMON_DEB="/home/oggy/snapraid-daemon.deb"
+SNAPRAIDDAEMONLINK="https://github.com/amadvance/snapraid-daemon/releases/download/v1.5/snapraid-daemon_1.5-1_amd64.deb"
+SNAPRAIDDAEMONDEB="/home/oggy/snapraid-daemon.deb"
 
-wget -O "$SNAPRAID_DAEMON_DEB" "$SNAPRAID_DAEMON_LINK"
-sudo dpkg -i "$SNAPRAID_DAEMON_DEB"
-rm -fv "$SNAPRAID_DAEMON_DEB"
+wget -O "$SNAPRAIDDAEMONDEB" "$SNAPRAIDDAEMONLINK"
+sudo dpkg -i "$SNAPRAIDDAEMONDEB"
+rm -fv "$SNAPRAIDDAEMONDEB"
 
-SNAPRAIDD_CONF="/etc/snapraidd.conf"
+SNAPRAIDDCONF="/etc/snapraidd.conf"
 
 sudo sed -i \
   -e 's|^#net_port = 127.0.0.1:7627|net_port = 7627|' \
@@ -116,7 +116,7 @@ sudo sed -i \
   -e 's|^scrub_percentage = 0.7|scrub_percentage = 1|' \
   -e 's|^probe_interval_minutes = 3|probe_interval_minutes = 0|' \
   -e 's|^spindown_idle_minutes = 15|#spindown_idle_minutes = 15|' \
-  "$SNAPRAIDD_CONF"
+  "$SNAPRAIDDCONF"
 
 sudo systemctl daemon-reload
 sleep 5
