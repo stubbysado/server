@@ -34,18 +34,6 @@ apt full-upgrade -y
 apt clean
 apt autoremove -y
 
-# ZRAM
-apt update
-apt install systemd-zram-generator -y
-
-echo "[zram0]
-zram-size = min(ram, 8192)" | tee /etc/systemd/zram-generator.conf
-
-echo "vm.swappiness = 180
-vm.watermark_boost_factor = 0
-vm.watermark_scale_factor = 125
-vm.page-cluster = 0" | tee /etc/sysctl.d/99-zram.conf
-
 # FIX E1000E NIC
 NIC=$(basename $(ls -l /sys/class/net/*/device/driver 2>/dev/null | grep e1000e | awk '{print $9}' | cut -d/ -f5) 2>/dev/null | head -n 1)
 
@@ -71,6 +59,18 @@ EOF
 else
     echo "E1000E not found"
 fi
+
+# ZRAM
+apt update
+apt install systemd-zram-generator -y
+
+echo "[zram0]
+zram-size = min(ram, 8192)" | tee /etc/systemd/zram-generator.conf
+
+echo "vm.swappiness = 180
+vm.watermark_boost_factor = 0
+vm.watermark_scale_factor = 125
+vm.page-cluster = 0" | tee /etc/sysctl.d/99-zram.conf
 
 # UPDATE.SH
 tee /root/update.sh <<'EOF'
