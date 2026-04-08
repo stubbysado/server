@@ -31,12 +31,12 @@ sudo tee -a /etc/fstab <<'EOF'
 # Hard Disk Drive
 UUID=dd43886e-07ea-4c66-baae-84c333eab877 /mnt/parity1 auto nosuid,nodev,nofail 0 0
 
-UUID=61ce7573-4a44-4cfa-83df-c3d1046b13ae /mnt/data1   auto nosuid,nodev,nofail 0 0
-UUID=947f2157-352e-44f3-ac73-87ec4075db2e /mnt/data2   auto nosuid,nodev,nofail 0 0
-UUID=ef3bdd10-22cf-42fe-aedb-660d41386008 /mnt/data3   auto nosuid,nodev,nofail 0 0
-UUID=f4b3eba6-b51b-4641-89b2-cadecbb2775f /mnt/data4   auto nosuid,nodev,nofail 0 0
-UUID=04873b05-2b65-4e8a-b8e4-43bf7be51a58 /mnt/data5   auto nosuid,nodev,nofail 0 0
-UUID=3890ba1c-3b95-4df2-a979-cd81d280e994 /mnt/data6   auto nosuid,nodev,nofail 0 0
+UUID=61ce7573-4a44-4cfa-83df-c3d1046b13ae /mnt/data1 auto nosuid,nodev,nofail 0 0
+UUID=947f2157-352e-44f3-ac73-87ec4075db2e /mnt/data2 auto nosuid,nodev,nofail 0 0
+UUID=ef3bdd10-22cf-42fe-aedb-660d41386008 /mnt/data3 auto nosuid,nodev,nofail 0 0
+UUID=f4b3eba6-b51b-4641-89b2-cadecbb2775f /mnt/data4 auto nosuid,nodev,nofail 0 0
+UUID=04873b05-2b65-4e8a-b8e4-43bf7be51a58 /mnt/data5 auto nosuid,nodev,nofail 0 0
+UUID=3890ba1c-3b95-4df2-a979-cd81d280e994 /mnt/data6 auto nosuid,nodev,nofail 0 0
 EOF
 
 sudo systemctl daemon-reload
