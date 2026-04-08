@@ -23,7 +23,7 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt clean
 sudo apt autoremove -y
-sudo apt install gcc make mergerfs samba screen -y
+sudo apt install mergerfs samba -y
 
 # FSTAB
 sudo mkdir -p /mnt/parity1 /mnt/data{1..6}
@@ -80,17 +80,47 @@ PASSWORD="sudo"
 echo -e "$PASSWORD\n$PASSWORD" | sudo smbpasswd -a oggy
 sudo systemctl restart smbd.service
 
+# NFS
+sudo apt update
+sudo apt install nfs-kernel-server -y
+echo "/mnt/server 10.0.0.31(rw,async,no_root_squash,no_subtree_check,fsid=0)" | sudo tee -a /etc/exports
+echo "/mnt/server 10.0.0.42(rw,async,no_root_squash,no_subtree_check,fsid=0)" | sudo tee -a /etc/exports
+echo "/mnt/server 10.0.0.43(rw,async,no_root_squash,no_subtree_check,fsid=0)" | sudo tee -a /etc/exports
+sudo exportfs -ra
+sudo systemctl restart nfs-kernel-server
+
 # SNAPRAID
-mkdir /home/oggy/snapraid
-wget https://github.com/amadvance/snapraid/releases/download/v13.0/snapraid-13.0.tar.gz -P /home/oggy/snapraid/
-tar -xzf /home/oggy/snapraid/snapraid-13.0.tar.gz -C /home/oggy/snapraid/
+SNAPRAID_LINK="https://github.com/amadvance/snapraid/releases/download/v14.1/snapraid_14.1-1_amd64.deb"
+SNAPRAID_DEB="/home/oggy/snapraid.deb"
 
-CONFIGURESNAPRAID="/home/oggy/snapraid/snapraid-13.0/configure"
+wget -O "$SNAPRAID_DEB" "$SNAPRAID_LINK"
+sudo dpkg -i "$SNAPRAID_DEB"
+rm -fv "$SNAPRAID_DEB"
 
-cd /home/oggy/snapraid && $CONFIGURESNAPRAID
-make -C /home/oggy/snapraid
-sudo make install
-rm -rfv /home/oggy/snapraid
+SNAPRAID_DAEMON_LINK="https://github.com/amadvance/snapraid-daemon/releases/download/v1.5/snapraid-daemon_1.5-1_amd64.deb"
+SNAPRAID_DAEMON_DEB="/home/oggy/snapraid-daemon.deb"
+
+wget -O "$SNAPRAID_DAEMON_DEB" "$SNAPRAID_DAEMON_LINK"
+sudo dpkg -i "$SNAPRAID_DAEMON_DEB"
+rm -fv "$SNAPRAID_DAEMON_DEB"
+
+SNAPRAIDD_CONF="/etc/snapraidd.conf"
+
+sudo sed -i \
+  -e 's|^#net_port = 127.0.0.1:7627|net_port = 7627|' \
+  -e 's|^#net_acl = +127.0.0.1|net_acl = +127.0.0.1,+10.0.0.0/24|' \
+  -e 's|^maintenance_schedule = 02:00|maintenance_schedule = 00:00|' \
+  -e 's|^sync_threshold_deletes = 50|sync_threshold_deletes = 0|' \
+  -e 's|^sync_threshold_updates = 100|sync_threshold_updates = 0|' \
+  -e 's|^#sync_prehash = 1|sync_prehash = 1|' \
+  -e 's|^scrub_percentage = 0.7|scrub_percentage = 1|' \
+  -e 's|^probe_interval_minutes = 3|probe_interval_minutes = 0|' \
+  -e 's|^spindown_idle_minutes = 15|#spindown_idle_minutes = 15|' \
+  "$SNAPRAIDD_CONF"
+
+sudo systemctl daemon-reload
+sleep 5
+sudo systemctl restart snapraidd.service
 
 sudo tee /etc/snapraid.conf <<'EOF'
 
@@ -117,21 +147,6 @@ exclude *.part
 exclude snapraid.log
 exclude snapraid-output.log
 EOF
-
-# CRONTAB
-bash -c '(crontab -l 2>/dev/null; echo "0 0 * * * /home/oggy/script.sh") | crontab -'
-
-# ALIAS
-echo "alias ll='ls -la'" >> /home/oggy/.bashrc
-
-# NFS
-sudo apt update
-sudo apt install nfs-kernel-server -y
-echo "/mnt/server 10.0.0.31(rw,async,no_root_squash,no_subtree_check,fsid=0)" | sudo tee -a /etc/exports
-echo "/mnt/server 10.0.0.42(rw,async,no_root_squash,no_subtree_check,fsid=0)" | sudo tee -a /etc/exports
-echo "/mnt/server 10.0.0.43(rw,async,no_root_squash,no_subtree_check,fsid=0)" | sudo tee -a /etc/exports
-sudo exportfs -ra
-sudo systemctl restart nfs-kernel-server
 
 # ZRAM
 sudo apt update
