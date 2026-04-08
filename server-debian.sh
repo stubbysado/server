@@ -143,9 +143,6 @@ data data6 /mnt/data6/
 exclude lost+found/
 exclude .recycle/
 exclude 02-Downloads/
-exclude *.part
-exclude snapraid.log
-exclude snapraid-output.log
 EOF
 
 # ZRAM
