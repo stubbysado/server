@@ -64,15 +64,15 @@ sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
 sudo tee -a /etc/samba/smb.conf <<'EOF'
 
 [server]
-   path = /mnt/server
-   browseable = no
-   read only = no
-   guest ok = no
-   valid users = oggy
-   vfs objects = recycle
-   recycle:repository = .recycle
-   recycle:directory_mode = 755
-   recycle:versions = yes
+path = /mnt/server
+browseable = no
+read only = no
+guest ok = no
+valid users = oggy
+vfs objects = recycle
+recycle:repository = .recycle
+recycle:directory_mode = 755
+recycle:versions = yes
 EOF
 
 SAMBAPASSWORD="sudo"
