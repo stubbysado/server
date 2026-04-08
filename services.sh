@@ -96,6 +96,7 @@ sudo mv ./Prowlarr/ /opt
 sudo chown oggy:oggy -Rv /opt/Prowlarr
 sudo mkdir -p /var/lib/prowlarr
 sudo chown -R oggy:oggy /var/lib/prowlarr
+
 sudo tee /etc/systemd/system/prowlarr.service <<'EOF'
 [Unit]
 Description=Prowlarr Daemon
@@ -112,18 +113,16 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 EOF
+
 sudo systemctl daemon-reload
 sudo systemctl enable --now prowlarr
 rm ./Prowlarr*.linux*.tar.gz
 
 # RADARR
 sudo apt install curl sqlite3 -y
-
 sudo mkdir -p /var/lib/radarr
 sudo chown "$USER":"$USER" /var/lib/radarr
-
 wget --content-disposition 'http://radarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64'
-
 tar -xvzf Radarr*.linux*.tar.gz
 sudo mv Radarr /opt/
 sudo chown "$USER":"$USER" -R /opt/Radarr
@@ -167,6 +166,7 @@ wget "$REALDEBRIDCLIENTLINK"
 mkdir -p ./rdtc
 unzip ./RealDebridClient.zip -d ./rdtc
 sed -i 's@/data/db/@@g' ./rdtc/appsettings.json
+
 sudo tee /etc/systemd/system/rdtc.service <<'EOF'
 [Unit]
 Description=RdtClient Service
@@ -180,6 +180,7 @@ User=oggy
 [Install]
 WantedBy=multi-user.target
 EOF
+
 sudo systemctl daemon-reload
 sudo systemctl enable rdtc
 sudo systemctl start rdtc
@@ -218,8 +219,8 @@ ARIA2CONFIGDIR="$HOME/.config/aria2"
 ARIA2CONFIGFILE="$ARIA2CONFIGDIR/aria2.conf"
 
 sudo apt update && sudo apt install aria2 -y
-
 mkdir -p "$ARIA2CONFIGDIR"
+
 tee "$ARIA2CONFIGFILE" <<EOF
 max-connection-per-server=16
 split=16
