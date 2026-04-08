@@ -20,7 +20,7 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt clean
 sudo apt autoremove -y
-sudo apt install gcc make mergerfs samba screen -y
+sudo apt install mergerfs samba screen -y
 
 # FSTAB
 sudo mkdir -p /mnt/parity1 /mnt/data{1..4}
@@ -77,16 +77,12 @@ echo -e "$PASSWORD\n$PASSWORD" | sudo smbpasswd -a oggy
 sudo systemctl restart smbd.service
 
 # SNAPRAID
-mkdir /home/oggy/snapraid
-wget https://github.com/amadvance/snapraid/releases/download/v13.0/snapraid-13.0.tar.gz -P /home/oggy/snapraid/
-tar -xzf /home/oggy/snapraid/snapraid-13.0.tar.gz -C /home/oggy/snapraid/
+SNAPRAID_LINK="https://github.com/amadvance/snapraid/releases/download/v14.1/snapraid_14.1-1_amd64.deb"
+SNAPRAID_DEB="/home/oggy/snapraid.deb"
 
-CONFIGURESNAPRAID="/home/oggy/snapraid/snapraid-13.0/configure"
-
-cd /home/oggy/snapraid && $CONFIGURESNAPRAID
-make -C /home/oggy/snapraid
-sudo make install
-rm -rfv /home/oggy/snapraid
+wget -O "$SNAPRAID_DEB" "$SNAPRAID_LINK"
+sudo dpkg -i "$SNAPRAID_DEB"
+rm -fv "$SNAPRAID_DEB"
 
 sudo tee /etc/snapraid.conf <<'EOF'
 
@@ -118,6 +114,3 @@ EOF
 sudo systemctl daemon-reload
 sudo mount -a
 sudo chown oggy:oggy /mnt/data-ext{1,2}
-
-# ALIAS
-echo "alias ll='ls -la'" >> /home/oggy/.bashrc
