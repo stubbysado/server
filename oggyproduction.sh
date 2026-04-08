@@ -59,36 +59,13 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable nfs-mount.service
 
-# LINK
-check_link() {
-    if ! curl --output /dev/null --silent --head --fail "$1"; then
-        return 1
-    fi
-}
-
-while true; do
-    echo "--- INVALID LINK (Ctrl+C to exit) ---"
-    
-    read -p "FILEBROWSER QUANTUM link: " FILEBROWSER
-    
-    if [ -z "$FILEBROWSER" ] ; then
-        echo "ERROR: Link required"
-        continue
-    fi
-
-    echo "Checking link"
-    if  check_link "$FILEBROWSER" ; then
-        echo "Link verified"
-        break
-    else
-        echo "ERROR: One or more links are unreachable. Please re-enter all links."
-    fi
-done
-
 # FILEBROWSER QUANTUM
-wget "$FILEBROWSER"
-chmod 755 ./linux-amd64-filebrowser
-sudo mv ./linux-amd64-filebrowser /usr/local/bin/filebrowser
+FILEBROWSERQUANTUMLINK="https://github.com/gtsteffaniak/filebrowser/releases/download/v1.2.4-stable/linux-amd64-filebrowser"
+FILEBROWSERQUANTUMBIN="/home/oggy/filebrowser"
+
+wget -O "$FILEBROWSERQUANTUMBIN" "$FILEBROWSERQUANTUMLINK"
+sudo chmod 755 "$FILEBROWSERQUANTUMBIN"
+sudo mv "$FILEBROWSERQUANTUMBIN" /usr/local/bin/filebrowser
 sudo mkdir -p /opt/filebrowser
 sudo chown oggy:oggy /opt/filebrowser
 sudo tee /opt/filebrowser/config.yaml <<'EOF'
