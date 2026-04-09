@@ -94,8 +94,8 @@ SNAPRAIDLINK="https://github.com/amadvance/snapraid/releases/download/v14.1/snap
 SNAPRAIDDEB="/home/oggy/snapraid.deb"
 
 wget -O "$SNAPRAID_DEB" "$SNAPRAIDLINK"
-sudo dpkg -i "$SNAPRAID_DEB"
-rm -fv "$SNAPRAID_DEB"
+sudo dpkg -i "$SNAPRAIDDEB"
+rm -fv "$SNAPRAIDDEB"
 
 SNAPRAIDDAEMONLINK="https://github.com/amadvance/snapraid-daemon/releases/download/v1.5/snapraid-daemon_1.5-1_amd64.deb"
 SNAPRAIDDAEMONDEB="/home/oggy/snapraid-daemon.deb"
@@ -119,7 +119,7 @@ sudo sed -i \
   "$SNAPRAIDDCONF"
 
 sudo systemctl daemon-reload
-sleep 5
+sudo rm -rfv /var/log/snapraid/*
 sudo systemctl restart snapraidd.service
 
 sudo tee /etc/snapraid.conf <<'EOF'
