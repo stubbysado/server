@@ -119,7 +119,6 @@ sudo sed -i \
   "$SNAPRAIDDCONF"
 
 sudo systemctl daemon-reload
-sudo rm -rfv /var/log/snapraid/*
 sudo systemctl restart snapraidd.service
 
 sudo tee /etc/snapraid.conf <<'EOF'
