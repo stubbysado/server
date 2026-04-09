@@ -93,7 +93,7 @@ sudo systemctl restart nfs-kernel-server
 SNAPRAIDLINK="https://github.com/amadvance/snapraid/releases/download/v14.1/snapraid_14.1-1_amd64.deb"
 SNAPRAIDDEB="/home/oggy/snapraid.deb"
 
-wget -O "$SNAPRAID_DEB" "$SNAPRAIDLINK"
+wget -O "$SNAPRAIDDEB" "$SNAPRAIDLINK"
 sudo dpkg -i "$SNAPRAIDDEB"
 rm -fv "$SNAPRAIDDEB"
 
