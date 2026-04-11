@@ -30,7 +30,7 @@ sudo apt install nfs-common -y
 sudo mkdir -p /mnt/server
 sudo chown oggy:oggy /mnt/server
 echo "10.0.0.21:/mnt/server /mnt/server nfs rw,async,nconnect=8,rsize=1048576,wsize=1048576,noatime,nofail,noauto 0 0" | sudo tee -a /etc/fstab
-sudo mount -a
+sudo mount /mnt/server
 
 sudo tee /etc/systemd/system/nfs-mount.service <<'EOF'
 [Unit]
