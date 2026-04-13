@@ -157,13 +157,6 @@ BAZARRVENVDIR="/opt/bazarr-venv"
 BAZARRSERVICEFILE="/etc/systemd/system/bazarr.service"
 BAZARRRUNUSER="${SUDO_USER:-$USER}"
 
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --user) BAZARRRUNUSER="$2"; shift 2 ;;
-    *) exit 1 ;;
-  esac
-done
-
 BAZARRDEBIANVERSION=$(. /etc/os-release && echo "$VERSION_ID")
 sudo apt-get update -qq
 if [[ "$BAZARRDEBIANVERSION" -ge 12 ]] 2>/dev/null; then
