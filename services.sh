@@ -59,6 +59,26 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable nfs-mount.service
 
+# SPEED TEST
+check_github_speed() {
+    local GITHUBTESTURL="http://prowlarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64"
+    while true; do
+        echo "Testing download (15s)"
+        GITHUBSPEED=$(curl -L --max-time 15 --progress-bar -o /dev/null -w "%{speed_download}" "$GITHUBTESTURL" 2>/dev/tty)
+        GITHUBSPEEDKB=$(awk "BEGIN {printf \"%.1f\", $GITHUBSPEED / 1024}")
+        echo "Speed: ${GITHUBSPEEDKB} KB/s"
+        read -rp "[P]roceed / [R]etry / [A]bort: " CHOICE
+        case "${CHOICE,,}" in
+            p) break ;;
+            r) continue ;;
+            a) exit 1 ;;
+            *) echo "Invalid" ;;
+        esac
+    done
+}
+
+check_github_speed
+
 # TRANSMISSION
 sudo systemctl stop transmission-daemon.service
 sudo systemctl start transmission-daemon.service
