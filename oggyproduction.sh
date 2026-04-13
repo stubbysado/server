@@ -38,7 +38,7 @@ sudo tee /etc/systemd/system/nfs-mount.service <<'EOF'
 Description=NFS Mount 10.0.0.21:/mnt/server
 After=network-online.target nfs-client.target
 Wants=network-online.target
-Before=remote-fs.target
+Before=remote-fs.target shutdown.target
 StartLimitBurst=10
 StartLimitIntervalSec=90
 
