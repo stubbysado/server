@@ -118,9 +118,6 @@ sudo sed -i \
   -e 's|^spindown_idle_minutes = 15|#spindown_idle_minutes = 15|' \
   "$SNAPRAIDDCONF"
 
-sudo systemctl daemon-reload
-sudo systemctl restart snapraidd.service
-
 sudo tee /etc/snapraid.conf <<'EOF'
 
 parity /mnt/parity1/snapraid.parity
