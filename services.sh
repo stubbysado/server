@@ -320,6 +320,10 @@ sudo apt install "$NAVIDROMEDEB" -y
 sudo sed -i 's|MusicFolder = "/opt/navidrome/music"|MusicFolder = "/mnt/server/03-Music/Music/"|' /etc/navidrome/navidrome.toml
 sudo systemctl enable --now navidrome
 
+# JELLYFIN
+sudo umount -l /tmp
+curl -s https://repo.jellyfin.org/install-debuntu.sh | sudo bash
+
 # CRONTAB
 sudo bash -c '(crontab -l 2>/dev/null; echo "0 0 * * * systemctl restart transmission-daemon.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart rdtc.service") | crontab -'
@@ -330,10 +334,6 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl resta
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart jellyfin.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart navidrome.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart transmission-daemon.service") | crontab -'
-
-# JELLYFIN
-sudo umount -l /tmp
-curl -s https://repo.jellyfin.org/install-debuntu.sh | sudo bash
 
 # ZRAM
 sudo apt update
