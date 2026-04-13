@@ -151,6 +151,51 @@ rm Radarr*.linux*.tar.gz
 curl -o install-sonarr.sh https://raw.githubusercontent.com/Sonarr/Sonarr/develop/distribution/debian/install.sh
 sudo bash install-sonarr.sh
 
+# BAZARR
+BAZARRINSTALLDIR="/opt/bazarr"
+BAZARRVENVDIR="/opt/bazarr-venv"
+BAZARRSERVICEFILE="/etc/systemd/system/bazarr.service"
+BAZARRRUNUSER="${SUDO_USER:-$USER}"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --user) BAZARRRUNUSER="$2"; shift 2 ;;
+    *) exit 1 ;;
+  esac
+done
+
+BAZARRDEBIANVERSION=$(. /etc/os-release && echo "$VERSION_ID")
+sudo apt-get update -qq
+if [[ "$BAZARRDEBIANVERSION" -ge 12 ]] 2>/dev/null; then
+  sudo apt-get install -y 7zip python3-dev python3-pip python3-setuptools \
+    python3-venv python3-full unrar unzip
+else
+  sudo apt-get install -y 7zip python3-dev python3-pip python3-distutils \
+    python3-venv unrar unzip
+fi
+
+BAZARRTMPZIP=$(mktemp /tmp/bazarr_XXXXXX.zip)
+wget -q -O "$BAZARRTMPZIP" https://github.com/morpheus65535/bazarr/releases/latest/download/bazarr.zip
+sudo mkdir -p "$BAZARRINSTALLDIR"
+sudo unzip -q -o "$BAZARRTMPZIP" -d "$BAZARRINSTALLDIR"
+rm -f "$BAZARRTMPZIP"
+
+sudo python3 -m venv "$BAZARRVENVDIR"
+sudo "$BAZARRVENVDIR/bin/pip" install --no-warn-script-location \
+  -r "$BAZARRINSTALLDIR/requirements.txt"
+
+sudo chown -R "$BAZARRRUNUSER":"$BAZARRRUNUSER" "$BAZARRINSTALLDIR" "$BAZARRVENVDIR"
+
+BAZARRPYTHONBIN="$BAZARRVENVDIR/bin/python3"
+
+printf '[Unit]\nDescription=Bazarr\nAfter=network.target\n\n[Service]\nType=simple\nUser=%s\nWorkingDirectory=%s\nEnvironment="PATH=%s/bin:/usr/local/bin:/usr/bin:/bin"\nExecStart=%s %s/bazarr.py\nRestart=on-failure\nRestartSec=5\nTimeoutStopSec=20\n\n[Install]\nWantedBy=multi-user.target\n' \
+  "$BAZARRRUNUSER" "$BAZARRINSTALLDIR" "$BAZARRVENVDIR" "$BAZARRPYTHONBIN" "$BAZARRINSTALLDIR" \
+  | sudo tee "$BAZARRSERVICEFILE" > /dev/null
+
+sudo systemctl daemon-reload
+sudo systemctl enable bazarr
+sudo systemctl start bazarr
+
 # REAL DEBRID (RDT-CLIENT)
 REALDEBRIDMICROSOFTLINK="https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb"
 REALDEBRIDMICROSOFTDEB="/home/oggy/microsoft.deb"
@@ -272,6 +317,10 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl resta
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart jellyfin.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart navidrome.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart transmission-daemon.service") | crontab -'
+
+# JELLYFIN
+sudo umount -l /tmp
+curl -s https://repo.jellyfin.org/install-debuntu.sh | sudo bash
 
 # ZRAM
 sudo apt update
