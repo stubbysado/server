@@ -347,6 +347,10 @@ vm.watermark_boost_factor = 0
 vm.watermark_scale_factor = 125
 vm.page-cluster = 0" | sudo tee /etc/sysctl.d/99-zram.conf
 
+sudo systemctl daemon-reload
+sudo sysctl --system
+sudo systemctl start /dev/zram0
+
 # UPDATE.SH
 tee /home/oggy/update.sh <<'EOF'
 #!/bin/bash
