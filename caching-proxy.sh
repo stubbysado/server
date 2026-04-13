@@ -35,24 +35,36 @@ chown www-data:www-data /var/cache/nginx/reverse-proxy
 tee /etc/nginx/sites-available/reverse-proxy <<'EOF'
 proxy_cache_path /var/cache/nginx/reverse-proxy
     levels=1:2
-    keys_zone=deb_cache:10m
+    keys_zone=deb_cache:20m
     max_size=5g
     inactive=180d
     use_temp_path=off;
 server {
     listen 80;
     server_name 10.0.0.41;
-    access_log /var/log/nginx/reverse-proxy.log;
-    error_log off;
+    resolver 10.0.0.1 valid=5m;
+    access_log off;
+    error_log /dev/null;
     proxy_cache deb_cache;
-    proxy_cache_valid 200 302 1h;
+    proxy_cache_key "$host$request_uri";
+    proxy_cache_valid 200 302 180d;
+    proxy_cache_valid 404 1m;
     proxy_cache_lock on;
     proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_503 http_504;
+    proxy_ignore_headers Cache-Control Expires;
     proxy_ssl_server_name on;
+    proxy_connect_timeout 10s;
+    proxy_read_timeout 60s;
     add_header X-Cache-Status $upstream_cache_status;
+    location ~* \.(gz|bz2|xz|lzma|diff|dsc|changes|Release|InRelease)$ {
+        proxy_pass https://mirror.sg.gs;
+        proxy_set_header Host mirror.sg.gs;
+        proxy_cache_valid 200 302 1h;
+    }
     location / {
         proxy_pass https://mirror.sg.gs/;
         proxy_set_header Host mirror.sg.gs;
+        proxy_cache_valid 200 302 180d;
     }
 }
 EOF
