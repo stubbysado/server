@@ -75,7 +75,7 @@ recycle:directory_mode = 755
 recycle:versions = yes
 
 [pve_backup]
-path = /mnt/server/10-PVE_Backup
+path = /mnt/server/10-Backup/pve
 browseable = no
 read only = no
 guest ok = no
