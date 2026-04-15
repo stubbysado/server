@@ -73,6 +73,13 @@ vfs objects = recycle
 recycle:repository = .recycle
 recycle:directory_mode = 755
 recycle:versions = yes
+
+[pve_backup]
+path = /mnt/server/10-PVE_Backup
+browseable = no
+read only = no
+guest ok = no
+valid users = oggy
 EOF
 
 SAMBAPASSWORD="sudo"
