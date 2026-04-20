@@ -56,10 +56,11 @@ server {
     proxy_connect_timeout 10s;
     proxy_read_timeout 60s;
     add_header X-Cache-Status $upstream_cache_status;
-    location ~* \.(gz|bz2|xz|lzma|diff|dsc|changes|Release|InRelease)$ {
+    location ~* (InRelease|Release(\.gpg)?|Packages(\.xz|\.gz|\.bz2)?|Sources(\.xz|\.gz)?|Translation-[a-z]+(\.xz)?)$ {
         proxy_pass https://mirror.sg.gs;
         proxy_set_header Host mirror.sg.gs;
-        proxy_cache_valid 200 302 1h;
+        proxy_no_cache 1;
+        proxy_cache_bypass 1;
     }
     location / {
         proxy_pass https://mirror.sg.gs/;
