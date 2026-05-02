@@ -72,6 +72,7 @@ sudo tee /opt/filebrowser/config.yaml <<'EOF'
 server:
   port: 55555
   database: /opt/filebrowser/database.db
+  cacheDir: /mnt/server/09-Work/RAW/tmp
   sources:
   - name: Oggy Production
     path: /mnt/server/09-Work/RAW/
