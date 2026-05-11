@@ -96,6 +96,12 @@ for VMID in $CONTAINER_IDS; do
 
     echo "--- LXC $VMID ---"
     /usr/sbin/pct exec $VMID -- bash -c "apt update && apt upgrade -y && apt clean && apt autoremove -y"
+
+    LXC_GLIBC_UPGRADE=$(/usr/sbin/pct exec $VMID -- bash -c "lsof -n -p 1 2>/dev/null | grep 'libc-.*\.so' | grep 'DEL'")
+    if [ -n "$LXC_GLIBC_UPGRADE" ]; then
+        echo "[!] LXC $VMID CORE LIBRARY UPDATED. REBOOT REQUIRED."
+        /usr/sbin/pct reboot $VMID
+    fi
 done
 
 # UPDATE
@@ -140,5 +146,6 @@ else
     exit 0
 fi
 EOF
+
 chmod 755 -v /root/update.sh
 (crontab -l 2>/dev/null; echo '0 5 * * 1 /root/update.sh > /root/update.log 2>&1') | crontab -
