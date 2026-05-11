@@ -79,23 +79,23 @@ tee /root/update.sh <<'EOF'
 #!/bin/bash
 
 # UPDATE LXC
-CONTAINER_IDS=$(pct list | tail -n +2 | awk '{print $1}')
+CONTAINER_IDS=$(/usr/sbin/pct list | tail -n +2 | awk '{print $1}')
 
 for VMID in $CONTAINER_IDS; do
-    STATUS=$(pct status $VMID)
+    STATUS=$(/usr/sbin/pct status $VMID)
     if [[ "$STATUS" != "status: running" ]]; then
         echo "$VMID: NOT RUNNING."
         continue
     fi
 
-    OSTYPE=$(pct config $VMID | grep "ostype" | awk '{print $2}')
+    OSTYPE=$(/usr/sbin/pct config $VMID | grep "ostype" | awk '{print $2}')
     if [[ "$OSTYPE" != "debian" ]]; then
         echo "$VMID: '$OSTYPE', SKIPPED."
         continue
     fi
 
     echo "--- LXC $VMID ---"
-    pct exec $VMID -- bash -c "apt update && apt upgrade -y && apt clean && apt autoremove -y"
+    /usr/sbin/pct exec $VMID -- bash -c "apt update && apt upgrade -y && apt clean && apt autoremove -y"
 done
 
 # UPDATE
