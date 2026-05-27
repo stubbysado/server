@@ -146,6 +146,7 @@ data data6 /mnt/data6/
 exclude lost+found/
 exclude .recycle/
 exclude 02-Downloads/
+exclude 09-Work/RAW/tmp/
 EOF
 
 # ZRAM
