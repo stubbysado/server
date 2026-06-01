@@ -95,7 +95,7 @@ for VMID in $CONTAINER_IDS; do
     fi
 
     echo "--- LXC $VMID ---"
-    /usr/sbin/pct exec $VMID -- bash -c "apt update && apt upgrade -y && apt clean && apt autoremove -y"
+    /usr/sbin/pct exec $VMID -- bash -c "apt update && apt upgrade -y && apt clean && apt autoremove -y && history -c && history -w"
 
     LXC_GLIBC_UPGRADE=$(/usr/sbin/pct exec $VMID -- bash -c "lsof -n -p 1 2>/dev/null | grep 'libc-.*\.so' | grep 'DEL'")
     if [ -n "$LXC_GLIBC_UPGRADE" ]; then
