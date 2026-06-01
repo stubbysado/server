@@ -24,7 +24,7 @@ EOF
 
 tee /etc/apt/sources.list.d/proxmox.sources <<'EOF'
 Types: deb
-URIs: http://mirror.sg.gs/pve
+URIs: https://mirror.twds.com.tw/proxmox/debian/pve
 Suites: trixie
 Components: pve-no-subscription
 Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
