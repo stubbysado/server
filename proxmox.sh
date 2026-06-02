@@ -10,13 +10,13 @@ mv /etc/apt/sources.list "$SOURCESLISTBACKUPDIR"/sources.list.bak
 # SOURCES.LIST.D
 tee /etc/apt/sources.list.d/debian.sources <<'EOF'
 Types: deb deb-src
-URIs: https://mirror.sg.gs/debian
+URIs: https://mirror.twds.com.tw/debian
 Suites: trixie trixie-updates
 Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 
 Types: deb deb-src
-URIs: https://mirror.sg.gs/debian-security
+URIs: https://mirror.twds.com.tw/debian-security
 Suites: trixie-security
 Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
