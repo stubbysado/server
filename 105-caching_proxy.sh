@@ -6,13 +6,13 @@ rm -f /etc/apt/sources.list.d/debian.sources
 # SOURCES.LIST.D
 tee /etc/apt/sources.list.d/debian.sources <<'EOF'
 Types: deb deb-src
-URIs: https://mirror.sg.gs/debian
+URIs: https://mirror.twds.com.tw/debian
 Suites: trixie trixie-updates
 Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 
 Types: deb deb-src
-URIs: https://mirror.sg.gs/debian-security
+URIs: https://mirror.twds.com.tw/debian-security
 Suites: trixie-security
 Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
@@ -57,14 +57,14 @@ server {
     proxy_read_timeout 60s;
     add_header X-Cache-Status $upstream_cache_status;
     location ~* (InRelease|Release(\.gpg)?|Packages(\.xz|\.gz|\.bz2)?|Sources(\.xz|\.gz)?|Translation-[a-z]+(\.xz)?)$ {
-        proxy_pass https://mirror.sg.gs;
-        proxy_set_header Host mirror.sg.gs;
+        proxy_pass https://mirror.twds.com.tw;
+        proxy_set_header Host mirror.twds.com.tw;
         proxy_no_cache 1;
         proxy_cache_bypass 1;
     }
     location / {
-        proxy_pass https://mirror.sg.gs/;
-        proxy_set_header Host mirror.sg.gs;
+        proxy_pass https://mirror.twds.com.tw/;
+        proxy_set_header Host mirror.twds.com.tw;
         proxy_cache_valid 200 302 180d;
     }
 }
