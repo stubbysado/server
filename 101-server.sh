@@ -92,20 +92,18 @@ sudo apt update
 sudo apt install nfs-kernel-server -y
 echo "/mnt/server 10.0.0.31(rw,async,no_root_squash,no_subtree_check,fsid=0)" | sudo tee -a /etc/exports
 echo "/mnt/server 10.0.0.42(rw,async,no_root_squash,no_subtree_check,fsid=0)" | sudo tee -a /etc/exports
-echo "/mnt/server 10.0.0.43(rw,async,no_root_squash,no_subtree_check,fsid=0)" | sudo tee -a /etc/exports
-echo "/mnt/server 10.0.0.49(rw,async,no_root_squash,no_subtree_check,fsid=0)" | sudo tee -a /etc/exports
 sudo exportfs -ra
 sudo systemctl restart nfs-kernel-server
 
 # SNAPRAID
-SNAPRAIDLINK="https://github.com/amadvance/snapraid/releases/download/v14.2/snapraid_14.2-1_amd64.deb"
+SNAPRAIDLINK="https://github.com/amadvance/snapraid/releases/download/v14.6/snapraid_14.6-1_amd64.deb"
 SNAPRAIDDEB="/home/oggy/snapraid.deb"
 
 wget -O "$SNAPRAIDDEB" "$SNAPRAIDLINK"
 sudo dpkg -i "$SNAPRAIDDEB"
 rm -fv "$SNAPRAIDDEB"
 
-SNAPRAIDDAEMONLINK="https://github.com/amadvance/snapraid-daemon/releases/download/v1.6/snapraid-daemon_1.6-1_amd64.deb"
+SNAPRAIDDAEMONLINK="https://github.com/amadvance/snapraid-daemon/releases/download/v1.11/snapraid-daemon_1.11-1_amd64.deb"
 SNAPRAIDDAEMONDEB="/home/oggy/snapraid-daemon.deb"
 
 wget -O "$SNAPRAIDDAEMONDEB" "$SNAPRAIDDAEMONLINK"
