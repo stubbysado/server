@@ -150,6 +150,198 @@ exclude 02-Downloads/
 exclude 09-Work/RAW/tmp/
 EOF
 
+# DOCKER
+sudo apt update
+sudo apt install ca-certificates curl -y
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/debian
+Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+
+# DOCKGE
+sudo mkdir -p /opt/stacks /opt/dockge
+sudo curl -sL https://raw.githubusercontent.com/louislam/dockge/master/compose.yaml --output /opt/dockge/compose.yaml
+sudo docker compose -f /opt/dockge/compose.yaml up -d
+
+# PROWLARR
+sudo mkdir -p /opt/stacks/prowlarr
+sudo tee /opt/stacks/prowlarr/compose.yaml <<'EOF'
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /opt/stacks/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+EOF
+sudo chown $USER:$USER -R /opt/stacks/prowlarr
+sudo docker compose -f /opt/stacks/prowlarr/compose.yaml up -d
+
+# RADARR
+sudo mkdir -p /opt/stacks/radarr
+sudo tee /opt/stacks/radarr/compose.yaml <<'EOF'
+services:
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /opt/stacks/radarr:/config
+      - /mnt/server/02-Downloads/radarr:/movies #optional
+      - /mnt/server/02-Downloads/qbittorent/downloads:/downloads #optional
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+EOF
+sudo chown $USER:$USER -R /opt/stacks/radarr
+sudo docker compose -f /opt/stacks/radarr/compose.yaml up -d
+
+# SONARR
+sudo mkdir -p /opt/stacks/sonarr
+sudo tee /opt/stacks/sonarr/compose.yaml <<'EOF'
+services:
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /opt/stacks/sonarr:/config
+      - /mnt/server/02-Downloads/sonarr:/tv #optional
+      - /mnt/server/02-Downloads/qbittorent/downloads:/downloads #optional
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+EOF
+sudo chown $USER:$USER -R /opt/stacks/sonarr
+sudo docker compose -f /opt/stacks/sonarr/compose.yaml up -d
+
+# LIDARR
+sudo mkdir -p /opt/stacks/lidarr
+sudo tee /opt/stacks/lidarr/compose.yaml <<'EOF'
+services:
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /opt/stacks/lidarr:/config
+      - /mnt/server/03-Music/Music:/music #optional
+      - /mnt/server/02-Downloads/qbittorent/downloads:/downloads #optional
+    ports:
+      - 8686:8686
+    restart: unless-stopped
+EOF
+sudo chown $USER:$USER -R /opt/stacks/lidarr
+sudo docker compose -f /opt/stacks/lidarr/compose.yaml up -d
+
+# BAZARR
+sudo mkdir -p /opt/stacks/bazarr
+sudo tee /opt/stacks/bazarr/compose.yaml <<'EOF'
+services:
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /opt/stacks/bazarr:/config
+      - /mnt/server/02-Downloads/radarr:/movies #optional
+      - /mnt/server/02-Downloads/sonarr:/tv #optional
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+EOF
+sudo chown $USER:$USER -R /opt/stacks/bazarr
+sudo docker compose -f /opt/stacks/bazarr/compose.yaml up -d
+
+# BYPARR
+sudo mkdir -p /opt/stacks/byparr
+sudo tee /opt/stacks/byparr/compose.yaml <<'EOF'
+services:
+  byparr:
+    image: ghcr.io/thephaseless/byparr:latest
+    restart: unless-stopped
+    init: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Uncomment below to use byparr outside of internal network
+    # ports:
+    #   - "8191:8191"
+EOF
+sudo chown $USER:$USER -R /opt/stacks/byparr
+sudo docker compose -f /opt/stacks/byparr/compose.yaml up -d
+
+# JELLYFIN
+sudo mkdir -p /opt/stacks/jellyfin
+sudo tee /opt/stacks/jellyfin/compose.yaml <<'EOF'
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - JELLYFIN_PublishedServerUrl=http://10.0.0.21 #optional
+    volumes:
+      - /opt/stacks/jellyfin:/config
+      - /mnt/server:/media
+    ports:
+      - 8096:8096
+      - 8920:8920 #optional
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+    restart: unless-stopped
+EOF
+sudo chown $USER:$USER -R /opt/stacks/jellyfin
+sudo docker compose -f /opt/stacks/jellyfin/compose.yaml up -d
+
+# NAVIDROME
+sudo mkdir -p /opt/stacks/navidrome
+sudo tee /opt/stacks/navidrome/compose.yaml <<'EOF'
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    user: 1000:1000 # should be owner of volumes
+    ports:
+      - "4533:4533"
+    restart: unless-stopped
+    volumes:
+      - "/opt/stacks/navidrome:/data"
+      - "/mnt/server/03-Music/Music:/music:ro"
+EOF
+sudo chown $USER:$USER -R /opt/stacks/navidrome
+sudo docker compose -f /opt/stacks/navidrome/compose.yaml up -d
+
 # ZRAM
 sudo apt update
 sudo apt install systemd-zram-generator -y
