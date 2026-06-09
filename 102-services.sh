@@ -230,6 +230,7 @@ curl -s https://repo.jellyfin.org/install-debuntu.sh | sudo bash
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart prowlarr.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart radarr.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart sonarr.service") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart lidarr.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart bazarr.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart jellyfin.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart navidrome.service") | crontab -'
