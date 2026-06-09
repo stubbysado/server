@@ -139,5 +139,6 @@ else
     exit 0
 fi
 EOF
-chmod 755 -v /home/oggy/update.sh
+
+sudo chmod 755 -v /home/oggy/update.sh
 sudo bash -c "(crontab -l 2>/dev/null; echo '30 6 * * 1 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
