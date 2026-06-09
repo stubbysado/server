@@ -80,3 +80,6 @@ else
     echo "[!] FAILED [!]"
     exit 1
 fi
+
+# CRONTAB
+sudo bash -c '(crontab -l 2>/dev/null; echo "0 0 * * 1 systemctl restart nginx.service") | crontab -'
