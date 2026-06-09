@@ -82,4 +82,4 @@ else
 fi
 
 # CRONTAB
-sudo bash -c '(crontab -l 2>/dev/null; echo "0 0 * * 1 systemctl restart nginx.service") | crontab -'
+bash -c '(crontab -l 2>/dev/null; echo "0 0 * * 1 systemctl restart nginx.service") | crontab -'
