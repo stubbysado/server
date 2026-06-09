@@ -115,8 +115,6 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable filebrowser
 sudo systemctl start filebrowser
-
-# CRONTAB
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart filebrowser.service") | crontab -'
 
 # ZRAM
