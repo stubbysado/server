@@ -80,6 +80,7 @@ EOF
 
 sudo systemctl daemon-reload
 sudo systemctl enable --now qbittorrent-nox
+sudo bash -c '(crontab -l 2>/dev/null; echo "0 3 * * * systemctl restart qbittorrent-nox.service") | crontab -'
 
 # ZRAM
 sudo apt update
