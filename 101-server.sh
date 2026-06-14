@@ -97,14 +97,14 @@ sudo exportfs -ra
 sudo systemctl restart nfs-kernel-server
 
 # SNAPRAID
-SNAPRAIDLINK="https://github.com/amadvance/snapraid/releases/download/v14.6/snapraid_14.6-1_amd64.deb"
+SNAPRAIDLINK="https://github.com/amadvance/snapraid/releases/download/v14.7/snapraid_14.7-1_amd64.deb"
 SNAPRAIDDEB="/home/oggy/snapraid.deb"
 
 wget -O "$SNAPRAIDDEB" "$SNAPRAIDLINK"
 sudo dpkg -i "$SNAPRAIDDEB"
 rm -fv "$SNAPRAIDDEB"
 
-SNAPRAIDDAEMONLINK="https://github.com/amadvance/snapraid-daemon/releases/download/v1.11/snapraid-daemon_1.11-1_amd64.deb"
+SNAPRAIDDAEMONLINK="https://github.com/amadvance/snapraid-daemon/releases/download/v1.12/snapraid-daemon_1.12-1_amd64.deb"
 SNAPRAIDDAEMONDEB="/home/oggy/snapraid-daemon.deb"
 
 wget -O "$SNAPRAIDDAEMONDEB" "$SNAPRAIDDAEMONLINK"
