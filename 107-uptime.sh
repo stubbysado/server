@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # REMOVE SOURCES.LIST
 rm -f /etc/apt/sources.list
