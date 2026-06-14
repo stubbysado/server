@@ -23,7 +23,7 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt clean
 sudo apt autoremove -y
-sudo apt install mergerfs samba -y
+sudo apt install mergerfs samba smartmontools -y
 
 # FSTAB
 sudo mkdir -p /mnt/parity1 /mnt/data{1..6}
