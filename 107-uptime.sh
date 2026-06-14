@@ -24,6 +24,9 @@ apt upgrade -y
 apt clean
 apt autoremove -y
 
+# ENABLE SSH
+sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && systemctl restart ssh.service
+
 # TIMEZONE
 timedatectl set-timezone Asia/Kuala_Lumpur
 
