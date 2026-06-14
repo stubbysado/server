@@ -20,7 +20,7 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt clean
 sudo apt autoremove -y
-sudo apt install mergerfs samba screen -y
+sudo apt install mergerfs samba screen smartmontools -y
 
 # FSTAB
 sudo mkdir -p /mnt/parity1 /mnt/data{1..6}
@@ -79,7 +79,7 @@ echo -e "$SAMBAPASSWORD\n$SAMBAPASSWORD" | sudo smbpasswd -a oggy
 sudo systemctl restart smbd.service
 
 # SNAPRAID
-SNAPRAIDLINK="https://github.com/amadvance/snapraid/releases/download/v14.2/snapraid_14.2-1_amd64.deb"
+SNAPRAIDLINK="https://github.com/amadvance/snapraid/releases/download/v14.7/snapraid_14.7-1_amd64.deb"
 SNAPRAIDDEB="/home/oggy/snapraid.deb"
 
 wget -O "$SNAPRAIDDEB" "$SNAPRAIDLINK"
