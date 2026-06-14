@@ -24,6 +24,9 @@ apt upgrade -y
 apt clean
 apt autoremove -y
 
+# SSH
+sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && systemctl restart ssh.service
+
 # BYPARR
 apt install git -y
 git clone https://github.com/ThePhaseless/Byparr
