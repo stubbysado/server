@@ -48,10 +48,10 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 
-wget -qO- https://astral.sh/uv/install.sh | sh
-sleep 30
-source $HOME/.local/bin/env
-/opt/byparr/.venv/bin/playwright install-deps
-systemctl daemon-reload
-systemctl enable byparr.service
-systemctl start byparr.service
+# wget -qO- https://astral.sh/uv/install.sh | sh
+# sleep 30
+# source $HOME/.local/bin/env
+# /opt/byparr/.venv/bin/playwright install-deps
+# systemctl daemon-reload
+# systemctl enable byparr.service
+# systemctl start byparr.service
