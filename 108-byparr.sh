@@ -51,6 +51,8 @@ EOF
 # wget -qO- https://astral.sh/uv/install.sh | sh
 # sleep 30
 # source $HOME/.local/bin/env
+# cd /opt/byparr/
+# uv sync
 # /opt/byparr/.venv/bin/playwright install-deps
 # systemctl daemon-reload
 # systemctl enable byparr.service
