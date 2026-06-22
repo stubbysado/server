@@ -72,7 +72,7 @@ server {
     }
 
     location / {
-        proxy_pass https://$upstream/;
+        proxy_pass https://$upstream$request_uri;
         proxy_set_header Host $upstream;
         proxy_cache_valid 200 302 180d;
     }
