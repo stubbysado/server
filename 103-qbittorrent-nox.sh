@@ -133,8 +133,8 @@ fi
 
 if [ "$REBOOT_NEEDED" -eq 1 ]; then
     echo "[!] REBOOT REQUIRED"
-    sleep 3
-    reboot
+    /usr/bin/sleep 3
+    /usr/sbin/reboot
 else
     echo "No reboot required."
     exit 0
