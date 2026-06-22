@@ -145,8 +145,9 @@ data data6 /mnt/data6/
 
 exclude lost+found/
 exclude .recycle/
-exclude 02-Downloads/
-exclude 09-Work/RAW/tmp/
+exclude 02-Downloads/qbittorent/
+exclude 02-Downloads/real-debrid/
+exclude 02-Downloads/jellyfin/
 EOF
 
 # ZRAM
