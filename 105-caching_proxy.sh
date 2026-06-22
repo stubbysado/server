@@ -42,12 +42,16 @@ proxy_cache_path /var/cache/nginx/reverse-proxy
     max_size=5g
     inactive=180d
     use_temp_path=off;
+
 server {
     listen 80;
     server_name 10.0.0.41;
     resolver 10.0.0.1 valid=5m;
     access_log off;
     error_log /dev/null;
+
+    set $upstream "mirror.twds.com.tw";
+
     proxy_cache deb_cache;
     proxy_cache_key "$host$request_uri";
     proxy_cache_valid 200 302 180d;
@@ -59,15 +63,17 @@ server {
     proxy_connect_timeout 10s;
     proxy_read_timeout 60s;
     add_header X-Cache-Status $upstream_cache_status;
+
     location ~* (InRelease|Release(\.gpg)?|Packages(\.xz|\.gz|\.bz2)?|Sources(\.xz|\.gz)?|Translation-[a-z]+(\.xz)?)$ {
-        proxy_pass https://mirror.twds.com.tw;
-        proxy_set_header Host mirror.twds.com.tw;
+        proxy_pass https://$upstream;
+        proxy_set_header Host $upstream;
         proxy_no_cache 1;
         proxy_cache_bypass 1;
     }
+
     location / {
-        proxy_pass https://mirror.twds.com.tw/;
-        proxy_set_header Host mirror.twds.com.tw;
+        proxy_pass https://$upstream/;
+        proxy_set_header Host $upstream;
         proxy_cache_valid 200 302 180d;
     }
 }
