@@ -60,7 +60,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable nfs-mount.service
 
 # FILEBROWSER QUANTUM
-FILEBROWSERQUANTUMLINK="https://github.com/gtsteffaniak/filebrowser/releases/download/v1.3.3-stable/linux-amd64-filebrowser"
+FILEBROWSERQUANTUMLINK="https://github.com/gtsteffaniak/filebrowser/releases/download/v1.4.0-stable/linux-amd64-filebrowser"
 FILEBROWSERQUANTUMBIN="/home/oggy/filebrowser"
 
 wget -O "$FILEBROWSERQUANTUMBIN" "$FILEBROWSERQUANTUMLINK"
