@@ -33,8 +33,6 @@ EOF
 # UPDATE
 apt update
 apt full-upgrade -y
-apt clean
-apt autoremove -y
 
 # FIX E1000E NIC
 NIC=$(basename $(ls -l /sys/class/net/*/device/driver 2>/dev/null | grep e1000e | awk '{print $9}' | cut -d/ -f5) 2>/dev/null | head -n 1)
@@ -107,8 +105,6 @@ done
 # UPDATE
 apt update
 apt full-upgrade -y
-apt clean
-apt autoremove -y
 
 REBOOT_NEEDED=0
 
