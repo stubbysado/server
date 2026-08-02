@@ -89,14 +89,14 @@ sudo exportfs -ra
 sudo systemctl restart nfs-kernel-server
 
 # SNAPRAID
-SNAPRAIDLINK="https://github.com/amadvance/snapraid/releases/download/v14.7/snapraid_14.7-1_amd64.deb"
+SNAPRAIDLINK="https://github.com/amadvance/snapraid/releases/download/v14.9/snapraid_14.9-1_amd64.deb"
 SNAPRAIDDEB="/home/oggy/snapraid.deb"
 
 wget -O "$SNAPRAIDDEB" "$SNAPRAIDLINK"
 sudo dpkg -i "$SNAPRAIDDEB"
 rm -fv "$SNAPRAIDDEB"
 
-SNAPRAIDDAEMONLINK="https://github.com/amadvance/snapraid-daemon/releases/download/v1.12/snapraid-daemon_1.12-1_amd64.deb"
+SNAPRAIDDAEMONLINK="https://github.com/amadvance/snapraid-daemon/releases/download/v1.14/snapraid-daemon_1.14-1_amd64.deb"
 SNAPRAIDDAEMONDEB="/home/oggy/snapraid-daemon.deb"
 
 wget -O "$SNAPRAIDDAEMONDEB" "$SNAPRAIDDAEMONLINK"
@@ -200,4 +200,4 @@ fi
 EOF
 
 sudo chmod 755 -v /home/oggy/update.sh
-sudo bash -c "(crontab -l 2>/dev/null; echo '0 6 * * 1 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
+sudo bash -c "(crontab -l 2>/dev/null; echo '0 5 * * 1 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
