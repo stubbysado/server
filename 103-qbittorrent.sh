@@ -59,7 +59,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable nfs-mount.service
 
 # QBITTORRENT-NOX
-wget "https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-5.2.2_v2.0.13/x86_64-qbittorrent-nox"
+wget "https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-5.2.3_v2.0.13/x86_64-qbittorrent-nox"
 sudo mv /home/oggy/x86_64-qbittorrent-nox /usr/local/bin/qbittorrent-nox
 sudo chmod 755 /usr/local/bin/qbittorrent-nox
 
@@ -142,4 +142,4 @@ fi
 EOF
 
 sudo chmod 755 -v /home/oggy/update.sh
-sudo bash -c "(crontab -l 2>/dev/null; echo '30 6 * * 1 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
+sudo bash -c "(crontab -l 2>/dev/null; echo '30 5 * * 1 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
