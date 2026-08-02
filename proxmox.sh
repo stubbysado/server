@@ -144,4 +144,4 @@ fi
 EOF
 
 chmod 755 -v /root/update.sh
-(crontab -l 2>/dev/null; echo '0 5 * * 1 /root/update.sh > /root/update.log 2>&1') | crontab -
+(crontab -l 2>/dev/null; echo '0 4 * * 1 /root/update.sh > /root/update.log 2>&1') | crontab -
