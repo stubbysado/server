@@ -60,7 +60,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable nfs-mount.service
 
 # FILEBROWSER QUANTUM
-FILEBROWSERQUANTUMLINK="https://github.com/gtsteffaniak/filebrowser/releases/download/v1.4.0-stable/linux-amd64-filebrowser"
+FILEBROWSERQUANTUMLINK="https://github.com/gtsteffaniak/filebrowser/releases/download/v1.5.0-stable/linux-amd64-filebrowser"
 FILEBROWSERQUANTUMBIN="/home/oggy/filebrowser"
 
 wget -O "$FILEBROWSERQUANTUMBIN" "$FILEBROWSERQUANTUMLINK"
@@ -177,4 +177,4 @@ fi
 EOF
 
 sudo chmod 755 -v /home/oggy/update.sh
-sudo bash -c "(crontab -l 2>/dev/null; echo '30 6 * * 1 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
+sudo bash -c "(crontab -l 2>/dev/null; echo '30 5 * * 1 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
