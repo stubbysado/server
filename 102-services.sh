@@ -23,7 +23,7 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt clean
 sudo apt autoremove -y
-sudo apt install curl nginx transmission-daemon -y
+sudo apt install curl nginx -y
 
 # NFS
 sudo apt update
@@ -110,6 +110,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now prowlarr
 rm ./Prowlarr*.linux*.tar.gz
 
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart prowlarr.service") | crontab -'
+
 # RADARR
 sudo apt install curl sqlite3 -y
 sudo mkdir -p /var/lib/radarr
@@ -139,9 +141,13 @@ sudo systemctl -q daemon-reload
 sudo systemctl enable --now -q radarr
 rm Radarr*.linux*.tar.gz
 
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart radarr.service") | crontab -'
+
 # SONARR
 curl -o install-sonarr.sh https://raw.githubusercontent.com/Sonarr/Sonarr/develop/distribution/debian/install.sh
 sudo bash install-sonarr.sh
+
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart sonarr.service") | crontab -'
 
 # LIDARR
 sudo apt update
@@ -175,6 +181,8 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable --now lidarr
 rm ./Lidarr*.linux*.tar.gz
+
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart lidarr.service") | crontab -'
 
 # BAZARR
 BAZARRINSTALLDIR="/opt/bazarr"
@@ -213,8 +221,10 @@ printf '[Unit]\nDescription=Bazarr\nAfter=network.target\n\n[Service]\nType=simp
 sudo systemctl daemon-reload
 sudo systemctl enable --now bazarr
 
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart bazarr.service") | crontab -'
+
 # NAVIDROME
-NAVIDROMELINK="https://github.com/navidrome/navidrome/releases/download/v0.62.0/navidrome_0.62.0_linux_amd64.deb"
+NAVIDROMELINK="https://github.com/navidrome/navidrome/releases/download/v0.63.2/navidrome_0.63.2_linux_amd64.deb"
 NAVIDROMEDEB="/home/oggy/navidrome.deb"
 
 wget -O "$NAVIDROMEDEB" "$NAVIDROMELINK"
@@ -222,18 +232,13 @@ sudo apt install "$NAVIDROMEDEB" -y
 sudo sed -i 's|MusicFolder = "/opt/navidrome/music"|MusicFolder = "/mnt/server/03-Music/Music/"|' /etc/navidrome/navidrome.toml
 sudo systemctl enable --now navidrome
 
+sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart navidrome.service") | crontab -'
+
 # JELLYFIN
 sudo umount -l /tmp
 curl -s https://repo.jellyfin.org/install-debuntu.sh | sudo bash
 
-# CRONTAB
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart prowlarr.service") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart radarr.service") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart sonarr.service") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart lidarr.service") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart bazarr.service") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart jellyfin.service") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart navidrome.service") | crontab -'
 
 # ZRAM
 sudo apt update
@@ -299,4 +304,4 @@ fi
 EOF
 
 sudo chmod 755 -v /home/oggy/update.sh
-sudo bash -c "(crontab -l 2>/dev/null; echo '30 6 * * 1 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
+sudo bash -c "(crontab -l 2>/dev/null; echo '30 5 * * 1 /home/oggy/update.sh > /home/oggy/update.log 2>&1') | crontab -"
