@@ -1,10 +1,5 @@
 #!/bin/bash -x
 
-# DISABLE HA
-systemctl stop pve-ha-lrm pve-ha-crm corosync
-systemctl disable pve-ha-lrm pve-ha-crm corosync
-systemctl mask pve-ha-lrm pve-ha-crm corosync
-
 # BACKUP SOURCES.LIST
 SOURCESLISTBACKUPDIR="/root/backup/sources_list_backup"
 
