@@ -59,30 +59,17 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable nfs-mount.service
 
-# SPEED TEST
-check_github_speed() {
-    local GITHUBTESTURL="http://prowlarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64"
-    while true; do
-        echo "Testing download (15s)"
-        GITHUBSPEED=$(curl -L --max-time 15 --progress-bar -o /dev/null -w "%{speed_download}" "$GITHUBTESTURL" 2>/dev/tty)
-        GITHUBSPEEDKB=$(awk "BEGIN {printf \"%.1f\", $GITHUBSPEED / 1024}")
-        echo "Speed: ${GITHUBSPEEDKB} KB/s"
-        read -rp "[P]roceed / [R]etry / [A]bort: " CHOICE
-        case "${CHOICE,,}" in
-            p) break ;;
-            r) continue ;;
-            a) exit 1 ;;
-            *) echo "Invalid" ;;
-        esac
-    done
-}
-
-check_github_speed
+# LOCAL CACHE
+SRC="/mnt/server/10-Backup/github/services"
+if [ ! -d "$SRC" ]; then
+    echo "[!] /mnt/server not mounted [!]"
+    exit 1
+fi
 
 # PROWLARR
 sudo apt update
 sudo apt install curl sqlite3 libicu-dev -y
-axel -n 16 'http://prowlarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64'
+cp "$SRC"/Prowlarr*.linux*.tar.gz .
 tar -xvzf ./Prowlarr*.linux*.tar.gz
 sudo mv ./Prowlarr/ /opt
 sudo chown oggy:oggy -Rv /opt/Prowlarr
@@ -116,7 +103,7 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl resta
 sudo apt install curl sqlite3 -y
 sudo mkdir -p /var/lib/radarr
 sudo chown "$USER":"$USER" /var/lib/radarr
-axel -n 16 'http://radarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64'
+cp "$SRC"/Radarr*.linux*.tar.gz .
 tar -xvzf Radarr*.linux*.tar.gz
 sudo mv Radarr /opt/
 sudo chown "$USER":"$USER" -R /opt/Radarr
@@ -144,8 +131,8 @@ rm Radarr*.linux*.tar.gz
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart radarr.service") | crontab -'
 
 # SONARR
-curl -o install-sonarr.sh https://raw.githubusercontent.com/Sonarr/Sonarr/develop/distribution/debian/install.sh
-sed -i 's/wget --content-disposition/axel -n 16/' ./install-sonarr.sh
+cp "$SRC/install-sonarr.sh" ./install-sonarr.sh
+sed -i "s|wget --content-disposition \"\$DLURL\"|cp ${SRC}/Sonarr*.linux*.tar.gz .|" ./install-sonarr.sh
 sudo bash install-sonarr.sh
 
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart sonarr.service") | crontab -'
@@ -153,7 +140,7 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl resta
 # LIDARR
 sudo apt update
 sudo apt install curl mediainfo sqlite3 libchromaprint-tools -y
-axel -n 16 'http://lidarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64'
+cp "$SRC"/Lidarr*.linux*.tar.gz .
 tar -xvzf ./Lidarr*.linux*.tar.gz
 sudo mv ./Lidarr/ /opt
 sudo chown oggy:oggy -Rv /opt/Lidarr
@@ -202,7 +189,7 @@ else
 fi
 
 BAZARRTMPZIP=$(mktemp -u /tmp/bazarr_XXXXXX.zip)
-axel -n 16 -o "$BAZARRTMPZIP" 'https://github.com/morpheus65535/bazarr/releases/latest/download/bazarr.zip'
+cp "$SRC/bazarr.zip" "$BAZARRTMPZIP"
 sudo mkdir -p "$BAZARRINSTALLDIR"
 sudo unzip -q -o "$BAZARRTMPZIP" -d "$BAZARRINSTALLDIR"
 rm -f "$BAZARRTMPZIP"
@@ -225,10 +212,9 @@ sudo systemctl enable --now bazarr
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart bazarr.service") | crontab -'
 
 # NAVIDROME
-NAVIDROMELINK="https://github.com/navidrome/navidrome/releases/download/v0.63.2/navidrome_0.63.2_linux_amd64.deb"
 NAVIDROMEDEB="/home/oggy/navidrome.deb"
 
-axel -n 16 -o "$NAVIDROMEDEB" "$NAVIDROMELINK"
+cp "$SRC"/navidrome_*_linux_amd64.deb "$NAVIDROMEDEB"
 sudo apt install "$NAVIDROMEDEB" -y
 sudo sed -i 's|MusicFolder = "/opt/navidrome/music"|MusicFolder = "/mnt/server/03-Music/Music/"|' /etc/navidrome/navidrome.toml
 sudo systemctl enable --now navidrome
