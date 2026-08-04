@@ -230,7 +230,7 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl resta
 ## LIMIT FFPROBE
 sudo tee /usr/lib/jellyfin-ffmpeg/ffprobe > /dev/null << 'EOF'
 #!/bin/bash
-ulimit -v 524288   # 512MB cap per ffprobe
+ulimit -v 500000
 
 for i in $(seq 1 10); do
   exec 9>"/tmp/ffprobe-slot-$i.lock"
