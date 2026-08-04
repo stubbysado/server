@@ -241,6 +241,15 @@ curl -s https://repo.jellyfin.org/install-debuntu.sh | sudo bash
 
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart jellyfin.service") | crontab -'
 
+## FIX FFPROBE
+sudo mv /usr/lib/jellyfin-ffmpeg/ffprobe /usr/lib/jellyfin-ffmpeg/ffprobe.real
+sudo tee /usr/lib/jellyfin-ffmpeg/ffprobe > /dev/null << 'EOF'
+#!/bin/bash
+exec /usr/bin/flock -w 300 /tmp/ffprobe.lock /usr/lib/jellyfin-ffmpeg/ffprobe.real "$@"
+EOF
+sudo chmod +x /usr/lib/jellyfin-ffmpeg/ffprobe
+sudo systemctl restart jellyfin
+
 # ZRAM
 sudo apt update
 sudo apt install systemd-zram-generator -y
