@@ -241,11 +241,21 @@ curl -s https://repo.jellyfin.org/install-debuntu.sh | sudo bash
 
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart jellyfin.service") | crontab -'
 
-## FIX FFPROBE
-sudo mv /usr/lib/jellyfin-ffmpeg/ffprobe /usr/lib/jellyfin-ffmpeg/ffprobe.real
+## LIMIT FFPROBE
 sudo tee /usr/lib/jellyfin-ffmpeg/ffprobe > /dev/null << 'EOF'
 #!/bin/bash
-exec /usr/bin/flock -w 300 /tmp/ffprobe.lock /usr/lib/jellyfin-ffmpeg/ffprobe.real "$@"
+ulimit -v 524288   # 512MB cap per ffprobe
+
+for i in $(seq 1 10); do
+  exec 9>"/tmp/ffprobe-slot-$i.lock"
+  if flock -n 9; then
+    exec /usr/lib/jellyfin-ffmpeg/ffprobe.real "$@"
+  fi
+done
+
+exec 9>"/tmp/ffprobe-slot-1.lock"
+flock -w 300 9
+exec /usr/lib/jellyfin-ffmpeg/ffprobe.real "$@"
 EOF
 sudo chmod +x /usr/lib/jellyfin-ffmpeg/ffprobe
 sudo systemctl restart jellyfin
