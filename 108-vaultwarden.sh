@@ -27,7 +27,7 @@ apt autoremove -y
 # SSH
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && systemctl restart ssh.service
 
-# INSTALL DOCKER
+# DOCKER
 apt update
 apt install -y ca-certificates curl
 install -m 0755 -d /etc/apt/keyrings
@@ -46,10 +46,8 @@ EOF
 apt update
 apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# CHECK DOCKER STATUS
 systemctl status docker --no-pager
 
-# IF NOT RUNNING
 systemctl enable docker
 systemctl start docker
 
