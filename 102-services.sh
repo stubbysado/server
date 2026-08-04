@@ -5,13 +5,13 @@ sudo rm -f /etc/apt/sources.list
 
 # SOURCES.LIST
 sudo tee /etc/apt/sources.list.d/debian.sources <<'EOF'
-Types: deb deb-src
+Types: deb deb-LOCALCACHE
 URIs: http://10.0.0.40/debian
 Suites: trixie trixie-updates
 Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 
-Types: deb deb-src
+Types: deb deb-LOCALCACHE
 URIs: http://10.0.0.40/debian-security
 Suites: trixie-security
 Components: main contrib non-free non-free-firmware
@@ -60,8 +60,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable nfs-mount.service
 
 # LOCAL CACHE
-SRC="/mnt/server/10-Backup/github/services"
-if [ ! -d "$SRC" ]; then
+LOCALCACHE="/mnt/server/10-Backup/github/services"
+if [ ! -d "$LOCALCACHE" ]; then
     echo "[!] /mnt/server not mounted [!]"
     exit 1
 fi
@@ -69,7 +69,7 @@ fi
 # PROWLARR
 sudo apt update
 sudo apt install curl sqlite3 libicu-dev -y
-cp "$SRC"/Prowlarr*.linux*.tar.gz .
+cp "$LOCALCACHE"/Prowlarr*.linux*.tar.gz .
 tar -xvzf ./Prowlarr*.linux*.tar.gz
 sudo mv ./Prowlarr/ /opt
 sudo chown oggy:oggy -Rv /opt/Prowlarr
@@ -103,7 +103,7 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl resta
 sudo apt install curl sqlite3 -y
 sudo mkdir -p /var/lib/radarr
 sudo chown "$USER":"$USER" /var/lib/radarr
-cp "$SRC"/Radarr*.linux*.tar.gz .
+cp "$LOCALCACHE"/Radarr*.linux*.tar.gz .
 tar -xvzf Radarr*.linux*.tar.gz
 sudo mv Radarr /opt/
 sudo chown "$USER":"$USER" -R /opt/Radarr
@@ -131,8 +131,8 @@ rm Radarr*.linux*.tar.gz
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart radarr.service") | crontab -'
 
 # SONARR
-cp "$SRC/install-sonarr.sh" ./install-sonarr.sh
-sed -i "s|wget --content-disposition \"\$DLURL\"|cp ${SRC}/Sonarr*.linux*.tar.gz .|" ./install-sonarr.sh
+cp "$LOCALCACHE/install-sonarr.sh" ./install-sonarr.sh
+sed -i "s|wget --content-disposition \"\$DLURL\"|cp ${LOCALCACHE}/Sonarr*.linux*.tar.gz .|" ./install-sonarr.sh
 sudo bash install-sonarr.sh
 
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart sonarr.service") | crontab -'
@@ -140,7 +140,7 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl resta
 # LIDARR
 sudo apt update
 sudo apt install curl mediainfo sqlite3 libchromaprint-tools -y
-cp "$SRC"/Lidarr*.linux*.tar.gz .
+cp "$LOCALCACHE"/Lidarr*.linux*.tar.gz .
 tar -xvzf ./Lidarr*.linux*.tar.gz
 sudo mv ./Lidarr/ /opt
 sudo chown oggy:oggy -Rv /opt/Lidarr
@@ -189,7 +189,7 @@ else
 fi
 
 BAZARRTMPZIP=$(mktemp -u /tmp/bazarr_XXXXXX.zip)
-cp "$SRC/bazarr.zip" "$BAZARRTMPZIP"
+cp "$LOCALCACHE/bazarr.zip" "$BAZARRTMPZIP"
 sudo mkdir -p "$BAZARRINSTALLDIR"
 sudo unzip -q -o "$BAZARRTMPZIP" -d "$BAZARRINSTALLDIR"
 rm -f "$BAZARRTMPZIP"
@@ -214,7 +214,7 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl resta
 # NAVIDROME
 NAVIDROMEDEB="/home/oggy/navidrome.deb"
 
-cp "$SRC"/navidrome_*_linux_amd64.deb "$NAVIDROMEDEB"
+cp "$LOCALCACHE"/navidrome_*_linux_amd64.deb "$NAVIDROMEDEB"
 sudo apt install "$NAVIDROMEDEB" -y
 sudo sed -i 's|MusicFolder = "/opt/navidrome/music"|MusicFolder = "/mnt/server/03-Music/Music/"|' /etc/navidrome/navidrome.toml
 sudo systemctl enable --now navidrome
