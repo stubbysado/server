@@ -60,7 +60,6 @@ sudo mount -a
 sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
 
 sudo tee -a /etc/samba/smb.conf <<'EOF'
-
 [server3]
 path = /mnt/server3
 browseable = no
