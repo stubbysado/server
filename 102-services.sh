@@ -145,6 +145,7 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl resta
 
 # SONARR
 curl -o install-sonarr.sh https://raw.githubusercontent.com/Sonarr/Sonarr/develop/distribution/debian/install.sh
+sed -i 's/wget --content-disposition/axel -n 16/' ./install-sonarr.sh
 sudo bash install-sonarr.sh
 
 sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart sonarr.service") | crontab -'
