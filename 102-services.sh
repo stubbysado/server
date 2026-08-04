@@ -23,7 +23,7 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt clean
 sudo apt autoremove -y
-sudo apt install curl nginx -y
+sudo apt install axel curl nginx -y
 
 # NFS
 sudo apt update
@@ -82,7 +82,7 @@ check_github_speed
 # PROWLARR
 sudo apt update
 sudo apt install curl sqlite3 libicu-dev -y
-wget --content-disposition 'http://prowlarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64'
+axel -n 16 'http://prowlarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64'
 tar -xvzf ./Prowlarr*.linux*.tar.gz
 sudo mv ./Prowlarr/ /opt
 sudo chown oggy:oggy -Rv /opt/Prowlarr
@@ -116,7 +116,7 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl resta
 sudo apt install curl sqlite3 -y
 sudo mkdir -p /var/lib/radarr
 sudo chown "$USER":"$USER" /var/lib/radarr
-wget --content-disposition 'http://radarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64'
+axel -n 16 'http://radarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64'
 tar -xvzf Radarr*.linux*.tar.gz
 sudo mv Radarr /opt/
 sudo chown "$USER":"$USER" -R /opt/Radarr
@@ -152,7 +152,7 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl resta
 # LIDARR
 sudo apt update
 sudo apt install curl mediainfo sqlite3 libchromaprint-tools -y
-wget --content-disposition 'http://lidarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64'
+axel -n 16 'http://lidarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64'
 tar -xvzf ./Lidarr*.linux*.tar.gz
 sudo mv ./Lidarr/ /opt
 sudo chown oggy:oggy -Rv /opt/Lidarr
@@ -200,8 +200,8 @@ else
     python3-venv unrar unzip
 fi
 
-BAZARRTMPZIP=$(mktemp /tmp/bazarr_XXXXXX.zip)
-wget -q -O "$BAZARRTMPZIP" https://github.com/morpheus65535/bazarr/releases/latest/download/bazarr.zip
+BAZARRTMPZIP=$(mktemp -u /tmp/bazarr_XXXXXX.zip)
+axel -n 16 -o "$BAZARRTMPZIP" 'https://github.com/morpheus65535/bazarr/releases/latest/download/bazarr.zip'
 sudo mkdir -p "$BAZARRINSTALLDIR"
 sudo unzip -q -o "$BAZARRTMPZIP" -d "$BAZARRINSTALLDIR"
 rm -f "$BAZARRTMPZIP"
@@ -227,7 +227,7 @@ sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl resta
 NAVIDROMELINK="https://github.com/navidrome/navidrome/releases/download/v0.63.2/navidrome_0.63.2_linux_amd64.deb"
 NAVIDROMEDEB="/home/oggy/navidrome.deb"
 
-wget -O "$NAVIDROMEDEB" "$NAVIDROMELINK"
+axel -n 16 -o "$NAVIDROMEDEB" "$NAVIDROMELINK"
 sudo apt install "$NAVIDROMEDEB" -y
 sudo sed -i 's|MusicFolder = "/opt/navidrome/music"|MusicFolder = "/mnt/server/03-Music/Music/"|' /etc/navidrome/navidrome.toml
 sudo systemctl enable --now navidrome
