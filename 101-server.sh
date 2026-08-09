@@ -140,6 +140,11 @@ exclude .recycle/
 exclude 02-Downloads/other/
 EOF
 
+# SNAPRAID SCRIPT
+cp /mnt/server/01-Documents/Other/snapraid_script.sh /home/oggy/
+sudo chmod 755 /home/oggy/snapraid_script.sh
+bash -c '(crontab -l 2>/dev/null; echo "0 3 * * 2-6,0 /home/oggy/snapraid_script.sh") | crontab -'
+
 # ZRAM
 sudo apt update
 sudo apt install systemd-zram-generator -y
