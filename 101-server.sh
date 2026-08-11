@@ -96,29 +96,7 @@ wget -O "$SNAPRAIDDEB" "$SNAPRAIDLINK"
 sudo dpkg -i "$SNAPRAIDDEB"
 rm -fv "$SNAPRAIDDEB"
 
-SNAPRAIDDAEMONLINK="https://github.com/amadvance/snapraid-daemon/releases/download/v1.14/snapraid-daemon_1.14-1_amd64.deb"
-SNAPRAIDDAEMONDEB="/home/oggy/snapraid-daemon.deb"
-
-wget -O "$SNAPRAIDDAEMONDEB" "$SNAPRAIDDAEMONLINK"
-sudo dpkg -i "$SNAPRAIDDAEMONDEB"
-rm -fv "$SNAPRAIDDAEMONDEB"
-
-SNAPRAIDDCONF="/etc/snapraidd.conf"
-
-sudo sed -i \
-  -e 's|^#net_port = 127.0.0.1:7627|net_port = 7627|' \
-  -e 's|^#net_acl = +127.0.0.1|net_acl = +127.0.0.1,+10.0.0.0/24|' \
-  -e 's|^maintenance_schedule = 02:00|maintenance_schedule = 00:00|' \
-  -e 's|^sync_threshold_deletes = 50|sync_threshold_deletes = 0|' \
-  -e 's|^sync_threshold_updates = 100|sync_threshold_updates = 0|' \
-  -e 's|^#sync_prehash = 1|sync_prehash = 1|' \
-  -e 's|^scrub_percentage = 0.7|scrub_percentage = 1|' \
-  -e 's|^probe_interval_minutes = 3|probe_interval_minutes = 0|' \
-  -e 's|^spindown_idle_minutes = 15|#spindown_idle_minutes = 15|' \
-  "$SNAPRAIDDCONF"
-
 sudo tee /etc/snapraid.conf <<'EOF'
-
 parity /mnt/parity1/snapraid.parity
 
 content /mnt/data1/snapraid.content
