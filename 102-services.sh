@@ -97,8 +97,6 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now prowlarr
 rm ./Prowlarr*.linux*.tar.gz
 
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart prowlarr.service") | crontab -'
-
 # RADARR
 sudo apt install curl sqlite3 -y
 sudo mkdir -p /var/lib/radarr
@@ -128,14 +126,10 @@ sudo systemctl -q daemon-reload
 sudo systemctl enable --now -q radarr
 rm Radarr*.linux*.tar.gz
 
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart radarr.service") | crontab -'
-
 # SONARR
 cp "$LOCALCACHE/install-sonarr.sh" ./install-sonarr.sh
 sed -i "s|wget --content-disposition \"\$DLURL\"|cp ${LOCALCACHE}/Sonarr*.linux*.tar.gz .|" ./install-sonarr.sh
 sudo bash install-sonarr.sh
-
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart sonarr.service") | crontab -'
 
 # LIDARR
 sudo apt update
@@ -169,8 +163,6 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable --now lidarr
 rm ./Lidarr*.linux*.tar.gz
-
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart lidarr.service") | crontab -'
 
 # BAZARR
 BAZARRINSTALLDIR="/opt/bazarr"
@@ -209,8 +201,6 @@ printf '[Unit]\nDescription=Bazarr\nAfter=network.target\n\n[Service]\nType=simp
 sudo systemctl daemon-reload
 sudo systemctl enable --now bazarr
 
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart bazarr.service") | crontab -'
-
 # NAVIDROME
 NAVIDROMEDEB="/home/oggy/navidrome.deb"
 
@@ -219,15 +209,11 @@ sudo apt install "$NAVIDROMEDEB" -y
 sudo sed -i 's|MusicFolder = "/opt/navidrome/music"|MusicFolder = "/mnt/server/03-Music/Music/"|' /etc/navidrome/navidrome.toml
 sudo systemctl enable --now navidrome
 
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart navidrome.service") | crontab -'
-
 # JELLYFIN
 sudo umount -l /tmp
 curl -s https://repo.jellyfin.org/install-debuntu.sh | sudo bash
 
-sudo bash -c '(crontab -l 2>/dev/null; echo "@reboot sleep 30 && systemctl restart jellyfin.service") | crontab -'
-
-## LIMIT FFPROBE
+## LIMIT FFPROBE (TEMPORARY)
 sudo cp /usr/lib/jellyfin-ffmpeg/ffprobe /usr/lib/jellyfin-ffmpeg/ffprobe.bak
 sudo tee /usr/lib/jellyfin-ffmpeg/ffprobe > /dev/null << 'EOF'
 #!/bin/bash
