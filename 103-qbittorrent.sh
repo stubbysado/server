@@ -80,8 +80,44 @@ EOF
 
 sudo systemctl daemon-reload
 sudo systemctl enable --now qbittorrent-nox
-sudo bash -c '(crontab -l 2>/dev/null; echo "55 2 * * * /usr/bin/sync && /usr/bin/systemctl stop qbittorrent-nox.service") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "0 6 * * * /usr/bin/systemctl restart qbittorrent-nox.service") | crontab -'
+
+tee /home/oggy/qbittorrent-nox_check.sh <<'EOF'
+#!/bin/bash
+LOG="/mnt/server/08-Temporary/snapraid.log"
+SERVICE="qbittorrent-nox.service"
+MARKER="/dev/shm/qbittorrent-nox_marker-$(date +%F)"
+
+case "$1" in
+  stop)
+    rm -f /dev/shm/qbittorrent-nox_marker-*
+    /usr/bin/sync
+    /usr/bin/systemctl stop "$SERVICE"
+    ;;
+  check)
+    [ -f "$MARKER" ] && exit 0
+    if [ -f "$LOG" ] && [ "$(date -r "$LOG" +%F)" = "$(date +%F)" ]; then
+      /usr/bin/systemctl restart "$SERVICE"
+      touch "$MARKER"
+    fi
+    ;;
+  start)
+    [ -f "$MARKER" ] && exit 0
+    /usr/bin/systemctl restart "$SERVICE"
+    touch "$MARKER"
+    ;;
+esac
+EOF
+
+sudo chmod 755 /home/oggy/qbittorrent-nox_check.sh
+
+sudo bash -c '(crontab -l 2>/dev/null; echo "55 2 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh stop") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "30 3 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh check") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "0,30 4 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh check") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "0,30 5 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh check") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "0,30 6 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh check") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "0,30 7 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh check") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "0,30 8 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh check") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "0 9 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh start") | crontab -'
 
 # ZRAM
 sudo apt update
