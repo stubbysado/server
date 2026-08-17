@@ -59,8 +59,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable nfs-mount.service
 
 # QBITTORRENT-NOX
-wget "https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-5.2.3_v2.0.13/x86_64-qbittorrent-nox"
-sudo mv /home/oggy/x86_64-qbittorrent-nox /usr/local/bin/qbittorrent-nox
+sudo cp /mnt/server/10-Backup/github/bin/qbittorrent-nox /usr/local/bin/qbittorrent-nox
 sudo chmod 755 /usr/local/bin/qbittorrent-nox
 
 sudo tee /etc/systemd/system/qbittorrent-nox.service <<'EOF'
