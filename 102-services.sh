@@ -60,7 +60,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable nfs-mount.service
 
 # LOCAL CACHE
-LOCALCACHE="/mnt/server/10-Backup/github/services"
+LOCALCACHE="/mnt/server/10-Backup/github/bin"
 if [ ! -d "$LOCALCACHE" ]; then
     echo "[!] /mnt/server not mounted [!]"
     exit 1
