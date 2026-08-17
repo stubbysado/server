@@ -60,12 +60,11 @@ sudo systemctl daemon-reload
 sudo systemctl enable nfs-mount.service
 
 # FILEBROWSER QUANTUM
-FILEBROWSERQUANTUMLINK="https://github.com/gtsteffaniak/filebrowser/releases/download/v1.5.0-stable/linux-amd64-filebrowser"
-FILEBROWSERQUANTUMBIN="/home/oggy/filebrowser"
+FILEBROWSERQUANTUMDIR="/mnt/server/10-Backup/github/bin/filebrowser"
+FILEBROWSERQUANTUMBIN="/usr/local/bin/filebrowser"
 
-wget -O "$FILEBROWSERQUANTUMBIN" "$FILEBROWSERQUANTUMLINK"
+sudo cp "$FILEBROWSERQUANTUMDIR" "$FILEBROWSERQUANTUMBIN"
 sudo chmod 755 "$FILEBROWSERQUANTUMBIN"
-sudo mv "$FILEBROWSERQUANTUMBIN" /usr/local/bin/filebrowser
 sudo mkdir -p /opt/filebrowser
 sudo chown oggy:oggy /opt/filebrowser
 sudo tee /opt/filebrowser/config.yaml <<'EOF'
