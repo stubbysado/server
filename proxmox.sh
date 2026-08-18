@@ -1,8 +1,8 @@
 #!/bin/bash -x
 
 # SOURCES.LIST.D
-rm -rfv /etc/apt/sources.list.d/*
-rm -rfv /etc/apt/sources.list
+rm -rf /etc/apt/sources.list.d/*
+rm -rf /etc/apt/sources.list
 
 tee /etc/apt/sources.list.d/debian.sources <<'EOF'
 Types: deb deb-src
