@@ -115,7 +115,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable filebrowser
 sudo systemctl start filebrowser
 
-# SCHEDULE
+# CRONTAB
 bash -c "(crontab -l 2>/dev/null; echo '0 23 * * * /mnt/server/01-Documents/Other/wedding_schedule.sh') | crontab -"
 
 # ZRAM
