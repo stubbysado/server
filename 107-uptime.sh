@@ -63,6 +63,32 @@ cat > "$CONF_FILE" << 'EOF'
 # Changes take effect on the next hourly check, no restart needed.
 
 opnsense | 10.0.0.1
+switch | 10.0.0.10
+wap | 10.0.0.11
+wap2 | 10.0.0.12
+server | 10.0.0.21
+server2 | 10.0.0.22
+server3 | 10.0.0.23
+server4 | 10.0.0.24
+vaultwarden | 10.0.0.45
+qbittorrent | 10.0.0.44
+jellyfin | http://10.0.0.43:8096
+navidrome | http://10.0.0.43:4533
+prowlarr | http://10.0.0.43:9696
+radarr | http://10.0.0.43:7878
+sonarr | http://10.0.0.43:8989
+lidarr | http://10.0.0.43:8686
+bazarr | http://10.0.0.43:6767
+ntfy | 10.0.0.46
+oglab | https://oglab.cc
+website | https://oggyproduction.com
+cloud | https://cloud.oggyproduction.com
+dns | 1.1.1.1
+dns | 1.0.0.1
+dns | 9.9.9.9
+dns | 149.112.112.112
+dns | 8.8.8.8
+dns | 8.8.4.4
 EOF
 echo "CONFIG: $CONF_FILE"
 else
