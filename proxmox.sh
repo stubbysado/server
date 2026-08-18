@@ -1,13 +1,9 @@
 #!/bin/bash -x
 
-# BACKUP SOURCES.LIST
-SOURCESLISTBACKUPDIR="/root/backup/sources_list_backup"
-
-mkdir -p "$SOURCESLISTBACKUPDIR"
-mv /etc/apt/sources.list.d/* "$SOURCESLISTBACKUPDIR"
-mv /etc/apt/sources.list "$SOURCESLISTBACKUPDIR"/sources.list.bak
-
 # SOURCES.LIST.D
+rm -rfv /etc/apt/sources.list.d/*
+rm -rfv /etc/apt/sources.list
+
 tee /etc/apt/sources.list.d/debian.sources <<'EOF'
 Types: deb deb-src
 URIs: https://mirror.twds.com.tw/debian
