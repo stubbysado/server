@@ -89,7 +89,6 @@ MARKER="/dev/shm/qbittorrent-nox_marker-$(date +%F)"
 case "$1" in
   stop)
     rm -f /dev/shm/qbittorrent-nox_marker-*
-    /usr/bin/sync
     /usr/bin/systemctl stop "$SERVICE"
     ;;
   check)
