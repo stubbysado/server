@@ -110,12 +110,7 @@ EOF
 sudo chmod 755 /home/oggy/qbittorrent-nox_check.sh
 
 sudo bash -c '(crontab -l 2>/dev/null; echo "55 2 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh stop") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "30 3 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh check") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "0,30 4 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh check") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "0,30 5 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh check") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "0,30 6 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh check") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "0,30 7 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh check") | crontab -'
-sudo bash -c '(crontab -l 2>/dev/null; echo "0,30 8 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh check") | crontab -'
+sudo bash -c '(crontab -l 2>/dev/null; echo "0,30 4-8 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh check") | crontab -'
 sudo bash -c '(crontab -l 2>/dev/null; echo "0 9 * * 2-6,0 /home/oggy/qbittorrent-nox_check.sh start") | crontab -'
 
 # ZRAM
