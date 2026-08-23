@@ -84,7 +84,7 @@ frontend:
   name: Oggy Production
 auth:
   adminUsername: admin
-  adminPassword: fWEHt"Pg]N4G$w76
+  adminPassword: XXXXX
 userDefaults:
   permissions:
     api: false
