@@ -76,12 +76,12 @@ echo -e "$SAMBAPASSWORD\n$SAMBAPASSWORD" | sudo smbpasswd -a oggy
 sudo systemctl restart smbd.service
 
 # SNAPRAID
-SNAPRAIDDIR="/mnt/server/10-Backup/github/bin/snapraid.deb"
-SNAPRAIDDEB="/home/oggy/snapraid.deb"
+SNAPRAIDDEB="https://github.com/amadvance/snapraid/releases/download/v14.9/snapraid_14.9-1_amd64.deb"
+SNAPRAIDDIR="/home/oggy/snapraid.deb"
 
-cp "$SNAPRAIDDIR" "$SNAPRAIDDEB"
-sudo dpkg -i "$SNAPRAIDDEB"
-rm -fv "$SNAPRAIDDEB"
+wget "$SNAPRAIDDEB" -O "$SNAPRAIDDIR"
+sudo dpkg -i "$SNAPRAIDDIR"
+rm -rfv "$SNAPRAIDDIR"
 
 sudo tee /etc/snapraid.conf <<'EOF'
 
