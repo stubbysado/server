@@ -75,3 +75,24 @@ docker run -d --name vaultwarden \
 
 # VERIFY
 docker logs vaultwarden
+
+# CRON
+tee /root/update_container.sh <<'EOF'
+#!/bin/bash
+set -e
+
+/usr/bin/docker pull vaultwarden/server:latest
+/usr/bin/docker stop vaultwarden || true
+/usr/bin/docker rm -f vaultwarden || true
+/usr/bin/docker run -d --name vaultwarden \
+  --restart unless-stopped \
+  --no-healthcheck \
+  -e ROCKET_TLS='{certs="/data/ssl/cert.pem",key="/data/ssl/key.pem"}' \
+  -e ROCKET_PORT=443 \
+  -v /vw-data/:/data/ \
+  -p 443:443 \
+  vaultwarden/server:latest
+EOF
+
+chmod 755 /root/update_container.sh
+bash -c "(crontab -l 2>/dev/null; echo '0 5 * * 1 /root/update_container.sh 2>&1') | crontab -"
