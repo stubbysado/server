@@ -86,7 +86,6 @@ set -e
 /usr/bin/docker rm -f vaultwarden || true
 /usr/bin/docker run -d --name vaultwarden \
   --restart unless-stopped \
-  --no-healthcheck \
   -e ROCKET_TLS='{certs="/data/ssl/cert.pem",key="/data/ssl/key.pem"}' \
   -e ROCKET_PORT=443 \
   -v /vw-data/:/data/ \
