@@ -105,3 +105,24 @@ data data6 /mnt/data6/
 
 exclude lost+found/
 EOF
+
+# WOL
+NIC=$(ip route | awk '/default/ {print $5}' | head -n1)
+
+if [ -z "$NIC" ]; then
+    echo "ERROR."
+    exit 1
+fi
+
+echo "$NIC"
+
+sudo ethtool -s "$NIC" wol g
+sudo ethtool "$NIC" | grep "Wake-on"
+
+POST_UP_LINE="post-up /usr/sbin/ethtool -s $NIC wol g"
+
+if grep -q "$POST_UP_LINE" /etc/network/interfaces; then
+    echo "SKIPPED."
+else
+    sudo sed -i "/^iface $NIC /a \\    $POST_UP_LINE" /etc/network/interfaces
+fi
