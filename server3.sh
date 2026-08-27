@@ -20,7 +20,7 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt clean
 sudo apt autoremove -y
-sudo apt install mergerfs samba screen smartmontools -y
+sudo apt install ethtool mergerfs samba screen smartmontools -y
 
 # FSTAB
 sudo mkdir -p /mnt/parity1 /mnt/data{1..6}
