@@ -74,7 +74,7 @@ recycle:directory_mode = 755
 recycle:versions = yes
 EOF
 
-SAMBAPASSWORD="sudo"
+SAMBAPASSWORD="XXXXX"
 
 echo -e "$SAMBAPASSWORD\n$SAMBAPASSWORD" | sudo smbpasswd -a oggy
 sudo systemctl restart smbd.service
